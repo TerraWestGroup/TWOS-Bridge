@@ -1,0 +1,46 @@
+name: Nightly TWOS Bridge Ingestion
+
+on:
+  schedule:
+    # 11:30 UTC = 19:30 AWST (Australia/Perth is UTC+8 year-round, no DST).
+    # MechanicDesk reports arrive ~18:10 AWST, so this leaves over an hour
+    # of buffer for reports to land before the ingestion run.
+    - cron: "30 11 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install xlrd
+
+      - name: Run nightly ingestion
+        env:
+          GRAPH_TENANT_ID: ${{ secrets.GRAPH_TENANT_ID }}
+          GRAPH_CLIENT_ID: ${{ secrets.GRAPH_CLIENT_ID }}
+          GRAPH_CLIENT_SECRET: ${{ secrets.GRAPH_CLIENT_SECRET }}
+          MAILBOX_ADDRESS: ${{ secrets.MAILBOX_ADDRESS }}
+        run: python scripts/nightly_ingest.py
+
+      - name: Commit and push updated state
+        run: |
+          git config user.name "TWOS Bridge Ingestion Bot"
+          git config user.email "actions@github.com"
+          if git diff --quiet -- data/twos-state.json; then
+            echo "No changes to twos-state.json; nothing to commit."
+          else
+            git add data/twos-state.json
+            git commit -m "Automated nightly ingestion: update twos-state.json"
+            git push
+          fi
