@@ -69,14 +69,22 @@ def perth_date(utc_iso):
 
 
 def fetch_child_folder_id(token, base_url, folder_name, parent="Inbox"):
-    children = graph_get(token, f"{base_url}/mailFolders/{parent}/childFolders?$top=50")
+    """
+    parent="Inbox" (default) looks under Inbox's child folders, matching
+    Mechanic Desk Reports / Podium / ANZ Worldline. parent=None looks at
+    the mailbox's top-level folders instead (siblings of Inbox itself),
+    which is where the Quote Report folders (Luke Bleasedale, Mitch
+    Cooper) turned out to actually live.
+    """
+    list_url = f"{base_url}/mailFolders?$top=100" if parent is None else f"{base_url}/mailFolders/{parent}/childFolders?$top=50"
+    children = graph_get(token, list_url)
     folder = next(
         (f for f in children.get("value", []) if f["displayName"] == folder_name),
         None,
     )
     if not folder:
-        print(f"ERROR: '{folder_name}' folder not found under {parent}.", file=sys.stderr)
-        sys.exit(1)
+        location = "top level of the mailbox" if parent is None else f"under {parent}"
+        raise ValueError(f"'{folder_name}' folder not found at {location}.")
     return folder["id"]
 
 
@@ -292,14 +300,14 @@ def main():
     # running log; only the most recent date present is promoted
     # (handled inside the parser). ---
     QUOTE_FOLDER_LOCATION = {
-        "Luke Bleasdale": "bunbury",
+        "Luke Bleasedale": "bunbury",
         "Mitch Cooper": "busselton",
     }
     try:
         latest_by_location = {}
         with tempfile.TemporaryDirectory() as quote_tmp_dir:
             for folder_name, location in QUOTE_FOLDER_LOCATION.items():
-                folder_id = fetch_child_folder_id(token, base_url, folder_name)
+                folder_id = fetch_child_folder_id(token, base_url, folder_name, parent=None)
                 folder_id_enc = urllib.parse.quote(folder_id, safe="")
                 quote_query = urllib.parse.urlencode({
                     "$top": "5",
