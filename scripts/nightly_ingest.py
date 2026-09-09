@@ -31,6 +31,8 @@ from parsers.income_report import parse_income_report
 from parsers.productivity_report import parse_productivity_report
 from parsers.efficiency_report import parse_efficiency_report
 from parsers.podium_digest import parse_podium_digest
+from xero_client import get_access_token as xero_get_access_token, get_tenant_id as xero_get_tenant_id, xero_get
+from xero_financial import get_bank_account_balance, get_payables_summary, BANK_ACCOUNT_OF_INTEREST
 
 STATE_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "twos-state.json")
 
@@ -189,6 +191,43 @@ def main():
             print(f"WARNING: failed to parse Podium Daily Digest: {e}", file=sys.stderr)
     else:
         print("WARNING: no Podium Daily Digest email found in Inbox.")
+
+    # --- Xero financial data (DN03 Cash Flow & Budget), via direct Xero
+    # Custom Connection API access -- bypasses dataSights, which has no
+    # scriptable/unattended access path. Best-effort: if Xero credentials
+    # are absent or the API call fails, the rest of the state file still
+    # updates normally. ---
+    xero_client_id = os.environ.get("XERO_CLIENT_ID")
+    xero_client_secret = os.environ.get("XERO_CLIENT_SECRET")
+    if xero_client_id and xero_client_secret:
+        try:
+            xero_token = xero_get_access_token(xero_client_id, xero_client_secret)
+            xero_tenant_id = xero_get_tenant_id(xero_token)
+            as_of_date = latest_date  # same accountable date as the MechanicDesk close
+
+            bank_balance = get_bank_account_balance(
+                xero_get, xero_token, xero_tenant_id, as_of_date, BANK_ACCOUNT_OF_INTEREST
+            )
+            net_payables, overdue_payables = get_payables_summary(
+                xero_get, xero_token, xero_tenant_id, as_of_date
+            )
+
+            if bank_balance is not None:
+                overdraft_drawn = round(-bank_balance, 2) if bank_balance < 0 else 0.0
+                overdraft_limit = state["financialControl"]["overdraftLimit"]  # not derivable from Xero; keep existing
+                state["financialControl"]["overdraftDrawn"] = overdraft_drawn
+                state["financialControl"]["overdraftHeadroom"] = round(overdraft_limit - overdraft_drawn, 2)
+            state["financialControl"]["netPayables"] = net_payables
+            state["financialControl"]["overduePayables"] = overdue_payables
+            state["financialControl"]["treasuryAsOfDate"] = as_of_date
+            state["financialControl"]["payablesAsOfSyncUtc"] = datetime.datetime.utcnow().isoformat() + "Z"
+
+            print(f"Parsed Xero financial data: bank_balance={bank_balance}, "
+                  f"netPayables={net_payables}, overduePayables={overdue_payables}")
+        except Exception as e:
+            print(f"WARNING: Xero financial ingestion failed: {e}", file=sys.stderr)
+    else:
+        print("WARNING: XERO_CLIENT_ID/XERO_CLIENT_SECRET not set, skipping financial ingestion.")
 
     with tempfile.TemporaryDirectory() as tmp_dir:
         results = {}  # (location, reportType) -> parsed dict

@@ -31,6 +31,8 @@ jobs:
           GRAPH_CLIENT_ID: ${{ secrets.GRAPH_CLIENT_ID }}
           GRAPH_CLIENT_SECRET: ${{ secrets.GRAPH_CLIENT_SECRET }}
           MAILBOX_ADDRESS: ${{ secrets.MAILBOX_ADDRESS }}
+          XERO_CLIENT_ID: ${{ secrets.XERO_CLIENT_ID }}
+          XERO_CLIENT_SECRET: ${{ secrets.XERO_CLIENT_SECRET }}
         run: python scripts/nightly_ingest.py
 
       - name: Commit and push updated state
