@@ -41,8 +41,29 @@ jobs:
           git config user.email "actions@github.com"
           if git diff --quiet -- data/twos-state.json; then
             echo "No changes to twos-state.json; nothing to commit."
+            echo "STATE_CHANGED=false" >> "$GITHUB_ENV"
           else
             git add data/twos-state.json
             git commit -m "Automated nightly ingestion: update twos-state.json"
             git push
+            echo "STATE_CHANGED=true" >> "$GITHUB_ENV"
           fi
+
+      # IMPORTANT: a workflow's own automated commits/pushes (using the
+      # default GITHUB_TOKEN, as above) do NOT trigger other workflows'
+      # `on: push` -- this is a deliberate GitHub anti-recursion
+      # safeguard. That means the separate "Deploy TWOS Bridge to Azure
+      # Static Web Apps" workflow would never fire after a nightly
+      # ingestion run. So deployment is done directly here instead,
+      # right after the commit, rather than relying on that push to
+      # trigger it.
+      - name: Deploy to Azure Static Web Apps
+        if: env.STATE_CHANGED == 'true'
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "/"
+          output_location: ""
+          skip_app_build: true
