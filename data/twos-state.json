@@ -1,16 +1,16 @@
 {
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-07T01:11:28.002493Z",
-  "latestAccountableDate": "2026-09-04",
+  "generatedAt": "2026-09-09T08:28:09.644151Z",
+  "latestAccountableDate": "2026-09-08",
   "sources": {
     "mechanicDesk": {
       "status": "connected_tested",
-      "receivedAt": "2026-09-04T10:10:42Z",
+      "receivedAt": "2026-09-08T10:10:45Z",
       "expectedAtLocal": "18:10",
       "timezone": "Australia/Perth",
       "folder": "Inbox/Mechanic Desk Reports",
-      "reportCount": 8,
-      "statusDetail": "Latest accountable close ingested; all eight required reports received.",
+      "reportCount": 6,
+      "statusDetail": "Automated nightly ingestion: 6/6 Income/Productivity/Efficiency reports parsed for 2026-09-08.",
       "requiredReports": {
         "bunbury": [
           "Income",
@@ -26,7 +26,7 @@
         ]
       },
       "provenance": "Scheduled MechanicDesk .xls reports received through Outlook",
-      "automationStatus": "version_controlled_generator_manual_deploy",
+      "automationStatus": "scheduled_github_actions",
       "automationRequirement": "State generator and deployment health check are version controlled; scheduled execution must retain connector credentials."
     },
     "xeroDataSights": {
@@ -62,43 +62,43 @@
   "locations": {
     "bunbury": {
       "revenue": {
-        "net": -350.52,
-        "grossProfit": -3694.79,
-        "grossMarginPercent": -1054.09,
-        "sourceFile": "daily_income_report_040926.xls",
+        "net": 5713.54,
+        "grossProfit": 2687.2,
+        "grossMarginPercent": 47.03,
+        "sourceFile": "daily_income_report_080926.xls",
         "target": 13000
       },
       "workshop": {
         "productivityPercent": 100.0,
-        "efficiencyPercent": 144.41,
-        "productivityCoverage": "Daniel Fowles, Jack Rooney",
-        "efficiencyCoverage": "Daniel Fowles, Jack Rooney",
+        "efficiencyPercent": 100.0,
+        "productivityCoverage": "Daniel Fowles",
+        "efficiencyCoverage": "Daniel Fowles",
         "evidenceStatus": "current",
         "sourceFiles": [
-          "daily_productivity_report_040926.xls",
-          "daily_efficiency_report_040926.xls",
-          "daily_job_report_040926.xls"
+          "daily_income_report_080926.xls",
+          "daily_efficiency_report_080926.xls",
+          "daily_productivity_report_080926.xls"
         ]
       }
     },
     "busselton": {
       "revenue": {
-        "net": 10736.45,
-        "grossProfit": 3003.07,
-        "grossMarginPercent": 27.97,
-        "sourceFile": "daily_income_report_040926.xls",
+        "net": 3243.65,
+        "grossProfit": 1345.53,
+        "grossMarginPercent": 41.48,
+        "sourceFile": "daily_income_report_080926.xls",
         "target": 10000
       },
       "workshop": {
-        "productivityPercent": 51.6,
-        "efficiencyPercent": 118.67,
-        "productivityCoverage": "Zach Hutchison, Jayden Brookes",
-        "efficiencyCoverage": "Zach Hutchison, Jayden Brookes",
+        "productivityPercent": 80.0,
+        "efficiencyPercent": 111.5,
+        "productivityCoverage": "Zach Hutchison, Aaron Leonard",
+        "efficiencyCoverage": "Zach Hutchison",
         "evidenceStatus": "current",
         "sourceFiles": [
-          "daily_productivity_report_040926.xls",
-          "daily_efficiency_report_040926.xls",
-          "daily_job_report_040926.xls"
+          "daily_income_report_080926.xls",
+          "daily_efficiency_report_080926.xls",
+          "daily_productivity_report_080926.xls"
         ]
       }
     }
