@@ -64,14 +64,14 @@ def perth_date(utc_iso):
     return perth_dt.date().isoformat()
 
 
-def fetch_mail_folder_id(token, base_url):
-    inbox_children = graph_get(token, f"{base_url}/mailFolders/Inbox/childFolders?$top=50")
+def fetch_child_folder_id(token, base_url, folder_name, parent="Inbox"):
+    children = graph_get(token, f"{base_url}/mailFolders/{parent}/childFolders?$top=50")
     folder = next(
-        (f for f in inbox_children.get("value", []) if f["displayName"] == "Mechanic Desk Reports"),
+        (f for f in children.get("value", []) if f["displayName"] == folder_name),
         None,
     )
     if not folder:
-        print("ERROR: 'Mechanic Desk Reports' folder not found under Inbox.", file=sys.stderr)
+        print(f"ERROR: '{folder_name}' folder not found under {parent}.", file=sys.stderr)
         sys.exit(1)
     return folder["id"]
 
@@ -117,7 +117,7 @@ def main():
     token = get_access_token(tenant_id, client_id, client_secret)
     base_url = f"https://graph.microsoft.com/v1.0/users/{urllib.parse.quote(mailbox)}"
 
-    folder_id = fetch_mail_folder_id(token, base_url)
+    folder_id = fetch_child_folder_id(token, base_url, "Mechanic Desk Reports")
     messages = fetch_recent_messages(token, base_url, folder_id, top=50)
     print(f"Fetched {len(messages)} recent messages from Mechanic Desk Reports.")
 
@@ -152,22 +152,20 @@ def main():
     with open(STATE_PATH) as f:
         state = json.load(f)
 
-    # --- Podium Daily Digest (separate from MechanicDesk: lives in Inbox
-    # directly, not the Mechanic Desk Reports subfolder; HTML body, not
-    # an .xls attachment). Fetched by listing recent Inbox messages and
-    # matching client-side (a server-side $filter on from/emailAddress/address
-    # returns HTTP 400 without extra ConsistencyLevel headers, so this
-    # avoids that entirely -- same approach as the MechanicDesk folder scan.) ---
+    # --- Podium Daily Digest: now filed into its own "Podium" subfolder
+    # under Inbox (moved there by an Outlook rule), same reliable
+    # pattern as Mechanic Desk Reports -- no more scanning-window
+    # guesswork against a busy Inbox. ---
+    podium_folder_id = fetch_child_folder_id(token, base_url, "Podium")
+    podium_folder_id_enc = urllib.parse.quote(podium_folder_id, safe="")
     podium_query = urllib.parse.urlencode({
-        "$top": "100",
+        "$top": "10",
         "$orderby": "receivedDateTime desc",
         "$select": "id,subject,receivedDateTime,from",
     })
-    inbox_messages = graph_get(token, f"{base_url}/mailFolders/Inbox/messages?{podium_query}").get("value", [])
-    podium_messages = [
-        m for m in inbox_messages
-        if m.get("from", {}).get("emailAddress", {}).get("address", "").lower() == "notifications@podium.com"
-    ]
+    podium_messages = graph_get(
+        token, f"{base_url}/mailFolders/{podium_folder_id_enc}/messages?{podium_query}"
+    ).get("value", [])
     if podium_messages:
         podium_msg = podium_messages[0]
         podium_msg_id_enc = urllib.parse.quote(podium_msg["id"], safe="")
