@@ -30,6 +30,7 @@ from graph_client import get_access_token, graph_get, graph_get_all_pages
 from parsers.income_report import parse_income_report
 from parsers.productivity_report import parse_productivity_report
 from parsers.efficiency_report import parse_efficiency_report
+from parsers.podium_digest import parse_podium_digest
 
 STATE_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "twos-state.json")
 
@@ -150,6 +151,40 @@ def main():
 
     with open(STATE_PATH) as f:
         state = json.load(f)
+
+    # --- Podium Daily Digest (separate from MechanicDesk: lives in Inbox
+    # directly, not the Mechanic Desk Reports subfolder; HTML body, not
+    # an .xls attachment) ---
+    podium_query = urllib.parse.urlencode({
+        "$filter": "from/emailAddress/address eq 'notifications@podium.com'",
+        "$orderby": "receivedDateTime desc",
+        "$top": "1",
+        "$select": "id,subject,receivedDateTime",
+    })
+    podium_messages = graph_get(token, f"{base_url}/mailFolders/Inbox/messages?{podium_query}").get("value", [])
+    if podium_messages:
+        podium_msg = podium_messages[0]
+        podium_msg_id_enc = urllib.parse.quote(podium_msg["id"], safe="")
+        full_msg = graph_get(
+            token,
+            f"{base_url}/messages/{podium_msg_id_enc}?$select=subject,receivedDateTime,body",
+        )
+        try:
+            podium_result = parse_podium_digest(full_msg["body"]["content"], full_msg["subject"])
+            state["podium"]["inbox"] = podium_result["inbox"]
+            state["podium"]["group"] = podium_result["group"]
+            state["podium"]["locations"] = podium_result["locations"]
+            state["podium"]["reportingDate"] = podium_result["reportingDate"]
+            state["sources"]["podiumDailyDigest"]["status"] = "connected_tested"
+            state["sources"]["podiumDailyDigest"]["receivedAt"] = full_msg["receivedDateTime"]
+            state["sources"]["podiumDailyDigest"]["reportingDate"] = podium_result["reportingDate"]
+            state["sources"]["podiumDailyDigest"]["provenance"] = f"{full_msg['subject']} received in Outlook"
+            print(f"Parsed Podium Daily Digest: reportingDate={podium_result['reportingDate']}, "
+                  f"newLeads={podium_result['inbox']['newLeads']}")
+        except Exception as e:
+            print(f"WARNING: failed to parse Podium Daily Digest: {e}", file=sys.stderr)
+    else:
+        print("WARNING: no Podium Daily Digest email found in Inbox.")
 
     with tempfile.TemporaryDirectory() as tmp_dir:
         results = {}  # (location, reportType) -> parsed dict
