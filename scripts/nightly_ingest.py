@@ -300,7 +300,7 @@ def main():
     # running log; only the most recent date present is promoted
     # (handled inside the parser). ---
     QUOTE_FOLDER_LOCATION = {
-        "Luke Bleasedale": "bunbury",
+        "Luke Bleasdale": "bunbury",
         "Mitch Cooper": "busselton",
     }
     try:
