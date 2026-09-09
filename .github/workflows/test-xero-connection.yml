@@ -1,0 +1,21 @@
+name: Test Xero Connection
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  test-connection:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run Xero connection test
+        env:
+          XERO_CLIENT_ID: ${{ secrets.XERO_CLIENT_ID }}
+          XERO_CLIENT_SECRET: ${{ secrets.XERO_CLIENT_SECRET }}
+        run: python scripts/test_xero_connection.py
