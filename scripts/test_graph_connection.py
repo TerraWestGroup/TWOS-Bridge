@@ -82,10 +82,15 @@ def main():
 
     print(f"Found folder: {folder['displayName']} (id={folder['id']}, totalItemCount={folder.get('totalItemCount')})")
 
+    folder_id = urllib.parse.quote(folder['id'], safe='')
+    query = urllib.parse.urlencode({
+        "$top": "10",
+        "$orderby": "receivedDateTime desc",
+        "$select": "subject,receivedDateTime,hasAttachments",
+    })
     messages = graph_get(
         token,
-        f"{base}/mailFolders/{folder['id']}/messages"
-        f"?$top=10&$orderby=receivedDateTime desc&$select=subject,receivedDateTime,hasAttachments",
+        f"{base}/mailFolders/{folder_id}/messages?{query}",
     )
 
     print(f"\nMost recent {len(messages.get('value', []))} messages in Mechanic Desk Reports:")
