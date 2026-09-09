@@ -1,0 +1,2860 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>TerraWest Group | TWOS Bridge</title>
+    <style>
+        :root {
+            --bg: #f5f7fa;
+            --card: #fff;
+            --ink: #15202b;
+            --muted: #667085;
+            --line: #e4e7ec;
+            --nav: #070707;
+            --orange: #f7941d;
+            --orange-dark: #9a4d00;
+            --orange-soft: #fff4e5;
+            --good: #18794e;
+            --warn: #b54708;
+            --bad: #b42318;
+            --blue: var(--orange-dark)
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font: 14px system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--ink)
+        }
+
+        header {
+            background: var(--nav);
+            color: #fff;
+            padding: 18px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: end
+        }
+
+        h1 {
+            margin: 0;
+            font-family: Saira, "Arial Narrow", Arial, sans-serif;
+            font-size: 24px;
+            letter-spacing: .01em
+        }
+
+        h2,
+        h3,
+        .sidehead {
+            font-family: Saira, "Arial Narrow", Arial, sans-serif
+        }
+
+        .sub {
+            opacity: .75;
+            margin-top: 4px
+        }
+
+        .fresh {
+            font-size: 12px;
+            opacity: .82;
+            text-align: right
+        }
+
+        .nav {
+            background: #fff;
+            border-bottom: 1px solid var(--line);
+            padding: 0 28px
+        }
+
+        .nav button {
+            border: 0;
+            background: transparent;
+            padding: 14px 13px;
+            cursor: pointer;
+            color: var(--muted);
+            font-weight: 650
+        }
+
+        .nav button.active {
+            color: var(--orange-dark);
+            border-bottom: 3px solid var(--orange)
+        }
+
+        .wrap {
+            max-width: 1500px;
+            margin: auto;
+            padding: 22px
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 18px
+        }
+
+        .stat,
+        .card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 12px
+        }
+
+        .stat {
+            padding: 14px
+        }
+
+        .stat b {
+            display: block;
+            font-size: 22px;
+            margin-top: 5px
+        }
+
+        .board {
+            overflow: auto
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 230px repeat(2, minmax(420px, 1fr));
+            min-width: 1100px
+        }
+
+        .cell {
+            background: #fff;
+            border-right: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            padding: 14px
+        }
+
+        .head {
+            background: #eef2f6;
+            font-weight: 700
+        }
+
+        .division {
+            font-weight: 700;
+            cursor: pointer
+        }
+
+        .division small {
+            display: block;
+            color: var(--muted);
+            font-weight: 500;
+            margin-top: 4px
+        }
+
+        .measures {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 7px
+        }
+
+        .m {
+            padding: 8px;
+            border-radius: 8px;
+            background: #f8fafc;
+            border: 1px solid #eef2f6;
+            cursor: pointer
+        }
+
+        .m:hover {
+            border-color: #98a2b3
+        }
+
+        .m span {
+            display: block;
+            color: var(--muted);
+            font-size: 11px
+        }
+
+        .m b {
+            font-size: 14px
+        }
+
+        .up {
+            color: var(--good)
+        }
+
+        .down {
+            color: var(--bad)
+        }
+
+        .flat {
+            color: var(--muted)
+        }
+
+        .attention {
+            box-shadow: inset 4px 0 var(--bad)
+        }
+
+        .watch {
+            box-shadow: inset 4px 0 var(--warn)
+        }
+
+        #drawer {
+            position: fixed;
+            right: -680px;
+            top: 0;
+            width: 660px;
+            max-width: 96vw;
+            height: 100vh;
+            background: white;
+            box-shadow: -8px 0 30px #0002;
+            transition: .2s;
+            padding: 24px;
+            overflow: auto;
+            z-index: 4
+        }
+
+        #drawer.open {
+            right: 0
+        }
+
+        .close {
+            float: right;
+            border: 0;
+            background: #eef2f6;
+            border-radius: 8px;
+            padding: 8px 11px;
+            cursor: pointer
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 8px;
+            border-radius: 20px;
+            background: #eef4ff;
+            color: var(--blue);
+            font-size: 12px;
+            margin: 0 5px 5px 0
+        }
+
+        .section {
+            border-top: 1px solid var(--line);
+            padding-top: 15px;
+            margin-top: 18px
+        }
+
+        .evidence {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 8px 0
+        }
+
+        .action {
+            border-left: 4px solid var(--warn);
+            padding: 10px 12px;
+            background: #fffaeb
+        }
+
+        .timeline {
+            border-left: 2px solid #d0d5dd;
+            margin-left: 6px;
+            padding-left: 16px
+        }
+
+        .timeline p {
+            margin: 0 0 14px
+        }
+
+        .btn {
+            border: 0;
+            background: var(--orange);
+            color: #111;
+            font-weight: 750;
+            padding: 9px 12px;
+            border-radius: 8px;
+            margin: 5px 6px 5px 0;
+            cursor: pointer
+        }
+
+        .btn.alt {
+            background: #eef2f6;
+            color: var(--ink)
+        }
+
+        .muted {
+            color: var(--muted)
+        }
+
+        .hidden {
+            display: none
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        .table th,
+        .table td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid var(--line);
+            vertical-align: top
+        }
+
+        .table th {
+            font-size: 12px;
+            color: var(--muted);
+            background: #f8fafc
+        }
+
+        .status {
+            font-weight: 700
+        }
+
+        .good {
+            color: var(--good)
+        }
+
+        .warn {
+            color: var(--warn)
+        }
+
+        .bad {
+            color: var(--bad)
+        }
+
+        .casegrid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr .8fr .8fr;
+            gap: 8px
+        }
+
+        .case {
+            padding: 14px;
+            border-bottom: 1px solid var(--line);
+            cursor: pointer
+        }
+
+        .case:hover {
+            background: #f8fafc
+        }
+
+        .compare {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px
+        }
+
+        .panel {
+            padding: 15px;
+            border: 1px solid var(--line);
+            border-radius: 10px
+        }
+
+        .panel h3 {
+            margin-top: 0
+        }
+
+        .contextbox {
+            background: var(--orange-soft);
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid var(--orange)
+        }
+
+        @media(max-width:800px) {
+            .summary {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .compare {
+                grid-template-columns: 1fr
+            }
+
+            .fresh {
+                display: none
+            }
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background: #f4f6f8
+        }
+
+        .sidebar {
+            width: 248px;
+            background: var(--nav);
+            color: #fff;
+            min-height: 100vh;
+            padding: 22px 12px;
+            position: fixed;
+            left: 0;
+            top: 0
+        }
+
+        .brand {
+            padding: 0 10px 18px
+        }
+
+        .brand img {
+            display: block;
+            width: 100%;
+            height: auto
+        }
+
+        .brand small {
+            display: block;
+            margin-top: 7px;
+            color: #fff;
+            font-family: Saira, "Arial Narrow", Arial, sans-serif;
+            font-size: 11px;
+            font-weight: 650;
+            letter-spacing: .12em;
+            text-align: center;
+            text-transform: uppercase
+        }
+
+        .side,
+        .sidehead {
+            width: 100%;
+            text-align: left
+        }
+
+        .side {
+            border: 0;
+            background: transparent;
+            color: #e8e8e8;
+            padding: 10px 12px;
+            border-radius: 7px;
+            cursor: pointer;
+            border-left: 3px solid transparent
+        }
+
+        .side:hover,
+        .side.active {
+            background: #202020;
+            border-left-color: var(--orange);
+            color: #fff
+        }
+
+        .sidehead {
+            font-size: 11px;
+            color: var(--orange);
+            opacity: 1;
+            padding: 24px 12px 7px
+        }
+
+        .shell {
+            margin-left: 248px;
+            width: calc(100% - 248px)
+        }
+
+        header {
+            background: #fff;
+            color: var(--ink);
+            border-bottom: 1px solid var(--line);
+            padding: 20px 24px;
+            align-items: center;
+            border-top: 4px solid var(--orange)
+        }
+
+        .brandline {
+            color: var(--orange-dark);
+            font-family: Saira, "Arial Narrow", Arial, sans-serif;
+            font-size: 11px;
+            font-weight: 750;
+            letter-spacing: .12em;
+            margin-bottom: 3px;
+            text-transform: uppercase
+        }
+
+        .mobile-brand {
+            display: none
+        }
+
+        .sub,
+        .fresh {
+            color: var(--muted);
+            opacity: 1
+        }
+
+        .wrap {
+            max-width: none;
+            padding: 18px 22px
+        }
+
+        .divisionpanel {
+            padding: 18px 20px
+        }
+
+        .divisionpanel h2 {
+            font-size: 14px;
+            margin: 0 0 18px
+        }
+
+        .rings {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(120px, 1fr));
+            gap: 12px
+        }
+
+        .ringcard {
+            text-align: center;
+            padding: 2px 5px 12px;
+            border-right: 1px solid var(--line);
+            cursor: pointer
+        }
+
+        .ringcard:last-child {
+            border-right: 0
+        }
+
+        .ringcard h3 {
+            margin: 0;
+            font-size: 16px
+        }
+
+        .ringcard small {
+            display: block;
+            color: var(--muted);
+            height: 32px
+        }
+
+        .donut {
+            width: 124px;
+            height: 124px;
+            border-radius: 50%;
+            margin: 10px auto;
+            display: grid;
+            place-items: center;
+            position: relative
+        }
+
+        .donut:after {
+            content: '';
+            position: absolute;
+            width: 82px;
+            height: 82px;
+            background: #fff;
+            border-radius: 50%
+        }
+
+        .donut .num {
+            z-index: 1;
+            font-size: 34px;
+            font-weight: 750;
+            line-height: 1
+        }
+
+        .donut .num em {
+            display: block;
+            font-size: 10px;
+            font-style: normal;
+            font-weight: 500;
+            color: var(--muted);
+            margin-top: 7px;
+            line-height: 1.2
+        }
+
+        .viewlink {
+            color: var(--orange-dark);
+            font-size: 12px;
+            font-weight: 700
+        }
+
+        .legend {
+            border-top: 1px solid var(--line);
+            margin-top: 8px;
+            padding-top: 14px;
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            font-size: 12px
+        }
+
+        .lg {
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            border-radius: 3px;
+            margin-right: 6px;
+            vertical-align: -2px
+        }
+
+        .green {
+            background: #2fa84f
+        }
+
+        .amber {
+            background: #f5a000
+        }
+
+        .red {
+            background: #e53935
+        }
+
+        .grey {
+            background: #a7adb1
+        }
+
+        .summary.five {
+            grid-template-columns: repeat(5, 1fr);
+            margin-top: 14px
+        }
+
+        .lowergrid {
+            display: grid;
+            grid-template-columns: 1.05fr 1.05fr 1.05fr 1.25fr;
+            gap: 12px
+        }
+
+        .mini {
+            padding: 16px
+        }
+
+        .mini h3 {
+            font-size: 12px;
+            margin: 0 0 14px
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #edf0f2;
+            padding: 8px 0;
+            font-size: 12px
+        }
+
+        .twocol {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            text-align: center
+        }
+
+        .twocol strong {
+            display: block;
+            font-size: 23px;
+            margin: 7px 0
+        }
+
+        .twocol span {
+            display: block;
+            font-size: 12px
+        }
+
+        .principle {
+            margin-top: 14px;
+            border: 1px solid #f5c07a;
+            border-left: 4px solid var(--orange);
+            background: var(--orange-soft);
+            border-radius: 7px;
+            padding: 11px 14px;
+            color: #344054
+        }
+
+        .nav {
+            display: none
+        }
+
+        @media(max-width:1100px) {
+            .rings {
+                grid-template-columns: repeat(4, 1fr)
+            }
+
+            .lowergrid {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .summary.five {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        @media(max-width:800px) {
+            .sidebar {
+                display: none
+            }
+
+            .shell {
+                margin-left: 0;
+                width: 100%
+            }
+
+            .rings {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .lowergrid {
+                grid-template-columns: 1fr
+            }
+
+            .summary.five {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .ringcard {
+                border-right: 0
+            }
+
+            header {
+                align-items: flex-start;
+                gap: 12px
+            }
+
+            .mobile-brand {
+                display: block;
+                flex: 0 0 76px;
+                width: 76px;
+                height: auto
+            }
+        }
+
+        .readinessgrid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px
+        }
+
+        .gate {
+            padding: 16px
+        }
+
+        .gate h3 {
+            margin: 0 0 8px;
+            font-size: 13px
+        }
+
+        .gate .big {
+            font-size: 24px;
+            font-weight: 800
+        }
+
+        .bar {
+            height: 8px;
+            background: #eef2f6;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 9px 0
+        }
+
+        .bar i {
+            display: block;
+            height: 100%;
+            background: #2fa84f
+        }
+
+        .bar i.warnbar {
+            background: #f5a000
+        }
+
+        .contract {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px
+        }
+
+        .check {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            gap: 16px
+        }
+
+        .check:last-child {
+            border-bottom: 0
+        }
+
+        .pill {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700
+        }
+
+        .pill.ready {
+            background: #eaf7ee;
+            color: #18794e
+        }
+
+        .pill.partial {
+            background: #fff4e5;
+            color: #b54708
+        }
+
+        .pill.blocked {
+            background: #fdecec;
+            color: #b42318
+        }
+
+        .codebox {
+            font: 12px ui-monospace, SFMono-Regular, Consolas, monospace;
+            background: #101828;
+            color: #d0d5dd;
+            padding: 12px;
+            border-radius: 8px;
+            overflow: auto
+        }
+
+        @media(max-width:900px) {
+
+            .readinessgrid,
+            .contract {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .financegrid {
+            display: grid;
+            grid-template-columns: 1.35fr 1fr;
+            gap: 14px
+        }
+
+        .cashchart {
+            height: 240px;
+            display: flex;
+            align-items: end;
+            gap: 8px;
+            padding: 28px 12px 26px;
+            border-left: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            position: relative
+        }
+
+        .cashweek {
+            flex: 1;
+            min-width: 12px;
+            background: #d0d5dd;
+            border-radius: 5px 5px 0 0;
+            position: relative
+        }
+
+        .cashweek:after {
+            content: attr(data-week);
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 7px;
+            font-size: 10px;
+            color: var(--muted)
+        }
+
+        .cashlegend {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+            font-size: 12px
+        }
+
+        .scenario {
+            padding: 12px;
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            margin-bottom: 9px
+        }
+
+        .scenario strong {
+            display: block;
+            margin-bottom: 4px
+        }
+
+        .sourcegrid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 9px
+        }
+
+        .sourceitem {
+            padding: 12px;
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            background: #f8fafc
+        }
+
+        .sourceitem b,
+        .sourceitem span {
+            display: block
+        }
+
+        .sourceitem span {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 5px
+        }
+
+        @media(max-width:1000px) {
+            .financegrid {
+                grid-template-columns: 1fr
+            }
+
+            .sourcegrid {
+                grid-template-columns: 1fr 1fr
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="brand">
+            <img src="assets/terrawest-group-logo.png" alt="TerraWest Group">
+            <small>TerraWest Operating System</small>
+        </div>
+        <button class="side active" onclick="showView('boardView',this)">Bridge Home</button>
+        <div class="sidehead">OPERATING BOARD</div>
+        <button class="side" onclick="showView('boardView',this)">Divisions Overview</button>
+        <button class="side" onclick="showView('queueView',this)">Operations Manager Queue</button>
+        <button class="side" onclick="showView('shadowView',this)">Wave 2 Shadow</button>
+        <button class="side" onclick="showView('financeView',this)">Cash Flow &amp; Budget</button>
+        <div class="sidehead">MANAGEMENT</div>
+        <button class="side" onclick="showView('podiumView',this)">Podium Daily Digest</button>
+        <button class="side" onclick="showView('afterCareView',this)">Customer After-Care</button>
+        <button class="side" onclick="showView('casesView',this)">Cases</button>
+        <button class="side" onclick="showView('actionsView',this)">Actions</button>
+        <div class="sidehead">EVIDENCE & CONTROLS</div>
+        <button class="side" onclick="showView('evidenceView',this)">Evidence Health</button>
+        <button class="side" onclick="showView('controlView',this)">Control Room</button>
+        <button class="side" onclick="showView('integrationsView',this)">Integrations</button>
+        <div class="sidehead">SYSTEM</div>
+        <button class="side" onclick="showView('agentView',this)">Agent Loop</button>
+        <button class="side" onclick="showView('readinessView',this)">Agent Readiness</button>
+    </aside>
+    <div class="shell">
+        <header>
+            <img class="mobile-brand" src="assets/terrawest-group-logo.png" alt="TerraWest Group">
+            <div>
+                <div class="brandline">TerraWest Operating System</div>
+                <h1>TWOS Bridge</h1>
+                <div class="sub">Latest accountable operating position</div>
+            </div>
+            <div class="fresh" id="sourceFreshness">Loading evidence state…</div>
+        </header>
+        <main class="wrap">
+            <section id="boardView">
+                <div class="card divisionpanel">
+                    <h2>OPERATING BOARD — DIVISION STATUS</h2>
+                    <div id="divisionRings" class="rings">
+                    </div>
+                    <div class="legend">
+                        <span>
+                            <i class="lg green">
+                            </i>Within Standard</span>
+                        <span>
+                            <i class="lg amber">
+                            </i>Watch / Deteriorating</span>
+                        <span>
+                            <i class="lg red">
+                            </i>Constraint / Action Required</span>
+                        <span>
+                            <i class="lg grey">
+                            </i>Insufficient Evidence</span>
+                    </div>
+                </div>
+                <div class="summary five">
+                    <div class="stat">Owner Command<b id="homeOwnerAttention">—</b>
+                        <span class="muted" id="homeOwnerAttentionLabel">loading genuine attention items</span>
+                    </div>
+                    <div class="stat">Active Constraints<b>2</b>
+                        <span class="muted">confirmed / being handled</span>
+                    </div>
+                    <div class="stat">Actions Underway<b>4</b>
+                        <span class="muted">1 due today</span>
+                    </div>
+                    <div class="stat">Decisions Required<b>1</b>
+                        <span class="muted">authority boundary</span>
+                    </div>
+                    <div class="stat">Evidence Gaps<b>3</b>
+                        <span class="muted">held below escalation</span>
+                    </div>
+                </div>
+                <div class="lowergrid">
+                    <div class="card mini">
+                        <h3>EVIDENCE & INTEGRATION HEALTH</h3>
+
+                        <div class="row">
+                            <b>MechanicDesk</b>
+                            <span class="warn" id="mechanicDeskStatus">CHECKING</span>
+                        </div>
+                        <div class="row">
+                            <b>Xero / dataSights</b>
+                            <span class="good" id="dataSightsStatus">CONNECTED</span>
+                        </div>
+                        <p class="muted" id="dataSightsCadence">Loading sync cadence…</p>
+                        <div class="row">
+                            <b>ANZ Worldline</b>
+                            <span class="warn" id="worldlineStatus">CHECKING</span>
+                        </div>
+                        <p class="muted" id="worldlineFreshness">Loading settlement-feed state…</p>
+                        <div class="row">
+                            <b>Podium</b>
+                            <span class="warn" id="podiumStatus">CHECKING</span>
+                        </div>
+                        <p class="muted" id="podiumFreshness">Loading Outlook digest state…</p>
+                    </div>
+                    <div class="card mini">
+                        <h3 id="revenueHeading">REVENUE PERFORMANCE</h3>
+
+                        <div class="twocol">
+                            <div>
+                                <small>Bunbury</small>
+                                <strong id="bunburyRevenue">—</strong>
+                                <span id="bunburyRevenuePosition" class="muted">Loading</span>
+                            </div>
+                            <div>
+                                <small>Busselton</small>
+                                <strong id="busseltonRevenue">—</strong>
+                                <span id="busseltonRevenuePosition" class="muted">Loading</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mini">
+                        <h3>WORKSHOP / DEMAND</h3>
+
+                        <p>
+                            <b>Job + WIP evidence available</b>
+                        </p>
+                        <p class="muted">TWOS is extracting evidence before promoting productivity, demand or efficiency conclusions.</p>
+                    </div>
+                    <div class="card mini">
+                        <h3>WAVE 2 SHADOW</h3>
+                        <div class="twocol">
+                            <div><small>Assessments retained</small><strong id="shadowHomeTotal">—</strong></div>
+                            <div><small>Owner attention</small><strong id="shadowHomeOwner">—</strong></div>
+                        </div>
+                        <p class="muted" id="shadowHomeStatus">Loading persistent assessment state…</p>
+                        <button class="btn" onclick="showView('shadowView')">Open assessments</button>
+                    </div>
+                    <div class="card mini">
+                        <h3>CUSTOMER AFTER-CARE</h3>
+                        <div class="row"><b>TWOS-AC-001</b><span id="afterCareHomeStatus" class="warn">LOADING</span></div>
+                        <div class="twocol">
+                            <div><small>Due today</small><strong id="afterCareHomeDue">—</strong></div>
+                            <div><small>Unresolved</small><strong id="afterCareHomeUnresolved">—</strong></div>
+                        </div>
+                        <p class="muted" id="afterCareHomeNote">Loading persistent After-Care state…</p>
+                        <button class="btn" onclick="showView('afterCareView')">Open After-Care</button>
+                    </div>
+                    <div class="card mini">
+                        <h3>DN03 FINANCIAL CONTROL</h3>
+
+                        <p>
+                            <b>Cash evidence populated</b>
+                        </p>
+                        <p class="muted" id="financialHomeNote">Loading current dataSights financial evidence…</p>
+                        <button class="btn" onclick="showView('financeView')">Open cash flow</button>
+                    </div>
+                </div>
+                <div class="principle">TWOS Principle: Context before challenge. Evidence before judgement. Assign to closest. Escalate only when required.</div>
+            </section>
+<section id="financeView" class="hidden">
+<h2>DN03 · Cash Flow &amp; Budget</h2>
+<p class="muted" id="financialDetailNote">Loading current dataSights financial evidence…</p>
+<div class="summary">
+<div class="stat">Overdraft headroom<b id="financialHeadroom">—</b><span class="muted" id="financialHeadroomDetail">Loading…</span></div>
+<div class="stat">Net payables<b class="warn" id="financialNetAP">—</b><span class="muted" id="financialOverdueAP">Loading…</span></div>
+<div class="stat">Caplink due 30 Sep<b>$26,702</b><span class="muted">Receivable · excluded from opening liquidity</span></div>
+<div class="stat">Confidence<b class="good">HIGH</b><span class="muted">ANZ reconciled · dataSights synced 2 Sep</span></div>
+</div>
+<div class="financegrid">
+<div class="card gate"><h3>13-WEEK AVAILABLE-LIQUIDITY PROJECTION</h3>
+<div class="cashchart" aria-label="Thirteen-week base available-liquidity projection rising from 208 thousand to 343 thousand dollars"><div class="cashweek" data-week="1" style="height:61%"></div><div class="cashweek" data-week="2" style="height:63%"></div><div class="cashweek" data-week="3" style="height:66%"></div><div class="cashweek" data-week="4" style="height:69%"></div><div class="cashweek" data-week="5" style="height:79%"></div><div class="cashweek" data-week="6" style="height:82%"></div><div class="cashweek" data-week="7" style="height:84%"></div><div class="cashweek" data-week="8" style="height:87%"></div><div class="cashweek" data-week="9" style="height:90%"></div><div class="cashweek" data-week="10" style="height:92%"></div><div class="cashweek" data-week="11" style="height:95%"></div><div class="cashweek" data-week="12" style="height:97%"></div><div class="cashweek" data-week="13" style="height:100%"></div></div><div class="cashlegend"><span><i class="lg green"></i>Base ending: <b>$343,278</b></span><span><b>Opening headroom:</b> $199,343</span><span><b>Caplink:</b> +$26,702 on 30 Sep</span></div><p class="muted" style="margin-bottom:0">Run-rate uses completed weeks 1 Jun–30 Aug 2026: average inflows $91,774, outflows $82,756 and net +$9,018/week. Available liquidity is overdraft capacity, not cash in the bank.</p></div>
+<div class="card gate"><h3>SCENARIOS &amp; EXPOSURE</h3>
+<div class="scenario"><strong>Base · $343,278</strong><span class="muted">Recent average net movement continues; Caplink received 30 Sep.</span></div><div class="scenario"><strong>Conservative · $223,965</strong><span class="muted">Receipts 10% below recent average; outgoings unchanged; Caplink retained.</span></div><div class="scenario"><strong>Strong · $462,590</strong><span class="muted">Receipts 10% above recent average; outgoings unchanged; Caplink retained.</span></div><div class="action"><b>DN03 watch — no owner intervention currently required</b><p>Current overdraft headroom exceeds overdue AP by $3,778. The 30 September Caplink receipt increases that buffer to $30,480 before other cash movements. Net AR is a $76,616 credit position and must not be treated as forecast receipts until customer deposits, credits and allocations are classified.</p></div></div>
+</div>
+<div class="card gate" style="margin-top:14px"><h3>FORECAST EVIDENCE CHAIN</h3>
+<div class="sourcegrid"><div class="sourceitem"><b>Cash</b><span>Xero bank and cash accounts</span></div><div class="sourceitem"><b>Receipts</b><span>Aged receivables + payment behaviour</span></div><div class="sourceitem"><b>Outgoings</b><span>Aged payables + recurring transactions</span></div><div class="sourceitem"><b>Forward demand</b><span>MechanicDesk booked/executable work</span></div><div class="sourceitem"><b>Tax &amp; BAS</b><span>Xero liabilities + known due dates</span></div><div class="sourceitem"><b>Commitments</b><span>Outlook / TWOS owner-approved obligations</span></div><div class="sourceitem"><b>History</b><span>2016–2026 Xero evidence; anomalies excluded</span></div><div class="sourceitem"><b>Provenance</b><span>Source, sync time and confidence retained</span></div></div></div>
+<div class="card gate" style="margin-top:14px"><h3>APPROVED OPERATING BUDGET · SEP 2026–AUG 2027</h3>
+<p>Approved by the owner on 2 September 2026. Revenue grows 20% from the latest completed year, monthly seasonality follows that year, GP is held at 41.2%, and operating-expense growth is capped at 5%.</p>
+<div class="summary"><div class="stat">Revenue<b>$4.797m</b><span class="muted">20% annual growth</span></div><div class="stat">Gross profit<b>$1.977m</b><span class="muted">41.2% approved GP</span></div><div class="stat">Operating expenses<b>$1.543m</b><span class="muted">Maximum 5% growth</span></div><div class="stat">Operating result<b class="good">$433,851</b><span class="muted">9.0% operating margin</span></div></div>
+<table class="table"><thead><tr><th>Month</th><th>Revenue</th><th>Direct costs</th><th>Operating expenses</th><th>Operating result</th></tr></thead><tbody>
+<tr><td>Sep 2026</td><td>$405,402</td><td>$238,376</td><td>$129,552</td><td>$37,473</td></tr>
+<tr><td>Oct 2026</td><td>$377,883</td><td>$222,195</td><td>$105,059</td><td>$50,629</td></tr>
+<tr><td>Nov 2026</td><td>$403,619</td><td>$237,328</td><td>$103,652</td><td>$62,639</td></tr>
+<tr><td>Dec 2026</td><td>$355,637</td><td>$209,115</td><td>$119,608</td><td>$26,915</td></tr>
+<tr><td>Jan 2027</td><td>$368,079</td><td>$216,431</td><td>$139,917</td><td>$11,732</td></tr>
+<tr><td>Feb 2027</td><td>$339,217</td><td>$199,460</td><td>$124,071</td><td>$15,686</td></tr>
+<tr><td>Mar 2027</td><td>$396,674</td><td>$233,244</td><td>$137,104</td><td>$26,326</td></tr>
+<tr><td>Apr 2027</td><td>$408,906</td><td>$240,437</td><td>$114,392</td><td>$54,078</td></tr>
+<tr><td>May 2027</td><td>$446,158</td><td>$262,341</td><td>$134,457</td><td>$49,360</td></tr>
+<tr><td>Jun 2027</td><td>$404,141</td><td>$237,635</td><td>$150,822</td><td>$15,684</td></tr>
+<tr><td>Jul 2027</td><td>$487,919</td><td>$286,896</td><td>$131,887</td><td>$69,136</td></tr>
+<tr><td>Aug 2027</td><td>$403,807</td><td>$237,439</td><td>$152,174</td><td>$14,195</td></tr>
+</tbody><tfoot><tr><th>12 months</th><th>$4,797,441</th><th>$2,820,896</th><th>$1,542,694</th><th>$433,851</th></tr></tfoot></table>
+<div class="action"><b>Approved management standard</b><p>Monthly performance is assessed against Revenue, GP and Operating Expense targets together. Revenue growth does not compensate for GP below 41.2% or operating expenses above the approved monthly ceiling.</p></div></div>
+<div class="card gate" style="margin-top:14px"><h3>12-MONTH EVIDENCE BASELINE · SEP 2026–AUG 2027</h3>
+<p>This is the calculated starting point for budget setting: 50% weight on the latest 12 months, 30% on the preceding year and 20% on the third year. It preserves monthly seasonality and uses account-classified Xero transactions rather than a simple ten-year average.</p><div class="summary"><div class="stat">Revenue<b>$3.556m</b><span class="muted">Weighted historical baseline</span></div><div class="stat">Gross profit<b>$1.466m</b><span class="muted">41.2% baseline GP</span></div><div class="stat">Operating expenses<b>$1.352m</b><span class="muted">Account-classified Xero history</span></div><div class="stat">Operating result<b class="warn">$113,069</b><span class="muted">3.2% baseline margin</span></div></div><table class="table"><thead>
+<tr><th>Month</th><th>Revenue</th><th>Direct costs</th><th>Operating expenses</th><th>Operating result</th></tr>
+</thead><tbody>
+<tr><td>Sep 2026</td><td>$277,572</td><td>$167,569</td><td>$106,988</td><td>$3,016</td></tr>
+
+<tr><td>Oct 2026</td><td>$267,526</td><td>$161,708</td><td>$94,991</td><td>$10,828</td></tr>
+
+<tr><td>Nov 2026</td><td>$308,928</td><td>$196,229</td><td>$91,514</td><td>$21,186</td></tr>
+
+<tr><td>Dec 2026</td><td>$266,009</td><td>$146,908</td><td>$103,194</td><td>$15,907</td></tr>
+
+<tr><td>Jan 2027</td><td>$255,925</td><td>$154,476</td><td>$115,680</td><td class="bad">($14,230)</td></tr>
+
+<tr><td>Feb 2027</td><td>$271,152</td><td>$172,300</td><td>$108,325</td><td class="bad">($9,473)</td></tr>
+
+<tr><td>Mar 2027</td><td>$281,170</td><td>$173,591</td><td>$114,386</td><td class="bad">($6,808)</td></tr>
+
+<tr><td>Apr 2027</td><td>$304,376</td><td>$177,550</td><td>$98,903</td><td>$27,924</td></tr>
+
+<tr><td>May 2027</td><td>$333,169</td><td>$191,326</td><td>$111,520</td><td>$30,323</td></tr>
+
+<tr><td>Jun 2027</td><td>$320,312</td><td>$195,862</td><td>$174,893</td><td class="bad">($50,443)</td></tr>
+
+<tr><td>Jul 2027</td><td>$355,268</td><td>$195,927</td><td>$113,604</td><td>$45,737</td></tr>
+
+<tr><td>Aug 2027</td><td>$314,954</td><td>$197,390</td><td>$118,460</td><td class="bad">($896)</td></tr>
+</tbody><tfoot>
+<tr><th>12 months</th><th>$3,556,363</th><th>$2,090,834</th><th>$1,352,460</th><th>$113,069</th></tr>
+</tfoot></table><table class="table" style="margin-top:14px"><thead>
+<tr><th>Layer</th><th>Method</th><th>Bridge state</th></tr>
+</thead><tbody>
+<tr><td>Historical baseline</td><td>Three complete years of account-classified Xero evidence</td><td class="good status">Calculated</td></tr>
+
+<tr><td>Current run-rate</td><td>50% latest year · 30% prior · 20% third year</td><td class="good status">Calculated</td></tr>
+
+<tr><td>Seasonality</td><td>Each future month mapped to its weighted historical month</td><td class="good status">Calculated</td></tr>
+
+<tr><td>Structural changes</td><td>Staffing, prices, location growth and operating-model assumptions</td><td class="warn status">Management adjustments required</td></tr>
+
+<tr><td>Approved budget</td><td>20% revenue growth · 41.2% GP · operating expenses +5% maximum</td><td class="good status">Approved 2 Sep 2026</td></tr>
+</tbody></table><div class="action"><b>Management implication</b><p>Repeating the weighted historical pattern produces only a 3.2% operating margin. This baseline must now be converted into a performance budget by applying explicit revenue, GP, staffing and overhead assumptions; it should not be adopted unchanged as TerraWest's target.</p></div><p class="muted" style="margin-bottom:0"><b>Data quality rule:</b> the model uses the three complete years ending August 2026; the anomalous 1966 date is outside the window, and double-entry rows are classified by P&amp;L account type.</p></div>
+</section>
+<section id="queueView" class="hidden">
+                <h2>Owner Command</h2>
+                <p class="muted">Only matters requiring owner authority, judgement, intervention or unresolved owner context are admitted. Full Shadow assessment evidence remains available separately.</p>
+                <div class="summary">
+                    <div class="stat">Owner attention<b id="ownerQueueCount">—</b>
+                        <span class="muted">state-filtered</span>
+                    </div>
+                    <div class="stat">Shadow retained<b id="ownerQueueSuppressed">—</b>
+                        <span class="muted">available without creating work</span>
+                    </div>
+                    <div class="stat">Authority boundary<b id="ownerQueueAuthority">—</b>
+                        <span class="muted">requires owner decision</span>
+                    </div>
+                    <div class="stat">Unresolved context<b id="ownerQueueContext">—</b>
+                        <span class="muted">owner-only context required</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <table class="table">
+                        <thead>
+                            
+<tr>
+                                <th>Priority</th>
+                                <th>What TWOS knows</th>
+                                <th>What TWOS is doing</th>
+                                <th>What Lindsay needs to do</th>
+                            </tr>
+
+                        </thead>
+                        <tbody id="ownerQueueBody"><tr><td colspan="4" class="muted">Loading persistent Owner Command state…</td></tr></tbody>
+                    </table>
+                </div>
+                <div class="card" style="padding:16px;margin-top:14px">
+                    <h3 style="margin-top:0">Queue admission rule</h3>
+
+                    <p style="margin-bottom:0">A matter reaches this queue only when TWOS needs an Operations Manager <b>decision, authority, judgement, escalation or unresolved context</b>. Poor performance by itself is not enough if the accountable leader and TWOS are already handling it inside an agreed timeframe.</p>
+                </div>
+            </section>
+            <section id="podiumView" class="hidden">
+                <h2>DN06 · Podium Customer Conversations</h2>
+                <p class="muted" id="podiumSubtitle">Loading persistent Outlook digest evidence…</p>
+                <div class="summary">
+                    <div class="stat">New leads<b id="podiumLeads">—</b><span class="muted">digest reporting day</span></div>
+                    <div class="stat">Active conversations<b id="podiumActive">—</b><span class="muted">group total</span></div>
+                    <div class="stat">Open messages<b id="podiumOpen">—</b><span class="muted">awaiting response</span></div>
+                    <div class="stat">New reviews<b id="podiumReviews">—</b><span class="muted">group total</span></div>
+                </div>
+                <div class="lowergrid">
+                    <div class="card mini"><h3>RESPONSE POSITION</h3><div class="row"><b>Bunbury median</b><span id="podiumBunResponse">—</span></div><div class="row"><b>Busselton median</b><span id="podiumBusResponse">—</span></div><p class="muted">A dash in the source is retained as unavailable; it is not converted to zero.</p></div>
+                    <div class="card mini"><h3>REVIEWS &amp; FEEDBACK</h3><div class="row"><b>Review invites</b><span id="podiumInvites">—</span></div><div class="row"><b>Feedback responses</b><span id="podiumFeedback">—</span></div><p class="muted" id="podiumCsat">Customer satisfaction: —</p></div>
+                    <div class="card mini"><h3>PODIUM PAYMENTS</h3><div class="row"><b>Received</b><span id="podiumPayments">—</span></div><div class="row"><b>Requests sent</b><span id="podiumRequests">—</span></div><p class="muted">Podium payments only; this is not total business receipts.</p></div>
+                    <div class="card mini"><h3>TWOS TREATMENT</h3><div class="row"><b>State</b><span class="good" id="podiumAssessmentStatus">MONITORING</span></div><div class="row"><b>Owner attention</b><span class="good" id="podiumOwnerAttention">NO</span></div><p class="muted" id="podiumAssessment"></p></div>
+                </div>
+                <div class="card" style="padding:16px;margin-top:14px"><h3 style="margin-top:0">EVIDENCE BOUNDARY</h3><p id="podiumLimitation"></p><p class="muted" id="podiumNextControl" style="margin-bottom:0"></p></div>
+            </section>
+            <section id="afterCareView" class="hidden">
+                <h2>DN06 · Customer After-Care</h2>
+                <p class="muted" id="afterCareSubtitle">Loading approved program state…</p>
+                <div class="summary">
+                    <div class="stat">Active cycles<b id="afterCareActive">—</b><span class="muted">MechanicDesk AFTER-CARE tag</span></div>
+                    <div class="stat">Due today<b id="afterCareDue">—</b><span class="muted">consultant obligations</span></div>
+                    <div class="stat">Overdue<b id="afterCareOverdue">—</b><span class="muted">accountability exceptions</span></div>
+                    <div class="stat">Unresolved concerns<b id="afterCareUnresolved">—</b><span class="muted">outcome not yet closed</span></div>
+                </div>
+                <div class="card" style="padding:18px">
+                    <h3 style="margin-top:0">CUSTOMER PROMISE</h3>
+                    <p id="afterCarePromise" style="font-size:18px;font-weight:700;line-height:1.45"></p>
+                    <p class="muted" id="afterCarePrinciple" style="margin-bottom:0"></p>
+                </div>
+                <div class="card" style="padding:16px;margin-top:14px">
+                    <h3 style="margin-top:0">THREE-YEAR JOURNEY</h3>
+                    <table class="table"><thead><tr><th>Milestone</th><th>Customer experience</th><th>Owner</th><th>Control rule</th></tr></thead><tbody id="afterCareMilestones"><tr><td colspan="4">Loading state…</td></tr></tbody></table>
+                </div>
+                <div class="lowergrid" style="margin-top:14px">
+                    <div class="card mini"><h3>DAILY CONSULTANT WORKFLOW</h3><p id="afterCareWorkflow"></p><div id="afterCareOutcomes"></div><p class="muted" id="afterCareNoAnswer"></p></div>
+                    <div class="card mini"><h3>CONCERN RESOLUTION</h3><p id="afterCareConcern"></p><p class="muted" id="afterCareConcernBehaviour"></p></div>
+                    <div class="card mini"><h3>MECHANICDESK CONTROL</h3><div class="row"><b>Program</b><span class="good">APPROVED</span></div><div class="row"><b>Operating feed</b><span id="afterCareFeedStatus" class="warn">CHECKING</span></div><p class="muted" id="afterCareFeedRequirement"></p></div>
+                    <div class="card mini"><h3>OWNER TREATMENT</h3><div class="row"><b>Attention required</b><span id="afterCareOwnerStatus" class="good">NO</span></div><p class="muted" id="afterCareOwnerReason"></p></div>
+                </div>
+                <div class="card" style="padding:16px;margin-top:14px"><h3 style="margin-top:0">SUCCESS MEASURES</h3><table class="table"><thead><tr><th>Outcome</th><th>What good looks like</th><th>Evidence</th><th>Current state</th></tr></thead><tbody id="afterCareMeasures"></tbody></table></div>
+                <div class="card" style="padding:16px;margin-top:14px"><h3 style="margin-top:0">QUALITY LEARNING ROUTE</h3><p id="afterCareQualityRoute"></p><p class="muted" style="margin-bottom:0">After-Care → evidence → pattern detection → DN04/DN05 improvement → better future builds.</p></div>
+            </section>
+            <section id="shadowView" class="hidden">
+                <h2>Wave 2 Shadow Assessments</h2>
+                <p class="muted">Complete assessments remain visible here with evidence, context, confidence and history. Shadow mode observes and recommends; it does not create leader work or Owner noise without a valid promotion reason.</p>
+                <div class="summary">
+                    <div class="stat">Total assessments<b id="shadowTotal">—</b><span class="muted">persistent records</span></div>
+                    <div class="stat">Monitoring<b id="shadowMonitoring">—</b><span class="muted">no intervention required</span></div>
+                    <div class="stat">Evidence limited<b id="shadowEvidenceLimited">—</b><span class="muted">no performance judgement</span></div>
+                    <div class="stat">Owner promoted<b id="shadowPromoted">—</b><span class="muted">genuine attention only</span></div>
+                </div>
+                <div class="card">
+                    <div class="casegrid head" style="padding:12px"><b>Assessment</b><b>Leader / state</b><b>Evidence through</b><b>Owner treatment</b></div>
+                    <div id="shadowAssessmentList"><div class="muted" style="padding:16px">Loading persistent assessment state…</div></div>
+                </div>
+                <div class="card" style="padding:16px;margin-top:14px">
+                    <h3 style="margin-top:0">Promotion contract</h3>
+                    <p style="margin-bottom:0">An assessment reaches Owner Command only for an owner-reserved decision, authority boundary, material unresolved risk, failed leadership resolution, or context that only the owner can supply. Exceptions, incomplete evidence and normal leader-managed correction remain in Shadow.</p>
+                </div>
+            </section>
+            <section id="controlView" class="hidden">
+                <h2>TWOS Control Room</h2>
+                <p class="muted">The machinery underneath Bridge. Controls run across independent evidence sources; only failed, unexplained or authority-bound outcomes should rise to the Operations Manager.</p>
+                <div class="summary">
+                    <div class="stat">Controls defined<b>7</b>
+                        <span class="muted">Cross-source operating tests</span>
+                    </div>
+                    <div class="stat">Testable now<b>2</b>
+                        <span class="muted">With current live evidence</span>
+                    </div>
+                    <div class="stat">Waiting on feed<b>3</b>
+                        <span class="muted">Evidence incomplete</span>
+                    </div>
+                    <div class="stat">OM escalations<b>0</b>
+                        <span class="muted">From live controls</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <table class="table">
+                        <thead>
+                            
+<tr>
+                                <th>Control</th>
+                                <th>Evidence chain</th>
+                                <th>Current state</th>
+                                <th>Escalation rule</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            
+<tr>
+                                <td>
+                                    <b>Revenue integrity</b>
+                                    <br>Bunbury / Busselton
+                                </td>
+                                <td>MechanicDesk Income → Sale → Xero/dataSights</td>
+                                <td>
+                                    <span class="warn status">Partial</span>
+                                    <br>Income live; Sale extraction pending; Xero source live
+                                </td>
+                                <td>Only unexplained material variance becomes a case</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>
+                                    <b>EFTPOS settlement</b>
+                                    <br>Bunbury / Busselton
+                                </td>
+                                <td>MechanicDesk Received Payment → ANZ Worldline → Xero clearing/bank</td>
+                                <td>
+                                    <span class="warn status">Waiting</span>
+                                    <br>Worldline feed pending
+                                </td>
+                                <td>Timing difference is held; unexplained settlement variance escalates</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>
+                                    <b>Workshop demand</b>
+                                </td>
+                                <td>Job WIP → forward bookings → Sales opportunities → completed work</td>
+                                <td>
+                                    <span class="warn status">Building</span>
+                                    <br>WIP evidence available for extraction
+                                </td>
+                                <td>Assign only after demand constraint is evidenced</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>
+                                    <b>Workshop execution</b>
+                                </td>
+                                <td>Job Report → timesheets → sold/estimated hours → QC</td>
+                                <td>
+                                    <span class="warn status">Building</span>
+                                    <br>Job evidence available; TWOS efficiency definition still protected
+                                </td>
+                                <td>Do not blame fitter performance from estimate-efficiency alone</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>
+                                    <b>Cash pressure</b>
+                                </td>
+                                <td>Xero cashflow → AR → AP → account transactions</td>
+                                <td>
+                                    <span class="good status">Source live</span>
+                                    <br>Control thresholds not yet promoted
+                                </td>
+                                <td>Escalate liquidity/commitment risk, not normal movement</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>
+                                    <b>Profitable demand</b>
+                                    <br>DN06 Growth
+                                </td>
+                                <td>Xero marketing spend → lead source → quote → completed sale → revenue / GP</td>
+                                <td>
+                                    <span class="warn status">Building</span>
+                                    <br>Xero spend source live; attribution evidence still being joined
+                                </td>
+                                <td>Surface channel/campaign only when spend can be linked credibly to profitable demand</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>
+                                    <b>Constraint recurrence</b>
+                                </td>
+                                <td>Case history → prior actions → later operating result</td>
+                                <td>
+                                    <span class="good status">Logic active</span>
+                                </td>
+                                <td>Repeated same constraint becomes systemic review</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card" style="padding:16px;margin-top:14px">
+                    <h3 style="margin-top:0">DN06 · Profitable Demand Control</h3>
+
+                    <p class="muted">Marketing is not promoted as activity, reach or impressions. TWOS tests whether actual spend is producing profitable demand and traces where the chain breaks.</p>
+                    <table class="table">
+                        <thead>
+                            
+<tr>
+                                <th>Stage</th>
+                                <th>Preferred evidence</th>
+                                <th>Bridge treatment</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            
+<tr>
+                                <td>Spend</td>
+                                <td>Xero / dataSights account transactions</td>
+                                <td>Actual financial cost; classify by channel/campaign where coding supports it</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>Enquiry / lead</td>
+                                <td>Podium + MechanicDesk lead source</td>
+                                <td>Demand creation and attribution evidence</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>Quote / conversion</td>
+                                <td>MechanicDesk</td>
+                                <td>Trace DN06 hand-off into DN02 Sales</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>Completed revenue / GP</td>
+                                <td>MechanicDesk corroborated by Xero</td>
+                                <td>Calculate revenue-to-spend and GP-to-spend return</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>Constraint</td>
+                                <td>Joined evidence</td>
+                                <td>Identify whether the break is DN06 demand, DN02 conversion, DN04 capacity/execution, or economics</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <p style="margin-bottom:0">
+                        <b>Promotion rule:</b> until spend and outcome attribution are sufficiently reliable, DN06 remains <span class="warn">Building</span>. TWOS must not manufacture an ROI number.
+                    </p>
+                </div>
+                <div class="card" style="padding:16px;margin-top:14px">
+                    <h3 style="margin-top:0">Evidence Confidence & Corroboration</h3>
+
+                    <p class="muted">TWOS now separates a data point from a management conclusion. Multiple independent sources can strengthen a conclusion without creating extra measures on the Operating Board.</p>
+                    <table class="table">
+                        <thead>
+                            
+<tr>
+                                <th>Confidence</th>
+                                <th>Evidence state</th>
+                                <th>TWOS behaviour</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            
+<tr>
+                                <td>
+                                    <span class="good status">High</span>
+                                </td>
+                                <td>Current primary evidence corroborated by an independent source, or a single authoritative source with a stable definition</td>
+                                <td>May diagnose and assign within established authority</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>
+                                    <span class="warn status">Medium</span>
+                                </td>
+                                <td>Current evidence establishes the exception but cause is not sufficiently corroborated</td>
+                                <td>Seek context before attributing cause or assigning corrective action</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>
+                                    <span class="bad status">Low</span>
+                                </td>
+                                <td>Stale, incomplete, conflicting or definition-uncertain evidence</td>
+                                <td>Investigate only; do not blame, assign or escalate as a confirmed constraint</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card" style="padding:16px;margin-top:14px">
+                    <h3 style="margin-top:0">Trajectory Engine</h3>
+
+                    <p class="muted">A single operating day establishes position. TWOS promotes trajectory only when comparable evidence exists across accountable operating days.</p>
+                    <table class="table">
+                        <thead>
+                            
+<tr>
+                                <th>Window</th>
+                                <th>Purpose</th>
+                                <th>Management use</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            
+<tr>
+                                <td>Latest close</td>
+                                <td>Current accountable position</td>
+                                <td>Detect today's exception</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>5 accountable days</td>
+                                <td>Short operating trajectory</td>
+                                <td>Separate one-off noise from a developing constraint</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>20 accountable days</td>
+                                <td>Operating pattern</td>
+                                <td>Test whether corrective action changed the result</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>30 accountable days</td>
+                                <td>Standard validation</td>
+                                <td>Recalibrate provisional targets against TerraWest evidence where the standard requires it</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <p style="margin-bottom:0">
+                        <b>Rule:</b> no arrow is shown merely because two unrelated snapshots exist. TWOS requires like-for-like definitions and accountable-day comparability.
+                    </p>
+                </div>
+                <div class="card" style="padding:16px;margin-top:14px">
+                    <h3 style="margin-top:0">Evidence promotion gate</h3>
+
+                    <p>Before a number becomes a Bridge management measure, TWOS asks four questions: <b>Is the source real?</b> <b>Is the definition understood?</b> <b>Is it current enough for the decision?</b> <b>Does it change management action?</b>
+                    </p>
+                    <p class="muted" style="margin-bottom:0">If the answer to the last question is no, the evidence stays underneath Bridge. This is how additional MechanicDesk reports, Xero detail and Worldline settlements can improve diagnosis without creating dashboard clutter.</p>
+                </div>
+            </section>
+            <section id="casesView" class="hidden">
+                <h2>Operating Cases</h2>
+                <p class="muted">The management story behind material exceptions. Closing an action does not close a case until the result is verified.</p>
+                <div class="card">
+                    <div class="casegrid head" style="padding:12px">
+                        <b>Case / constraint</b>
+                        <b>Owner / state</b>
+                        <b>Due</b>
+                        <b>OM involvement</b>
+                    </div>
+                    <div id="cases">
+                    </div>
+                </div>
+            </section>
+            <section id="actionsView" class="hidden">
+                <h2>Corrective Actions</h2>
+                <p class="muted">Actions are tracked against the operating result they are intended to restore.</p>
+                <div class="card">
+                    <table class="table">
+                        <thead>
+                            
+<tr>
+                                <th>Action</th>
+                                <th>Owner</th>
+                                <th>Expected result</th>
+                                <th>Status</th>
+                                <th>Effectiveness</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            
+<tr>
+                                <td>Review priority executable opportunities and restore forward bookings</td>
+                                <td>Sales leader · Bunbury</td>
+                                <td>Forward demand back above standard</td>
+                                <td class="warn">Context requested</td>
+                                <td>Not yet measurable</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>Complete workshop capacity allocation review</td>
+                                <td>Workshop leader · Busselton</td>
+                                <td>Maintain ≥80% productivity</td>
+                                <td class="good">In progress</td>
+                                <td>Improving</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>Review recurring demand constraint as system issue</td>
+                                <td>DN02 / DN04</td>
+                                <td>Prevent repeat demand shortfall</td>
+                                <td class="warn">Recommended</td>
+                                <td>Pending</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section id="evidenceView" class="hidden">
+                <h2>Evidence Intake</h2>
+                <p class="muted">TWOS can receive more evidence than it displays. Reports are classified, mapped to the Organising Board and only promoted into the operating picture when they add management value.</p>
+                <div class="summary">
+                    <div class="stat">Reports detected<b>9+</b>
+                        <span class="muted">MechanicDesk · state-driven latest accountable close</span>
+                    </div>
+                    <div class="stat">Live measures<b>4+</b>
+                        <span class="muted">Revenue BY/BN + Xero source/control evidence</span>
+                    </div>
+                    <div class="stat">Awaiting extraction<b>7+</b>
+                        <span class="muted">Available evidence, not yet promoted</span>
+                    </div>
+                    <div class="stat">Ingestion rule<b>Auto</b>
+                        <span class="muted">Use, corroborate, retain or ignore</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <table class="table">
+                        <thead>
+                            
+<tr>
+                                <th>Incoming evidence</th>
+                                <th>Cadence</th>
+                                <th>Likely TWOS use</th>
+                                <th>State</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            
+<tr>
+                                <td>Income Report · Bunbury / Busselton</td>
+                                <td>Daily</td>
+                                <td>DN02 / DN04 revenue and GP position</td>
+                                <td class="good status">Promoted live</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>Job Report · Bunbury / Busselton</td>
+                                <td>Daily</td>
+                                <td>DN04 completed work, job economics and production context</td>
+                                <td class="warn status">Available</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>Job WIP Report · Bunbury / Busselton</td>
+                                <td>Daily</td>
+                                <td>DN04 WIP, executable workload and bottleneck context</td>
+                                <td class="warn status">Available</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>Sale Report · Bunbury / Busselton</td>
+                                <td>Daily</td>
+                                <td>DN02 sales activity and revenue corroboration</td>
+                                <td class="warn status">Available</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>Received Payment Report · Bunbury / Busselton</td>
+                                <td>Daily</td>
+                                <td>DN03 expected payment evidence; input to three-way settlement control</td>
+                                <td class="warn status">Available</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>Xero via dataSights</td>
+                                <td>Synced</td>
+                                <td>DN03 financial truth layer; account transactions, cashflow, AR/AP and statements</td>
+                                <td class="good status">Live source</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>ANZ Worldline Settlement</td>
+                                <td>Daily</td>
+                                <td>DN03 actual EFTPOS settlement; reconcile MechanicDesk → Worldline → Xero</td>
+                                <td class="warn status">Feed pending</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>Stock Value Report</td>
+                                <td>Monthly</td>
+                                <td>DN03 inventory value / working-capital context</td>
+                                <td class="warn status">Available</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>Income by Job Type</td>
+                                <td>Monthly</td>
+                                <td>DN02 / DN04 mix, economics and profitable-work pattern</td>
+                                <td class="warn status">Available</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>Lead Income Report</td>
+                                <td>Monthly</td>
+                                <td>DN02 / DN06 lead-source revenue and marketing effectiveness</td>
+                                <td class="warn status">Available</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>Xero marketing transactions</td>
+                                <td>Synced</td>
+                                <td>DN06 actual marketing spend and financial cost evidence</td>
+                                <td class="good status">Live source</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>Podium lead / enquiry evidence</td>
+                                <td>Event / activity</td>
+                                <td>DN06 attribution and DN02 hand-off evidence</td>
+                                <td class="good status">Daily digest connected</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card" style="padding:16px;margin-top:14px">
+                    <h3 style="margin-top:0">DN03 · Payments Reconciliation Control</h3>
+
+                    <p class="muted">Designed as a three-way evidence control. TWOS should surface only unexplained variance, not make the Operations Manager manually reconcile three reports.</p>
+                    <div class="compare">
+                        <div class="panel">
+                            <h3>Bunbury</h3>
+
+                            <div class="evidence">
+                                <b>1 · MechanicDesk</b>
+                                <br>Expected EFTPOS / received-payment evidence <span class="warn">available for extraction</span>
+                            </div>
+                            <div class="evidence">
+                                <b>2 · ANZ Worldline</b>
+                                <br>Actual settlement evidence <span class="warn">feed pending</span>
+                            </div>
+                            <div class="evidence">
+                                <b>3 · Xero / dataSights</b>
+                                <br>Account transaction evidence <span class="good">live source</span>
+                            </div>
+                            <p>
+                                <b>Control state:</b> <span class="warn">Not yet testable end-to-end</span>
+                            </p>
+                        </div>
+                        <div class="panel">
+                            <h3>Busselton</h3>
+
+                            <div class="evidence">
+                                <b>1 · MechanicDesk</b>
+                                <br>Expected EFTPOS / received-payment evidence <span class="warn">available for extraction</span>
+                            </div>
+                            <div class="evidence">
+                                <b>2 · ANZ Worldline</b>
+                                <br>Actual settlement evidence <span class="warn">feed pending</span>
+                            </div>
+                            <div class="evidence">
+                                <b>3 · Xero / dataSights</b>
+                                <br>Account transaction evidence <span class="good">live source</span>
+                            </div>
+                            <p>
+                                <b>Control state:</b> <span class="warn">Not yet testable end-to-end</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="padding:16px;margin-top:14px">
+                    <h3 style="margin-top:0">Cross-source control design</h3>
+
+                    <p class="muted">The purpose of adding feeds is not to add tiles. TWOS uses them to test whether independent systems agree.</p>
+                    <table class="table">
+                        <thead>
+                            
+<tr>
+                                <th>Question</th>
+                                <th>Operational evidence</th>
+                                <th>Financial evidence</th>
+                                <th>Bridge output</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            
+<tr>
+                                <td>Did recorded sales become financial revenue?</td>
+                                <td>MechanicDesk Income / Sale</td>
+                                <td>Xero via dataSights</td>
+                                <td>Only unexplained variance</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>Did EFTPOS payments settle?</td>
+                                <td>MechanicDesk Received Payment</td>
+                                <td>Worldline + Xero Account Transactions</td>
+                                <td>Settlement exception</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>Is low workshop output caused by demand?</td>
+                                <td>Job WIP / Job / forward work</td>
+                                <td>Revenue and cash context where relevant</td>
+                                <td>Constraint trace, not duplicate metrics</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>Is a problem recurring?</td>
+                                <td>Historical operating evidence</td>
+                                <td>Historical financial evidence</td>
+                                <td>Recurring/systemic case</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card" style="padding:16px;margin-top:14px">
+                    <h3 style="margin-top:0">TWOS evidence rule</h3>
+
+                    <p style="margin-bottom:0">Every incoming report is classified as <b>Primary measure</b>, <b>Corroborating evidence</b>, <b>Context</b>, or <b>Not currently useful</b>. Receiving a report does not create a dashboard tile. Bridge remains constraint-led.</p>
+                </div>
+            </section>
+            <section id="agentView" class="hidden">
+                <h2>TWOS Agent Operating Loop</h2>
+                <p class="muted">The hand-off contract for TWOS Agent v0.1. The agent may do the work underneath Bridge; authority and evidence rules determine when Lindsay becomes involved.</p>
+                <div class="summary">
+                    <div class="stat">Agent mode<b>Observe + Recommend</b>
+                        <span class="muted">Initial trust stage</span>
+                    </div>
+                    <div class="stat">Auto-assign<b>Off</b>
+                        <span class="muted">Until judgement is validated</span>
+                    </div>
+                    <div class="stat">Evidence gate<b>Required</b>
+                        <span class="muted">No unsupported diagnosis</span>
+                    </div>
+                    <div class="stat">OM boundary<b>Protected</b>
+                        <span class="muted">Authority / judgement escalates</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <table class="table">
+                        <thead>
+                            
+<tr>
+                                <th>Stage</th>
+                                <th>Agent responsibility</th>
+                                <th>Required gate</th>
+                                <th>Bridge outcome</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            
+<tr>
+                                <td>
+                                    <b>1 · Observe</b>
+                                </td>
+                                <td>Ingest available MechanicDesk, Xero/dataSights, Outlook and other evidence.</td>
+                                <td>Source + timestamp + definition known</td>
+                                <td>Evidence retained underneath</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>
+                                    <b>2 · Detect</b>
+                                </td>
+                                <td>Compare position, trajectory and approved standards.</td>
+                                <td>Material exception, not noise</td>
+                                <td>Exception candidate</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>
+                                    <b>3 · Diagnose</b>
+                                </td>
+                                <td>Trace the likely constraint across Divisions and corroborate independent sources.</td>
+                                <td>Confidence assessed</td>
+                                <td>Likely constraint + evidence</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>
+                                    <b>4 · Context</b>
+                                </td>
+                                <td>Seek relevant human context when evidence cannot reliably establish cause.</td>
+                                <td>No premature blame</td>
+                                <td>Diagnosis revised or confirmed</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>
+                                    <b>5 · Recommend</b>
+                                </td>
+                                <td>Propose a specific, measurable, owned and time-bound corrective action.</td>
+                                <td>Within current evidence</td>
+                                <td>Recommendation / approval request</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>
+                                    <b>6 · Act</b>
+                                </td>
+                                <td>After trust validation, assign routine actions inside delegated authority.</td>
+                                <td>Authority + confidence + policy</td>
+                                <td>Leader action / OM escalation</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>
+                                    <b>7 · Verify</b>
+                                </td>
+                                <td>Check whether the intended operating result actually changed.</td>
+                                <td>Completion is not success</td>
+                                <td>Close, continue or escalate case</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>
+                                    <b>8 · Learn</b>
+                                </td>
+                                <td>Recognise recurrence and distinguish one-off exceptions from systemic constraints.</td>
+                                <td>Case history preserved</td>
+                                <td>Systemic review when warranted</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card" style="padding:16px;margin-top:14px">
+                    <h3 style="margin-top:0">Agent v0.1 authority</h3>
+
+                    <p>
+                        <b>May:</b> read evidence, classify it, calculate supported measures, detect exceptions, trace constraints, prepare context questions, create case recommendations and monitor outcomes.
+                    </p>
+                    <p>
+                        <b>Must not yet:</b> autonomously assign corrective actions, make owner-reserved decisions, alter approved standards, invent missing evidence or close a case merely because a task was completed.
+                    </p>
+                    <p style="margin-bottom:0">
+                        <b>Promotion path:</b> Observe + Recommend → Context + Recommend → Routine Assign + Track → broader delegated autonomy only after its judgement is demonstrated against real TerraWest cases.
+                    </p>
+                </div>
+            </section>
+            <section id="readinessView" class="hidden">
+                <h2>Agent Readiness & Handover</h2>
+                <p class="muted">This is the deployment contract for TWOS Agent v0.1. The Bridge logic is ready to hand over; persistent execution and remaining source adapters are the implementation boundary.</p>
+                <div class="readinessgrid">
+                    <div class="card gate">
+                        <h3>OPERATING LOGIC</h3>
+
+                        <div class="big good">READY</div>
+                        <div class="bar">
+                            <i style="width:100%">
+                            </i>
+                        </div>
+                        <span class="muted">Observe → detect → diagnose → context → recommend → act → verify → learn</span>
+                    </div>
+                    <div class="card gate">
+                        <h3>EVIDENCE MODEL</h3>
+
+                        <div class="big warn">PARTIAL LIVE</div>
+                        <div class="bar">
+                            <i class="warnbar" style="width:72%">
+                            </i>
+                        </div>
+                        <span class="muted">MechanicDesk, Xero and Podium digest proven; Worldline and deeper attribution adapters remain</span>
+                    </div>
+                    <div class="card gate">
+                        <h3>AUTONOMY</h3>
+
+                        <div class="big">STAGE 1</div>
+                        <div class="bar">
+                            <i style="width:25%">
+                            </i>
+                        </div>
+                        <span class="muted">Observe + Recommend. No autonomous leader assignment yet.</span>
+                    </div>
+                </div>
+                <div class="contract" style="margin-top:14px">
+                    <div class="card gate">
+                        <h3>HANDOVER GATES</h3>
+
+                        <div class="check">
+                            <span>Division/function model</span>
+                            <span class="pill ready">READY</span>
+                        </div>
+                        <div class="check">
+                            <span>Evidence provenance + freshness</span>
+                            <span class="pill ready">READY</span>
+                        </div>
+                        <div class="check">
+                            <span>Confidence / context-before-blame rule</span>
+                            <span class="pill ready">READY</span>
+                        </div>
+                        <div class="check">
+                            <span>Case + corrective-action lifecycle</span>
+                            <span class="pill ready">READY</span>
+                        </div>
+                        <div class="check">
+                            <span>OM escalation boundary</span>
+                            <span class="pill ready">READY</span>
+                        </div>
+                        <div class="check">
+                            <span>MechanicDesk evidence transport</span>
+                            <span class="pill ready">PROVEN</span>
+                        </div>
+                        <div class="check">
+                            <span>Xero/dataSights evidence access</span>
+                            <span class="pill ready">PROVEN</span>
+                        </div>
+                        <div class="check">
+                            <span>Persistent scheduled ingestion</span>
+                            <span class="pill partial">IMPLEMENT</span>
+                        </div>
+                        <div class="check">
+                            <span>Worldline settlement evidence</span>
+                            <span class="pill partial">AWAIT FEED</span>
+                        </div>
+                        <div class="check">
+                            <span>Podium digest ingestion</span>
+                            <span class="pill complete">PROVEN</span>
+                        </div>
+                    </div>
+                    <div class="card gate">
+                        <h3>AGENT CONTRACT</h3>
+
+                        <p>
+                            <b>Input:</b> evidence events with source, location, division/function, period, received time, value and provenance.
+                        </p>
+                        <p>
+                            <b>Output:</b> updated function state, exception candidate, diagnosis/confidence, context request, case/action recommendation, verification result or OM escalation.
+                        </p>
+                        <p>
+                            <b>Hard stops:</b> unsupported diagnosis, stale evidence presented as current, owner-reserved decisions, standard changes, action assignment outside delegated authority, case closure without result verification.
+                        </p>
+                        <div class="codebox">Evidence → Function State → Exception → Constraint → Context → Case → Action → Verification → Learning</div>
+                        <button class="btn" onclick="runReadiness()">Run readiness check</button>
+                        <div id="readinessResult">
+                        </div>
+                    </div>
+                </div>
+                <div class="card gate" style="margin-top:14px">
+                    <h3>WHAT THE AGENT SHOULD BUILD NEXT</h3>
+
+                    <table class="table">
+                        <thead>
+                            
+<tr>
+                                <th>Priority</th>
+                                <th>Work</th>
+                                <th>Done when</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            
+<tr>
+                                <td>1</td>
+                                <td>Persistent evidence ingestion service for Outlook/MechanicDesk and dataSights/Xero</td>
+                                <td>New evidence updates Bridge without manual file editing</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>2</td>
+                                <td>Function-state engine</td>
+                                <td>Division rings are calculated from underlying function states, never hard-coded</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>3</td>
+                                <td>Case engine + durable history</td>
+                                <td>Exceptions create/update one persistent case and recurrence is recognised</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>4</td>
+                                <td>Leader context + action workflow</td>
+                                <td>Context is requested before attribution; recommendations are specific and verifiable</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>5</td>
+                                <td>OM queue + authority gate</td>
+                                <td>Only matters requiring owner/OM judgement or authority reach Lindsay</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>6</td>
+                                <td>Worldline and Podium-to-MechanicDesk attribution adapters</td>
+                                <td>Payments reconciliation and profitable-demand attribution become evidence-backed; Podium daily operating evidence is already connected</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section id="integrationsView" class="hidden">
+                <h2>Integration Status</h2>
+                <p class="muted">Bridge does not claim a source is live until it is authenticated and tested.</p>
+                <div class="card">
+                    <table class="table">
+                        <thead>
+                            
+<tr>
+                                <th>Source</th>
+                                <th>Status</th>
+                                <th>Current role</th>
+                                <th>Next requirement</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            
+<tr>
+                                <td>MechanicDesk</td>
+                                <td class="good status">Email evidence flowing</td>
+                                <td>Daily / monthly operating evidence via scheduled reports</td>
+                                <td>Expand report extraction and mapping</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>Outlook</td>
+                                <td class="good status">Evidence source proven</td>
+                                <td>MechanicDesk report transport; future context and commitments</td>
+                                <td>Persist ingestion into production Bridge service</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>Calendar</td>
+                                <td class="warn status">Not connected in app</td>
+                                <td>Meetings, absences, commitments</td>
+                                <td>Authorised calendar adapter</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>SharePoint / OneDrive</td>
+                                <td class="warn status">Not connected in app</td>
+                                <td>TWOS standards and evidence</td>
+                                <td>Approved site/library mapping</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>Teams</td>
+                                <td class="warn status">Not connected in app</td>
+                                <td>Leader context conversations</td>
+                                <td>Permission and channel/chat mapping</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>Planner / To Do</td>
+                                <td class="warn status">Not connected in app</td>
+                                <td>Corrective actions / commitments</td>
+                                <td>Confirm operating task source</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>Xero via dataSights</td>
+                                <td class="good status">Live evidence available</td>
+                                <td>P&amp;L / Balance Sheet / Trial Balance / Aged AR / Aged AP / Account Transactions / Cashflow</td>
+                                <td>Query financial evidence into DN03 controls; persistent app adapter still required</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>ANZ Worldline</td>
+                                <td class="warn status">Awaiting evidence feed</td>
+                                <td>EFTPOS settlement evidence for payment reconciliation</td>
+                                <td>Automated settlement email into Outlook</td>
+                            </tr>
+
+                            
+<tr>
+                                <td>Podium via Outlook Daily Digest</td>
+                                <td id="podiumIntegrationStatus" class="warn status">Checking state</td>
+                                <td>Leads, conversations, response time, reviews, feedback and Podium payments</td>
+                                <td id="podiumIntegrationRequirement">Parse scheduled digest and retain provenance</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+    <div id="drawer">
+        <button class="close" onclick="drawer.classList.remove('open')">Close</button>
+        <div id="detail">
+        </div>
+    </div>
+    <script>
+        const ringState = {
+            DN01: {
+                n: 0,
+                s: ['g', 'g', 'g', 'g', 'g', 'g']
+            },
+            DN02: {
+                n: 1,
+                s: ['g', 'g', 'a', 'x', 'g', 'g']
+            },
+            DN03: {
+                n: 0,
+                s: ['g', 'x', 'x', 'g', 'x', 'x']
+            },
+            DN04: {
+                n: 1,
+                s: ['g', 'a', 'x', 'g', 'g', 'x']
+            },
+            DN05: {
+                n: 0,
+                s: ['g', 'x', 'g', 'x', 'g', 'g']
+            },
+            DN06: {
+                n: 0,
+                s: ['x', 'x', 'g', 'x', 'g', 'x']
+            },
+            DN07: {
+                n: 0,
+                s: ['g', 'x', 'g', 'x', 'g', 'g']
+            }
+        };
+
+        function ringGradient(s) {
+            let c = {
+                    g: '#2fa84f',
+                    a: '#f5a000',
+                    r: '#e53935',
+                    x: '#a7adb1'
+                },
+                step = 100 / s.length;
+            return `conic-gradient(${s.map((v,i)=>`${c[v]} ${i*step}% ${(i+1)*step-0.7}%,#fff ${(i+1)*step-0.7}% ${(i+1)*step}%`).join(',')})`
+        }
+
+        function renderRings() {
+            let el = document.getElementById('divisionRings');
+            if (!el) return;
+            el.innerHTML = divisions.map(d => {
+                let r = ringState[d[0]],
+                    attention = r.s.filter(v => v === 'a' || v === 'r').length;
+                return `<div class="ringcard" onclick="openDivision('${d[0]}')">
+<h3>${d[0]}</h3>
+
+<small>${d[1]}</small>
+<div class="donut" style="background:${ringGradient(r.s)}">
+<div class="num">${attention}<em>needing<br>attention</em>
+</div>
+</div>
+<span class="viewlink">View ${d[0]}</span>
+</div>`
+            }).join('')
+        }
+
+        const divisions = [
+            ['DN01', 'Executive', 'Direction, decisions & control'],
+            ['DN02', 'Sales', 'Pipeline, conversion & forward demand'],
+            ['DN03', 'Accounts', 'Cash, creditors & controls'],
+            ['DN04', 'Workshop', 'Demand, productivity & efficiency'],
+            ['DN05', 'Quality', 'QC, comebacks & standards'],
+            ['DN06', 'Growth', 'Marketing & new business'],
+            ['DN07', 'People', 'Capability, accountability & capacity']
+        ];
+        const data = {
+            DN01: {
+                Bunbury: [
+                    ['Decisions', '1', '→'],
+                    ['Commitments', '92%', '↑'],
+                    ['Overdue', '0', '→']
+                ],
+                Busselton: [
+                    ['Decisions', '0', '→'],
+                    ['Commitments', '88%', '↑'],
+                    ['Overdue', '0', '→']
+                ]
+            },
+            DN02: {
+                Bunbury: [
+                    ['Revenue', '102%', '→'],
+                    ['Conversion', '82%', '↑'],
+                    ['Forward demand', '74%', '↓']
+                ],
+                Busselton: [
+                    ['Revenue', '37%', '→'],
+                    ['Conversion', '87%', '→'],
+                    ['Forward demand', '93%', '↑']
+                ]
+            },
+            DN03: {
+                Bunbury: [
+                    ['90-day forecast', 'Building', '→'],
+                    ['12-month budget', 'Building', '→'],
+                    ['dataSights source', 'Proven', '↑']
+                ],
+                Busselton: [
+                    ['90-day forecast', 'Group view', '→'],
+                    ['12-month budget', 'Location split pending', '→'],
+                    ['dataSights source', 'Proven', '↑']
+                ]
+            },
+            DN04: {
+                Bunbury: [
+                    ['Revenue', '102%', '→'],
+                    ['Productivity', '78%', '↓'],
+                    ['Efficiency', '88%', '→']
+                ],
+                Busselton: [
+                    ['Revenue', '37%', '→'],
+                    ['Productivity', '86%', '↑'],
+                    ['Efficiency', '84%', '→']
+                ]
+            },
+            DN05: {
+                Bunbury: [
+                    ['QC', '96%', '↑'],
+                    ['Comebacks', '1', '→'],
+                    ['Compliance', '94%', '→']
+                ],
+                Busselton: [
+                    ['QC', '93%', '→'],
+                    ['Comebacks', '0', '→'],
+                    ['Compliance', '91%', '↑']
+                ]
+            },
+            DN06: {
+                Bunbury: [
+                    ['Profitable demand', 'Building', '→'],
+                    ['Marketing spend', 'Xero', '↑'],
+                    ['Attribution', 'Building', '→']
+                ],
+                Busselton: [
+                    ['Profitable demand', 'Building', '→'],
+                    ['Marketing spend', 'Xero', '↑'],
+                    ['Attribution', 'Building', '→']
+                ]
+            },
+            DN07: {
+                Bunbury: [
+                    ['Coverage', '94%', '→'],
+                    ['Reviews', '100%', '↑'],
+                    ['Actions', '2', '→']
+                ],
+                Busselton: [
+                    ['Coverage', '91%', '→'],
+                    ['Reviews', '100%', '↑'],
+                    ['Actions', '1', '→']
+                ]
+            }
+        };
+
+        function cls(t) {
+            return t === '↓' ? 'down' : t === '↑' ? 'up' : 'flat'
+        }
+
+        function showView(id, b) {
+            document.querySelectorAll('main>section').forEach(x => x.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+            document.querySelectorAll('.side').forEach(x => x.classList.remove('active'));
+            if (b) b.classList.add('active');
+            if (id === 'boardView') renderRings()
+        }
+        renderRings();
+        const caseRows = [
+            ['C-026', 'Forward executable demand below standard', 'Sales leader · Bunbury', 'Context requested', '2 Sep · 12:00', 'No intervention'],
+            ['C-025', 'Workshop productivity symptom linked to demand', 'DN04 → DN02', 'Monitoring', '—', 'Monitor linked case'],
+            ['C-024', 'Recurring forward-demand shortfall', 'DN02 / DN04', 'Systemic review suggested', '4 Sep', 'Decision required'],
+            ['C-023', 'Busselton workshop capacity allocation', 'Workshop leader · Busselton', 'In progress', '2 Sep', 'No intervention'],
+            ['C-022', 'Accounts exception verification', 'Accounts · Bunbury', 'Result verification', '1 Sep', 'Monitor']
+        ];
+        document.getElementById('cases').innerHTML = caseRows.map(c => `<div class="case casegrid" onclick="openCase('${c[0]}')">
+<div>
+<b>${c[0]}</b>
+<br>${c[1]}</div>
+<div>${c[2]}<br>
+<span class="muted">${c[3]}</span>
+</div>
+<div>${c[4]}</div>
+<div>${c[5]}</div>
+</div>`).join('');
+
+        function openDivision(d) {
+            let name = divisions.find(x => x[0] === d)[1];
+            detail.innerHTML = `<h2>${d} · ${name}</h2>
+<p class="muted">Side-by-side location view · each measure retains its own source state</p>
+<div class="compare">${['Bunbury','Busselton'].map(l=>`<div class="panel">
+<h3>${l}</h3>
+${data[d][l].map(x=>`<div class="evidence" onclick="openDetail('${d}','${l}','${x[0]}')" style="cursor:pointer">
+<b>${x[0]}</b>
+<br>${x[1]} <span class="${cls(x[2])}">${x[2]}</span>
+</div>`).join('')}</div>`).join('')}</div>
+<div class="section">
+<h3>TWOS comparison</h3>
+
+<p>${d==='DN02'?'The current fixture indicates a location-specific forward-demand weakness in Bunbury rather than a group-wide Sales constraint. Busselton is currently healthy on the same measure.':d==='DN04'?'Bunbury productivity is weaker than Busselton while fitter efficiency remains acceptable at both locations. Investigate executable demand before attributing the difference to fitter performance.':'No material cross-location diagnosis is configured for this fixture Division.'}</p>
+</div>`;
+            drawer.classList.add('open')
+        }
+
+        function openDetail(d, l, m) {
+            if (m === 'Revenue' && (d === 'DN02' || d === 'DN04')) {
+                let bun = l === 'Bunbury';
+                let live = twosRuntime.state?.locations?.[bun ? 'bunbury' : 'busselton']?.revenue;
+                if (!live) return;
+                let net = money(live.net);
+                let target = money(live.target);
+                let pct = `${(live.net / live.target * 100).toFixed(1)}%`;
+                let gp = `${money(live.grossProfit)} / ${live.grossMarginPercent.toFixed(2)}%`;
+                let closeDate = localDate(twosRuntime.state.latestAccountableDate);
+                detail.innerHTML = `<h2>${d} ${l} — Revenue</h2>
+<span class="badge">LATEST ACCOUNTABLE POSITION</span>
+<span class="badge">${l}</span>
+<span class="badge">${closeDate} close</span>
+<p class="muted">MechanicDesk daily Income Report received through Outlook at approximately 6:10 pm AWST on ${closeDate}.</p>
+<div class="section">
+<h3>Position</h3>
+
+<div class="evidence">
+<b>Net revenue</b>
+<br>${net} vs ${target} daily target · <b>${pct}</b>
+</div>
+<div class="evidence">
+<b>Gross profit</b>
+<br>${gp}</div>
+</div>
+<div class="section">
+<h3>TWOS assessment</h3>
+
+<p>${live.net >= live.target ? `${l} finished above the current ${target} daily revenue target. Revenue itself is therefore not today's identified constraint.` : `${l} finished below the current ${target} daily revenue target. Gross margin was ${live.grossMarginPercent.toFixed(2)}%. This establishes a revenue exception, but does not by itself establish the cause or accountable constraint.`}</p>
+</div>
+<div class="section">
+<h3>Source provenance</h3>
+
+<div class="evidence">MechanicDesk · ${live.sourceFile}<br>Ingested from Outlook · ${closeDate} ~6:10 pm AWST<br>
+<span class="muted">This is the latest completed accountable operating-day evidence, not a real-time feed.</span>
+</div>
+</div>`;
+                drawer.classList.add('open');
+                return
+            }
+            let isDemand = d === 'DN02' && l === 'Bunbury' && m === 'Forward demand';
+            let isProd = d === 'DN04' && l === 'Bunbury' && m === 'Productivity';
+            let title = isProd ? 'Workshop productivity — symptom trace' : isDemand ? 'Forward executable demand — likely constraint' : `${d} ${l} — ${m}`;
+            detail.innerHTML = `<h2>${title}</h2>
+<span class="badge">${l}</span>
+<span class="badge">${d}</span>
+<span class="badge">${isDemand?'High':'Medium'} confidence</span>
+<p class="muted">Mixed evidence state: Revenue is loaded from persistent MechanicDesk state. Other measures remain fixtures until their source adapters are connected.</p>
+<div class="section">
+<h3>TWOS assessment</h3>
+
+<p>${isProd?'Productivity is below standard, but fitter efficiency remains healthy. The evidence does <b>not</b> currently support attributing this to fitter execution. Forward executable demand is deteriorating, making DN02 Sales the likely upstream constraint.':isDemand?'Forward executable workshop demand is below standard and deteriorating. Current pipeline evidence suggests executable opportunities exist, but insufficient work has converted into forward workshop bookings.':'No material constraint diagnosis has been confirmed for this fixture measure.'}</p>${isProd?'<button class="btn" onclick="openDetail(\'DN02\',\'Bunbury\',\'Forward demand\')">Trace constraint → DN02 Sales</button>':''}</div>
+<div class="section">
+<h3>Evidence</h3>
+
+<div class="evidence">
+<b>Position</b>
+<br>${isProd?'Productivity 78% ↓ · Efficiency 88% → · Forward demand 74% ↓':'Forward demand 74% ↓ · Conversion 82% ↑ · Revenue is state-driven'}</div>
+<div class="evidence">
+<b>Source provenance</b>
+<br>
+<span id="prov">Source varies by measure. Revenue: persistent MechanicDesk state with Outlook provenance. Other prototype measures: development fixtures.</span>
+</div>
+</div>
+<div class="section">
+<h3>Corrective action</h3>
+
+<div class="action">
+<b>${isDemand?'Context requested — action not yet cold-assigned':'Existing linked case'}</b>
+<p>${isDemand?'TWOS first asks the Sales leader whether relevant context is missing from the available evidence. If no material contrary context exists, assign review of priority executable opportunities to restore forward demand.':'DN02 case contains the upstream corrective-action workflow.'}</p>
+<b>Operations Manager:</b> ${isDemand?'No intervention currently required':'Monitor linked case'}</div>
+</div>${isDemand?`<div class="section">
+<h3>Leader context</h3>
+
+<div class="contextbox">
+<b>Context request prepared</b>
+<p>TWOS has picked up that forward executable workshop demand has softened over the last few accountable days. Current evidence suggests there are executable opportunities in the pipeline, but they are not yet creating enough booked workshop work. Before we treat that as the constraint, is there anything happening in Sales or Workshop that is not reflected in the available data?</p>
+</div>
+<button class="btn alt" onclick="simulateContext()">Simulate leader response</button>
+<div id="contextResult">
+</div>
+</div>`:''}<div class="section">
+<h3>Case history</h3>
+
+<div class="timeline">
+<p>
+<b>31 Aug · 18:08</b>
+<br>Exception detected from completed operating-day evidence.</p>
+<p>
+<b>31 Aug · 18:10</b>
+<br>Evidence gathered and cross-Division relationship assessed.</p>
+<p>
+<b>31 Aug · 18:11</b>
+<br>${isDemand?'Leader context request prepared before assignment.':'Likely upstream Sales constraint identified.'}</p>
+</div>
+</div>`;
+            drawer.classList.add('open')
+        }
+
+        function simulateContext() {
+            document.getElementById('contextResult').innerHTML = `<div class="evidence">
+<b>Leader response · simulated</b>
+<p>Several open quotes are awaiting insurer approval, but there are still executable customer opportunities available for follow-up.</p>
+</div>
+<div class="action">
+<b>Diagnosis confirmed with revised scope</b>
+<p>Exclude insurer-dependent opportunities. Review remaining executable opportunities and restore forward workshop demand.</p>
+<b>Recommended owner:</b> Sales leader · Bunbury<br>
+<b>Due:</b> 2 Sep · 12:00<br>
+<b>Verification:</b> Recheck forward executable demand after next completed operating-day dataset.</div>`
+        }
+
+        function openCase(id) {
+            if (id === 'C-026') {
+                openDetail('DN02', 'Bunbury', 'Forward demand');
+                return
+            }
+            detail.innerHTML = `<h2>${id}</h2>
+<span class="badge">Operating case</span>
+<div class="section">
+<h3>Case state</h3>
+
+<p>This fixture case demonstrates persistent case memory. Full evidence and communication will be populated by connected adapters.</p>
+</div>
+<div class="section">
+<h3>Closure rule</h3>
+
+<p>An action being marked complete is insufficient. Bridge must verify that the intended operating result has actually been restored before closing the case.</p>
+</div>`;
+            drawer.classList.add('open')
+        }
+
+        function runReadiness() {
+            const checks = [
+                ['Operating logic', true],
+                ['Evidence provenance', true],
+                ['Case lifecycle', true],
+                ['OM authority gate', true],
+                ['Persistent ingestion', false],
+                ['Worldline feed', false]
+            ];
+            const ready = checks.filter(x => x[1]).length;
+            document.getElementById('readinessResult').innerHTML = `<div class="evidence">
+<b>${ready}/${checks.length} deployment gates currently satisfied</b>
+<br>
+<span class="muted">Bridge logic is handover-ready. Remaining gaps are implementation/integration work for the agent, not unresolved management design.</span>
+</div>`
+        }
+
+        const twosRuntime = { state: null };
+
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+        }
+
+        function shadowStatusLabel(status) {
+            return ({ monitoring: 'Monitoring', evidence_limited: 'Evidence limited', context_requested: 'Context requested', action_underway: 'Action underway', owner_attention: 'Owner attention' })[status] || status;
+        }
+
+        function afterCareMetric(value) {
+            return value === null || value === undefined ? 'Not connected' : String(value);
+        }
+
+        function podiumMetric(value, suffix = '') {
+            return value === null || value === undefined ? 'Unavailable' : `${value}${suffix}`;
+        }
+
+        function renderPodium(state) {
+            const source = state?.sources?.podiumDailyDigest;
+            const podium = state?.podium;
+            if (!source || !podium) throw new Error('Podium digest state missing');
+            const connected = source.status === 'connected_tested';
+            const received = new Date(source.receivedAt).toLocaleString('en-AU', {timeZone:'Australia/Perth', day:'numeric', month:'short', year:'numeric', hour:'numeric', minute:'2-digit'});
+            const sourceStatus = connected ? 'DAILY DIGEST / CURRENT' : 'DIGEST DEGRADED';
+            document.getElementById('podiumStatus').textContent = sourceStatus;
+            document.getElementById('podiumStatus').className = connected ? 'good' : 'bad';
+            document.getElementById('podiumFreshness').textContent = `Reports ${localDate(source.reportingDate)} · received ${received} AWST`;
+            document.getElementById('podiumSubtitle').textContent = `${source.provenance} · ${source.delivery}`;
+            document.getElementById('podiumLeads').textContent = podiumMetric(podium.inbox.newLeads);
+            document.getElementById('podiumActive').textContent = podiumMetric(podium.inbox.totalActiveConversations);
+            document.getElementById('podiumOpen').textContent = podiumMetric(podium.inbox.openMessages);
+            document.getElementById('podiumReviews').textContent = podiumMetric(podium.group.newReviews);
+            document.getElementById('podiumBunResponse').textContent = podiumMetric(podium.locations.bunbury.medianResponseMinutes, ' min');
+            document.getElementById('podiumBusResponse').textContent = podiumMetric(podium.locations.busselton.medianResponseMinutes, ' min');
+            document.getElementById('podiumInvites').textContent = podiumMetric(podium.group.reviewInvitesSent);
+            document.getElementById('podiumFeedback').textContent = podiumMetric(podium.group.feedbackResponses);
+            document.getElementById('podiumCsat').textContent = `Customer satisfaction: ${podiumMetric(podium.group.customerSatisfaction)}`;
+            document.getElementById('podiumPayments').textContent = money(podium.group.paymentsReceived);
+            document.getElementById('podiumRequests').textContent = podiumMetric(podium.group.paymentRequestsSent);
+            document.getElementById('podiumAssessmentStatus').textContent = podium.assessment.status.toUpperCase();
+            document.getElementById('podiumOwnerAttention').textContent = podium.assessment.ownerAttentionRequired ? 'YES' : 'NO';
+            document.getElementById('podiumOwnerAttention').className = podium.assessment.ownerAttentionRequired ? 'bad' : 'good';
+            document.getElementById('podiumAssessment').textContent = podium.assessment.summary;
+            document.getElementById('podiumLimitation').textContent = source.limitations;
+            document.getElementById('podiumNextControl').textContent = podium.assessment.nextControl;
+            document.getElementById('podiumIntegrationStatus').textContent = connected ? 'Connected / tested' : 'Connected / degraded';
+            document.getElementById('podiumIntegrationStatus').className = connected ? 'good status' : 'bad status';
+            document.getElementById('podiumIntegrationRequirement').textContent = connected ? `Latest successful evidence: ${source.provenance}` : 'Restore Outlook digest ingestion';
+
+            ['Bunbury','Busselton'].forEach(location => {
+                const rows = data.DN06[location];
+                const existing = rows.find(x => x[0] === 'Podium leads');
+                const value = `${podium.inbox.newLeads} group daily`;
+                if (existing) existing[1] = value; else rows.push(['Podium leads', value, '→']);
+            });
+        }
+
+        function renderAfterCare(state) {
+            const ac = state?.afterCare;
+            if (!ac) throw new Error('After-Care state missing');
+            const position = ac.operatingPosition || {};
+            const connected = ac.integration?.status === 'connected_tested';
+            const feedLabel = connected ? 'CONNECTED / TESTED' : 'NOT CONNECTED';
+            const metricClass = connected ? 'good' : 'muted';
+
+            document.getElementById('afterCareHomeStatus').textContent = connected ? 'CURRENT' : 'CONTROL READY';
+            document.getElementById('afterCareHomeStatus').className = connected ? 'good' : 'warn';
+            document.getElementById('afterCareHomeDue').textContent = connected ? afterCareMetric(position.dueToday) : '—';
+            document.getElementById('afterCareHomeUnresolved').textContent = connected ? afterCareMetric(position.unresolvedConcerns) : '—';
+            document.getElementById('afterCareHomeNote').textContent = connected ? 'Latest accountable After-Care position from MechanicDesk.' : 'Approved standard is active; MechanicDesk tagged-job operating feed is not yet connected.';
+            document.getElementById('afterCareSubtitle').textContent = `${ac.program.documentId} · ${ac.program.status} · ${ac.program.owner} · System of record: ${ac.program.systemOfRecord}`;
+            document.getElementById('afterCareActive').textContent = afterCareMetric(position.activeCycles);
+            document.getElementById('afterCareDue').textContent = afterCareMetric(position.dueToday);
+            document.getElementById('afterCareOverdue').textContent = afterCareMetric(position.overdue);
+            document.getElementById('afterCareUnresolved').textContent = afterCareMetric(position.unresolvedConcerns);
+            ['afterCareActive','afterCareDue','afterCareOverdue','afterCareUnresolved'].forEach(id => document.getElementById(id).className = metricClass);
+            document.getElementById('afterCarePromise').textContent = ac.program.promise;
+            document.getElementById('afterCarePrinciple').textContent = ac.program.designPrinciple;
+            document.getElementById('afterCareMilestones').innerHTML = ac.milestones.map(m => `<tr><td><b>${escapeHtml(m.label)}</b><br><span class="muted">${escapeHtml(m.dueRule)}</span></td><td>${escapeHtml(m.type)}</td><td>${escapeHtml(m.owner)}</td><td>${escapeHtml(m.rule)}</td></tr>`).join('');
+            document.getElementById('afterCareWorkflow').textContent = ac.dailyWorkflow.delivery;
+            document.getElementById('afterCareOutcomes').innerHTML = ac.dailyWorkflow.outcomes.map(x => `<span class="badge">${escapeHtml(x)}</span>`).join(' ');
+            document.getElementById('afterCareNoAnswer').textContent = `${ac.dailyWorkflow.noAnswerRule} No-show: ${ac.dailyWorkflow.noShowRule}`;
+            document.getElementById('afterCareConcern').textContent = ac.concernControl.rule;
+            document.getElementById('afterCareConcernBehaviour').textContent = ac.concernControl.requiredBehaviour;
+            document.getElementById('afterCareFeedStatus').textContent = feedLabel;
+            document.getElementById('afterCareFeedStatus').className = connected ? 'good' : 'warn';
+            document.getElementById('afterCareFeedRequirement').textContent = connected ? `Last successful ingestion: ${ac.integration.lastSuccessfulIngestionAt}` : `${ac.integration.requiredSource}. Next adapter: ${ac.integration.requiredAdapter}.`;
+            document.getElementById('afterCareOwnerStatus').textContent = position.ownerAttentionRequired ? 'YES' : 'NO';
+            document.getElementById('afterCareOwnerStatus').className = position.ownerAttentionRequired ? 'bad' : 'good';
+            document.getElementById('afterCareOwnerReason').textContent = position.ownerAttentionReason;
+            document.getElementById('afterCareMeasures').innerHTML = ac.successMeasures.map(m => `<tr><td><b>${escapeHtml(m.measure)}</b></td><td>${escapeHtml(m.outcome)}</td><td>${escapeHtml(m.evidence)}</td><td class="${m.value === null ? 'muted' : 'good'}">${m.value === null ? 'Awaiting operating evidence' : escapeHtml(m.value)}</td></tr>`).join('');
+            document.getElementById('afterCareQualityRoute').textContent = ac.concernControl.qualityRoute;
+
+            ['Bunbury','Busselton'].forEach(location => {
+                const rows = data.DN06[location];
+                const existing = rows.find(x => x[0] === 'After-Care');
+                const value = connected ? 'Current' : 'Control ready';
+                if (existing) existing[1] = value; else rows.push(['After-Care', value, '→']);
+            });
+        }
+
+        function renderOwnerCommand(state) {
+            const assessments = state?.wave2Shadow?.assessments || [];
+            const shadowItems = assessments.filter(a => a?.ownerAttention?.required === true).map(a => ({
+                id: a.id,
+                type: 'Wave 2 Shadow',
+                reasonCode: a.ownerAttention.reasonCode,
+                summary: a.summary,
+                activity: a.recommendation,
+                ownerAction: a.ownerAttention.reason,
+                open: `openShadowAssessment('${escapeHtml(a.id)}')`
+            }));
+            const ac = state?.afterCare;
+            const afterCareItems = ac?.operatingPosition?.ownerAttentionRequired ? [{
+                id: ac.program.documentId,
+                type: 'Customer After-Care',
+                reasonCode: 'material_unresolved_risk',
+                summary: ac.operatingPosition.ownerAttentionReason,
+                activity: 'TWOS retains the operating evidence and closest-accountable response in the After-Care control.',
+                ownerAction: ac.operatingPosition.ownerAttentionReason,
+                open: "showView('afterCareView')"
+            }] : [];
+            const items = [...shadowItems, ...afterCareItems];
+            const authority = items.filter(x => x.reasonCode === 'owner_reserved_decision' || x.reasonCode === 'authority_boundary').length;
+            const context = items.filter(x => x.reasonCode === 'owner_only_context_required').length;
+            document.getElementById('homeOwnerAttention').textContent = items.length;
+            document.getElementById('homeOwnerAttentionLabel').textContent = items.length ? 'genuine attention items' : 'no Owner action required';
+            document.getElementById('ownerQueueCount').textContent = items.length;
+            document.getElementById('ownerQueueSuppressed').textContent = assessments.length - shadowItems.length + (ac && !ac.operatingPosition.ownerAttentionRequired ? 1 : 0);
+            document.getElementById('ownerQueueAuthority').textContent = authority;
+            document.getElementById('ownerQueueContext').textContent = context;
+            document.getElementById('ownerQueueBody').innerHTML = items.length ? items.map(x => `<tr onclick="${x.open}" style="cursor:pointer"><td><span class="bad status">ACT</span></td><td><b>${escapeHtml(x.summary)}</b><br><span class="muted">${escapeHtml(x.type)} · ${escapeHtml(x.id)}</span></td><td>${escapeHtml(x.activity)}</td><td><b>${escapeHtml(x.ownerAction)}</b></td></tr>`).join('') : '<tr><td><span class="good status">CLEAR</span></td><td><b>No persistent TWOS control currently requires Owner attention.</b></td><td>TWOS continues observing, retaining evidence and working at the closest accountable level.</td><td><b>Nothing.</b></td></tr>';
+        }
+
+        function renderWave2Shadow(state) {
+            const shadow = state?.wave2Shadow;
+            const assessments = Array.isArray(shadow?.assessments) ? shadow.assessments : [];
+            const ownerItems = assessments.filter(a => a?.ownerAttention?.required === true);
+            const monitoring = assessments.filter(a => a.status === 'monitoring').length;
+            const evidenceLimited = assessments.filter(a => a.status === 'evidence_limited').length;
+            const authority = ownerItems.filter(a => a.ownerAttention.reasonCode === 'owner_reserved_decision' || a.ownerAttention.reasonCode === 'authority_boundary').length;
+            const context = ownerItems.filter(a => a.ownerAttention.reasonCode === 'owner_only_context_required').length;
+
+            document.getElementById('shadowHomeTotal').textContent = assessments.length;
+            document.getElementById('shadowHomeOwner').textContent = ownerItems.length;
+            document.getElementById('shadowHomeStatus').textContent = ownerItems.length ? `${ownerItems.length} assessment${ownerItems.length === 1 ? '' : 's'} promoted under the Owner-attention contract.` : 'All current assessments remain in Shadow; no Owner intervention required.';
+            document.getElementById('homeOwnerAttention').textContent = ownerItems.length;
+            document.getElementById('homeOwnerAttentionLabel').textContent = ownerItems.length ? 'genuine attention items' : 'no Owner action required';
+            document.getElementById('shadowTotal').textContent = assessments.length;
+            document.getElementById('shadowMonitoring').textContent = monitoring;
+            document.getElementById('shadowEvidenceLimited').textContent = evidenceLimited;
+            document.getElementById('shadowPromoted').textContent = ownerItems.length;
+            document.getElementById('ownerQueueCount').textContent = ownerItems.length;
+            document.getElementById('ownerQueueSuppressed').textContent = assessments.length - ownerItems.length;
+            document.getElementById('ownerQueueAuthority').textContent = authority;
+            document.getElementById('ownerQueueContext').textContent = context;
+
+            document.getElementById('shadowAssessmentList').innerHTML = assessments.length ? assessments.map(a => `<div class="case casegrid" onclick="openShadowAssessment('${escapeHtml(a.id)}')">
+                <div><b>${escapeHtml(a.id)}</b><br>${escapeHtml(a.scope)}<br><span class="muted">${escapeHtml(a.division)} · ${escapeHtml(a.location)}</span></div>
+                <div>${escapeHtml(a.accountableLeader)}<br><span class="${a.status === 'evidence_limited' ? 'warn' : 'good'}">${escapeHtml(shadowStatusLabel(a.status))}</span> · ${escapeHtml(a.confidence)} confidence</div>
+                <div>${escapeHtml(localDate(a.evidenceThrough.slice(0,10)))}<br><span class="muted">${escapeHtml(a.evidenceThrough.slice(11,16))} UTC</span></div>
+                <div class="${a.ownerAttention.required ? 'bad' : 'good'}">${a.ownerAttention.required ? 'Promoted to Owner Command' : 'No Owner attention'}</div>
+            </div>`).join('') : '<div class="muted" style="padding:16px">No persistent Shadow assessments are currently recorded.</div>';
+
+            document.getElementById('ownerQueueBody').innerHTML = ownerItems.length ? ownerItems.map(a => `<tr onclick="openShadowAssessment('${escapeHtml(a.id)}')" style="cursor:pointer">
+                <td><span class="bad status">ACT</span></td>
+                <td><b>${escapeHtml(a.summary)}</b><br><span class="muted">${escapeHtml(a.id)} · ${escapeHtml(a.division)} · ${escapeHtml(a.location)}</span></td>
+                <td>${escapeHtml(a.recommendation)}</td>
+                <td><b>${escapeHtml(a.ownerAttention.reason)}</b></td>
+            </tr>`).join('') : '<tr><td><span class="good status">CLEAR</span></td><td><b>No Wave 2 Shadow assessment currently requires Owner attention.</b></td><td>TWOS continues observing, retaining evidence and working at the closest accountable level.</td><td><b>Nothing.</b></td></tr>';
+        }
+
+        function openShadowAssessment(id) {
+            const assessment = twosRuntime.state?.wave2Shadow?.assessments?.find(a => a.id === id);
+            if (!assessment) return;
+            const evidence = assessment.evidence || [];
+            const history = assessment.history || [];
+            detail.innerHTML = `<h2>${escapeHtml(assessment.id)} · ${escapeHtml(assessment.scope)}</h2>
+                <span class="badge">WAVE 2 SHADOW</span><span class="badge">${escapeHtml(assessment.division)}</span><span class="badge">${escapeHtml(assessment.location)}</span>
+                <div class="section"><h3>Assessment state</h3><div class="evidence"><b>${escapeHtml(shadowStatusLabel(assessment.status))}</b> · ${escapeHtml(assessment.confidence)} confidence<br>${escapeHtml(assessment.summary)}</div><p>${escapeHtml(assessment.assessment)}</p></div>
+                <div class="section"><h3>Leader context</h3><p>${escapeHtml(assessment.contextState)}</p><p><b>Accountable leader:</b> ${escapeHtml(assessment.accountableLeader)}</p></div>
+                <div class="section"><h3>TWOS recommendation</h3><p>${escapeHtml(assessment.recommendation)}</p><div class="${assessment.ownerAttention.required ? 'action' : 'evidence'}"><b>Owner treatment:</b> ${escapeHtml(assessment.ownerAttention.reason)}</div></div>
+                <div class="section"><h3>Evidence</h3>${evidence.map(e => `<div class="evidence"><b>${escapeHtml(e.source)} · ${escapeHtml(e.reference)}</b><br>${escapeHtml(e.finding)}</div>`).join('')}</div>
+                <div class="section"><h3>History</h3><div class="timeline">${history.map(h => `<p><b>${escapeHtml(new Date(h.at).toLocaleString('en-AU',{timeZone:'Australia/Perth',day:'numeric',month:'short',hour:'numeric',minute:'2-digit'}))} · ${escapeHtml(h.event)}</b><br>${escapeHtml(h.detail)}</p>`).join('')}</div></div>
+                <div class="section"><h3>Existing-system links</h3><p><b>Case:</b> ${escapeHtml(assessment.linkedCaseId || 'None required')}<br><b>Action:</b> ${escapeHtml(assessment.linkedActionId || 'None required')}</p></div>`;
+            drawer.classList.add('open');
+        }
+
+        function money(value) {
+            return new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD' }).format(value);
+        }
+
+        function localDate(isoDate) {
+            const d = new Date(`${isoDate}T00:00:00+08:00`);
+            return new Intl.DateTimeFormat('en-AU', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Australia/Perth' }).format(d);
+        }
+
+        function expectedAccountableDate() {
+            const parts = Object.fromEntries(new Intl.DateTimeFormat('en-CA', {
+                timeZone: 'Australia/Perth', year: 'numeric', month: '2-digit', day: '2-digit',
+                weekday: 'short', hour: '2-digit', minute: '2-digit', hour12: false
+            }).formatToParts(new Date()).filter(part => part.type !== 'literal').map(part => [part.type, part.value]));
+            const date = new Date(`${parts.year}-${parts.month}-${parts.day}T12:00:00+08:00`);
+            const beforeClose = Number(parts.hour) * 60 + Number(parts.minute) < 18 * 60 + 20;
+            let daysBack = parts.weekday === 'Sat' ? 1 : parts.weekday === 'Sun' ? 2 : beforeClose ? (parts.weekday === 'Mon' ? 3 : 1) : 0;
+            date.setDate(date.getDate() - daysBack);
+            return new Intl.DateTimeFormat('en-CA', { timeZone: 'Australia/Perth' }).format(date);
+        }
+
+        function evidenceFresh(state) {
+            const source = state?.sources?.mechanicDesk;
+            if (!source || source.status !== 'connected_tested' || !source.receivedAt) return false;
+            return state.latestAccountableDate >= expectedAccountableDate();
+        }
+
+        function renderRevenue(location, prefix) {
+            const revenue = twosRuntime.state?.locations?.[location]?.revenue;
+            if (!revenue) return;
+            const pct = revenue.target ? revenue.net / revenue.target * 100 : 0;
+            const value = document.getElementById(`${prefix}Revenue`);
+            const position = document.getElementById(`${prefix}RevenuePosition`);
+            value.textContent = money(revenue.net);
+            position.textContent = `${pct.toFixed(1)}% of ${money(revenue.target)}`;
+            position.className = pct >= 100 ? 'good' : pct >= 80 ? 'warn' : 'bad';
+        }
+
+        function renderPercentMetric(value, partial = false) {
+            return value === null || value === undefined ? 'Evidence unavailable' : `${Number(value).toFixed(1)}%${partial ? ' · partial' : ''}`;
+        }
+
+        function renderFinancialControl(state) {
+            const financial = state.financialControl;
+            if (!financial) return;
+            const apDate = new Date(financial.payablesAsOfSyncUtc).toLocaleDateString('en-AU', {
+                timeZone: 'Australia/Perth', day: 'numeric', month: 'short', year: 'numeric'
+            });
+            const treasuryDate = localDate(financial.treasuryAsOfDate);
+            document.getElementById('financialHomeNote').textContent =
+                `Current dataSights AP at ${apDate}: ${money(financial.netPayables)} net and ${money(financial.overduePayables)} overdue. Treasury headroom ${money(financial.overdraftHeadroom)} was last reconciled ${treasuryDate}; Caplink ${money(financial.caplinkDue)} is due 30 Sep.`;
+            document.getElementById('financialDetailNote').textContent =
+                `Payables reflect the dataSights/Xero sync at ${apDate}. Treasury and the 13-week liquidity curve remain reconciled to ${treasuryDate}; known commitments and unresolved customer credits are shown separately.`;
+            document.getElementById('financialHeadroom').textContent = money(financial.overdraftHeadroom);
+            document.getElementById('financialHeadroomDetail').textContent = `${money(financial.overdraftLimit)} limit · ${money(financial.overdraftDrawn)} drawn · reconciled ${treasuryDate}`;
+            document.getElementById('financialNetAP').textContent = money(financial.netPayables);
+            document.getElementById('financialOverdueAP').textContent = `${money(financial.overduePayables)} overdue · synced ${apDate}`;
+        }
+
+        async function loadTwosState() {
+            const status = document.getElementById('mechanicDeskStatus');
+            try {
+                const response = await fetch(`data/twos-state.json?v=${Date.now()}`, { cache: 'no-store' });
+                if (!response.ok) throw new Error(`state ${response.status}`);
+                const state = await response.json();
+                twosRuntime.state = state;
+                const fresh = evidenceFresh(state);
+                status.textContent = fresh ? 'CURRENT' : 'STALE';
+                status.className = fresh ? 'good' : 'bad';
+                document.getElementById('sourceFreshness').textContent = `MechanicDesk close ${localDate(state.latestAccountableDate)} · 6:10 pm AWST | Xero/dataSights ${state.sources.xeroDataSights.displayFreshness}`;
+                const ds = state.sources.xeroDataSights;
+                const dsStatus = document.getElementById('dataSightsStatus');
+                dsStatus.textContent = ds.syncStatus === 'SUCCESS' ? 'SYNC SUCCESS' : ds.syncStatus;
+                dsStatus.className = ds.syncStatus === 'SUCCESS' ? 'good' : 'warn';
+                document.getElementById('dataSightsCadence').textContent = `${ds.approvedCadence} · schedule ${ds.scheduleConfiguration === 'pending_dataSights_configuration' ? 'awaiting configuration' : 'active'}`;
+                const wl = state.sources.anzWorldline;
+                const wlStatus = document.getElementById('worldlineStatus');
+                wlStatus.textContent = wl?.status === 'connected_tested' ? 'CONNECTED / TESTED' : wl?.status === 'connected_degraded' ? 'DELIVERY PROVEN / PARSER PENDING' : 'WAITING FEED';
+                wlStatus.className = wl?.status === 'connected_tested' ? 'good' : 'warn';
+                document.getElementById('worldlineFreshness').textContent = wl?.receivedAt ? `${wl.statusDetail} Received ${new Date(wl.receivedAt).toLocaleString('en-AU',{timeZone:'Australia/Perth',day:'numeric',month:'short',hour:'numeric',minute:'2-digit'})} AWST.` : 'No settlement evidence received.';
+                document.getElementById('revenueHeading').textContent = `REVENUE PERFORMANCE · ${localDate(state.latestAccountableDate).toUpperCase()}`;
+                renderRevenue('bunbury', 'bunbury');
+                renderRevenue('busselton', 'busselton');
+                const bunPct = `${(state.locations.bunbury.revenue.net / state.locations.bunbury.revenue.target * 100).toFixed(1)}%`;
+                const busPct = `${(state.locations.busselton.revenue.net / state.locations.busselton.revenue.target * 100).toFixed(1)}%`;
+                data.DN02.Bunbury.find(x => x[0] === 'Revenue')[1] = bunPct;
+                data.DN02.Busselton.find(x => x[0] === 'Revenue')[1] = busPct;
+                data.DN04.Bunbury.find(x => x[0] === 'Revenue')[1] = bunPct;
+                data.DN04.Busselton.find(x => x[0] === 'Revenue')[1] = busPct;
+                data.DN04.Bunbury.find(x => x[0] === 'Productivity')[1] = renderPercentMetric(state.locations.bunbury.workshop.productivityPercent, state.locations.bunbury.workshop.evidenceStatus === 'partial');
+                data.DN04.Bunbury.find(x => x[0] === 'Efficiency')[1] = renderPercentMetric(state.locations.bunbury.workshop.efficiencyPercent, state.locations.bunbury.workshop.evidenceStatus === 'partial');
+                data.DN04.Busselton.find(x => x[0] === 'Productivity')[1] = renderPercentMetric(state.locations.busselton.workshop.productivityPercent, state.locations.busselton.workshop.evidenceStatus === 'partial');
+                data.DN04.Busselton.find(x => x[0] === 'Efficiency')[1] = renderPercentMetric(state.locations.busselton.workshop.efficiencyPercent, state.locations.busselton.workshop.evidenceStatus === 'partial');
+                renderWave2Shadow(state);
+                renderAfterCare(state);
+                renderPodium(state);
+                renderOwnerCommand(state);
+                renderFinancialControl(state);
+                if (!fresh) document.getElementById('sourceFreshness').prepend('STALE EVIDENCE · ');
+            } catch (error) {
+                status.textContent = 'FEED FAILED';
+                status.className = 'bad';
+                document.getElementById('sourceFreshness').textContent = 'MechanicDesk evidence unavailable — current values withheld';
+                document.getElementById('bunburyRevenue').textContent = '—';
+                document.getElementById('busseltonRevenue').textContent = '—';
+                document.getElementById('bunburyRevenuePosition').textContent = 'Evidence unavailable';
+                document.getElementById('busseltonRevenuePosition').textContent = 'Evidence unavailable';
+                document.getElementById('shadowHomeStatus').textContent = 'Persistent Shadow assessment state unavailable.';
+                document.getElementById('ownerQueueBody').innerHTML = '<tr><td><span class="bad status">STATE FAILED</span></td><td colspan="3">Owner Command cannot determine whether attention is required because persistent state failed to load.</td></tr>';
+                document.getElementById('afterCareHomeStatus').textContent = 'STATE FAILED';
+                document.getElementById('afterCareHomeStatus').className = 'bad';
+                document.getElementById('afterCareHomeNote').textContent = 'Persistent After-Care state is unavailable.';
+                document.getElementById('podiumStatus').textContent = 'STATE FAILED';
+                document.getElementById('podiumStatus').className = 'bad';
+                document.getElementById('podiumFreshness').textContent = 'Persistent Podium digest state is unavailable.';
+            }
+        }
+
+        loadTwosState();
+    </script>
+</body>
+
+</html>

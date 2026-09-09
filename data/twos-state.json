@@ -1,0 +1,437 @@
+{
+  "schemaVersion": "1.0",
+  "generatedAt": "2026-09-07T01:11:28.002493Z",
+  "latestAccountableDate": "2026-09-04",
+  "sources": {
+    "mechanicDesk": {
+      "status": "connected_tested",
+      "receivedAt": "2026-09-04T10:10:42Z",
+      "expectedAtLocal": "18:10",
+      "timezone": "Australia/Perth",
+      "folder": "Inbox/Mechanic Desk Reports",
+      "reportCount": 8,
+      "statusDetail": "Latest accountable close ingested; all eight required reports received.",
+      "requiredReports": {
+        "bunbury": [
+          "Income",
+          "Job",
+          "Productivity",
+          "Efficiency"
+        ],
+        "busselton": [
+          "Income",
+          "Job",
+          "Productivity",
+          "Efficiency"
+        ]
+      },
+      "provenance": "Scheduled MechanicDesk .xls reports received through Outlook",
+      "automationStatus": "version_controlled_generator_manual_deploy",
+      "automationRequirement": "State generator and deployment health check are version controlled; scheduled execution must retain connector credentials."
+    },
+    "xeroDataSights": {
+      "status": "connected_tested",
+      "syncStatus": "SUCCESS",
+      "lastOrganisationSyncUtc": "2026-09-06T11:17:44.973Z",
+      "lastAccountTransactionsSyncUtc": "2026-09-06T11:18:29.763Z",
+      "approvedCadence": "Hourly Monday\u2013Friday with overnight recovery sync",
+      "scheduleConfiguration": "active",
+      "manualRefreshAvailable": true,
+      "agentRefreshAvailable": true,
+      "displayFreshness": "6 Sep 2026 \u00b7 7:18 pm AWST"
+    },
+    "podiumDailyDigest": {
+      "status": "connected_tested",
+      "delivery": "Scheduled Outlook email digest",
+      "sender": "notifications@podium.com",
+      "subjectPattern": "Podium Daily Digest (*)",
+      "reportingDate": "2026-09-02",
+      "receivedAt": "2026-09-03T14:00:19Z",
+      "timezone": "Australia/Perth",
+      "provenance": "Podium Daily Digest (SEPTEMBER 02, 2026) received in Outlook",
+      "limitations": "Daily summary evidence only; it does not establish campaign attribution, quote conversion, completed revenue or gross profit."
+    },
+    "anzWorldline": {
+      "status": "connected_degraded",
+      "delivery": "Scheduled Outlook PDF settlement report",
+      "receivedAt": "2026-09-03T15:34:04Z",
+      "provenance": "Your Settlement Report from ANZ Worldline Payment Solutions received in Outlook",
+      "statusDetail": "Email delivery is proven; settlement PDF extraction into persistent Bridge measures is not yet tested."
+    }
+  },
+  "locations": {
+    "bunbury": {
+      "revenue": {
+        "net": -350.52,
+        "grossProfit": -3694.79,
+        "grossMarginPercent": -1054.09,
+        "sourceFile": "daily_income_report_040926.xls",
+        "target": 13000
+      },
+      "workshop": {
+        "productivityPercent": 100.0,
+        "efficiencyPercent": 144.41,
+        "productivityCoverage": "Daniel Fowles, Jack Rooney",
+        "efficiencyCoverage": "Daniel Fowles, Jack Rooney",
+        "evidenceStatus": "current",
+        "sourceFiles": [
+          "daily_productivity_report_040926.xls",
+          "daily_efficiency_report_040926.xls",
+          "daily_job_report_040926.xls"
+        ]
+      }
+    },
+    "busselton": {
+      "revenue": {
+        "net": 10736.45,
+        "grossProfit": 3003.07,
+        "grossMarginPercent": 27.97,
+        "sourceFile": "daily_income_report_040926.xls",
+        "target": 10000
+      },
+      "workshop": {
+        "productivityPercent": 51.6,
+        "efficiencyPercent": 118.67,
+        "productivityCoverage": "Zach Hutchison, Jayden Brookes",
+        "efficiencyCoverage": "Zach Hutchison, Jayden Brookes",
+        "evidenceStatus": "current",
+        "sourceFiles": [
+          "daily_productivity_report_040926.xls",
+          "daily_efficiency_report_040926.xls",
+          "daily_job_report_040926.xls"
+        ]
+      }
+    }
+  },
+  "podium": {
+    "schemaVersion": "1.0",
+    "sourceKey": "podiumDailyDigest",
+    "reportingDate": "2026-09-02",
+    "inbox": {
+      "newLeads": 4,
+      "totalActiveConversations": 7,
+      "openMessages": 5
+    },
+    "locations": {
+      "bunbury": {
+        "medianResponseMinutes": null,
+        "newReviews": 0,
+        "reviewInvitesSent": 0,
+        "feedbackResponses": 0,
+        "customerSatisfaction": null,
+        "paymentsReceived": 0,
+        "paymentRequestsSent": 0,
+        "unpaidPaymentRequests": 0
+      },
+      "busselton": {
+        "medianResponseMinutes": null,
+        "newReviews": 0,
+        "reviewInvitesSent": 0,
+        "feedbackResponses": 0,
+        "customerSatisfaction": null,
+        "paymentsReceived": 0,
+        "paymentRequestsSent": 0,
+        "unpaidPaymentRequests": 0
+      }
+    },
+    "group": {
+      "newReviews": 0,
+      "reviewInvitesSent": 0,
+      "feedbackResponses": 0,
+      "customerSatisfaction": null,
+      "paymentsReceived": 0,
+      "paymentRequestsSent": 0
+    },
+    "assessment": {
+      "status": "monitoring",
+      "ownerAttentionRequired": false,
+      "summary": "The daily digest establishes enquiry and conversation activity. One day is insufficient for a performance conclusion or Owner intervention.",
+      "nextControl": "Retain daily digest history, establish response and lead trajectory, then link Podium enquiries to MechanicDesk quote, revenue and GP evidence before calculating attribution or return."
+    }
+  },
+  "wave2Shadow": {
+    "schemaVersion": "1.0",
+    "mode": "observe_recommend",
+    "home": "TWOS persistent assessment state",
+    "ownerPromotionRules": [
+      "owner_reserved_decision",
+      "authority_boundary",
+      "material_unresolved_risk",
+      "leader_resolution_failed",
+      "owner_only_context_required"
+    ],
+    "assessments": [
+      {
+        "id": "W2S-20260902-BUN-DN04",
+        "division": "DN04",
+        "location": "Bunbury",
+        "scope": "Workshop operating assessment",
+        "accountableLeader": "DN04 accountable leadership \u00b7 Bunbury",
+        "status": "monitoring",
+        "confidence": "medium",
+        "evidenceThrough": "2026-09-02T10:10:49Z",
+        "summary": "Current daily evidence establishes position but is not yet sufficient for a durable Wave 2 performance conclusion or trajectory.",
+        "assessment": "Revenue closed below the daily target while the recorded Productivity and Efficiency reports show strong conversion of recorded workshop time. TWOS must establish comparable forward/executable demand and accountable-day history before attributing the revenue position to workshop leadership or fitter execution.",
+        "contextState": "System evidence under observation; no leader challenge promoted from a single day.",
+        "recommendation": "Retain in Shadow and compare across accountable operating days. Seek leader context only if a sustained exception or conflicting evidence emerges.",
+        "ownerAttention": {
+          "required": false,
+          "reasonCode": null,
+          "reason": "No owner authority or intervention is required."
+        },
+        "linkedCaseId": null,
+        "linkedActionId": null,
+        "evidence": [
+          {
+            "source": "MechanicDesk",
+            "reference": "daily_income_report_020926.xls",
+            "finding": "Net revenue $9,533.79; GP 52.32%."
+          },
+          {
+            "source": "MechanicDesk",
+            "reference": "daily_productivity_report_020926.xls",
+            "finding": "100% productivity for three recorded fitters."
+          },
+          {
+            "source": "MechanicDesk",
+            "reference": "daily_efficiency_report_020926.xls",
+            "finding": "Weighted recorded efficiency 150.21% across three recorded fitters."
+          }
+        ],
+        "history": [
+          {
+            "at": "2026-09-02T10:10:49Z",
+            "event": "Evidence received",
+            "detail": "Scheduled Outlook reports received from MechanicDesk."
+          },
+          {
+            "at": "2026-09-02T13:15:00Z",
+            "event": "Shadow assessment created",
+            "detail": "Held below Owner Command pending comparable accountable-day evidence."
+          }
+        ]
+      },
+      {
+        "id": "W2S-20260902-BUS-DN04",
+        "division": "DN04",
+        "location": "Busselton",
+        "scope": "Workshop evidence-coverage assessment",
+        "accountableLeader": "DN04 accountable leadership \u00b7 Busselton",
+        "status": "evidence_limited",
+        "confidence": "low",
+        "evidenceThrough": "2026-09-02T10:10:49Z",
+        "summary": "The completed Job report names three mechanics, while Productivity and Efficiency coverage contains only Zach Hutchison. Performance attribution is prohibited until coverage is reconciled.",
+        "assessment": "Revenue and the completed job are visible, but fitter-level Efficiency coverage conflicts with the Job report. The 0% Efficiency row cannot be treated as a workshop or individual performance conclusion because other named mechanics are absent from the Efficiency report.",
+        "contextState": "Evidence reconciliation required before any leader context request or accountability intervention.",
+        "recommendation": "Keep the assessment in Shadow, test report-definition and timesheet coverage across subsequent closes, and promote only if the evidence gap persists and requires management authority.",
+        "ownerAttention": {
+          "required": false,
+          "reasonCode": null,
+          "reason": "This is an evidence-quality issue, not an owner decision."
+        },
+        "linkedCaseId": null,
+        "linkedActionId": null,
+        "evidence": [
+          {
+            "source": "MechanicDesk",
+            "reference": "daily_income_report_020926.xls",
+            "finding": "Net revenue $7,922.63; GP 51.81%."
+          },
+          {
+            "source": "MechanicDesk",
+            "reference": "daily_job_report_020926.xls",
+            "finding": "Completed job names Aaron Leonard, Jayden Brookes and Zach Hutchison."
+          },
+          {
+            "source": "MechanicDesk",
+            "reference": "daily_productivity_report_020926.xls",
+            "finding": "Only Zach Hutchison is present; 100% recorded productivity."
+          },
+          {
+            "source": "MechanicDesk",
+            "reference": "daily_efficiency_report_020926.xls",
+            "finding": "Only Zach Hutchison is present; 0% recorded Efficiency and zero effective hours."
+          }
+        ],
+        "history": [
+          {
+            "at": "2026-09-02T10:10:49Z",
+            "event": "Evidence received",
+            "detail": "Scheduled Outlook reports received from MechanicDesk."
+          },
+          {
+            "at": "2026-09-02T13:15:00Z",
+            "event": "Coverage conflict detected",
+            "detail": "Job mechanics and fitter-report coverage do not reconcile."
+          },
+          {
+            "at": "2026-09-02T13:15:00Z",
+            "event": "Owner promotion suppressed",
+            "detail": "Insufficient evidence is retained for investigation and does not create Owner work."
+          }
+        ]
+      }
+    ]
+  },
+  "afterCare": {
+    "schemaVersion": "1.0",
+    "program": {
+      "documentId": "TWOS-AC-001",
+      "version": "1.0",
+      "status": "Executive Standard \u2014 Approved Design",
+      "owner": "DN06 Growth / Customer Relationship",
+      "systemOfRecord": "MechanicDesk",
+      "appliesTo": "All current and future TerraWest 4x4 locations",
+      "sourceDocument": "TWOS_Customer_After-Care_Program_v1.0.docx",
+      "promise": "We maintain a relationship with our customer and their vehicle for three years, helping ensure the build continues to work for their life, their destinations and what they want to do next.",
+      "designPrinciple": "Technology manages the timing. The Build Consultant owns the relationship. The fitter owns the technical check. TWOS makes sure the promise is delivered."
+    },
+    "integration": {
+      "status": "not_connected",
+      "statusLabel": "Standard approved \u00b7 operating feed not connected",
+      "requiredSource": "MechanicDesk AFTER-CARE tag, job finalisation, vehicle history and milestone outcomes",
+      "requiredAdapter": "Read qualifying tagged jobs; calculate business-day milestones; write due cards and outcome references without creating a parallel customer database",
+      "lastSuccessfulIngestionAt": null
+    },
+    "operatingPosition": {
+      "activeCycles": null,
+      "dueToday": null,
+      "completedToday": null,
+      "overdue": null,
+      "unresolvedConcerns": null,
+      "recurringQualitySignals": null,
+      "ownerAttentionRequired": false,
+      "ownerAttentionReason": "No live After-Care operating evidence is connected; implementation status remains below Owner Command unless authority or a material unresolved risk is identified."
+    },
+    "eligibility": {
+      "decisionOwner": "Build Consultant",
+      "trigger": "AFTER-CARE tag + job finalisation",
+      "dayZero": "Job finalisation",
+      "minimumReference": "Bull-bar installation scale/significance; consultant judgement applies",
+      "restartRule": "A later significant build may restart the three-year cycle while preserving vehicle history"
+    },
+    "milestones": [
+      {
+        "code": "24H",
+        "label": "24 hours",
+        "type": "Genuine Build Consultant call",
+        "owner": "Build Consultant",
+        "rule": "Confirm satisfaction, function, understanding and concerns. No answer \u2192 SMS.",
+        "dueRule": "Next business day"
+      },
+      {
+        "code": "1M",
+        "label": "~1 month",
+        "type": "Conditional technical follow-up",
+        "owner": "Workshop / Consultant",
+        "rule": "Applicable retorque or technical follow-up. A completed required 500 km suspension retorque satisfies and suppresses this milestone.",
+        "dueRule": "Nearest business day; technical requirement takes precedence"
+      },
+      {
+        "code": "3M",
+        "label": "3 months",
+        "type": "Genuine Build Consultant call",
+        "owner": "Build Consultant",
+        "rule": "Understand real-life use and changing destinations, dreams or requirements. No answer \u2192 SMS.",
+        "dueRule": "Three-month business-day milestone"
+      },
+      {
+        "code": "6M",
+        "label": "6 months",
+        "type": "Build Health Check + consultation",
+        "owner": "Consultant + Fitter",
+        "rule": "Morning preferred; allow customer 30 minutes; fitter allocation approximately 15 minutes; complimentary general inspection and coffee.",
+        "dueRule": "Six-month business-day milestone"
+      },
+      {
+        "code": "12M",
+        "label": "12 months",
+        "type": "Build Health Check + consultation",
+        "owner": "Consultant + Fitter",
+        "rule": "Relationship-led physical check under the Build Health Check standard.",
+        "dueRule": "Twelve-month business-day milestone"
+      },
+      {
+        "code": "24M",
+        "label": "24 months",
+        "type": "Build Health Check + consultation",
+        "owner": "Consultant + Fitter",
+        "rule": "Check the build and explore evolving vehicle use and future requirements naturally.",
+        "dueRule": "Twenty-four-month business-day milestone"
+      },
+      {
+        "code": "36M",
+        "label": "36 months",
+        "type": "Build Health Check + consultation + thank-you",
+        "owner": "Consultant + Fitter",
+        "rule": "Final scheduled check and issue 10% After-Care voucher, valid 12 months and not with another offer.",
+        "dueRule": "Thirty-six-month business-day milestone"
+      }
+    ],
+    "dailyWorkflow": {
+      "delivery": "TWOS presents due obligations to the accountable consultant each business morning; consultants do not run reports or search for customers.",
+      "recording": [
+        "Outcome",
+        "One short note where useful",
+        "Next action only when required"
+      ],
+      "outcomes": [
+        "Contacted",
+        "No answer",
+        "Call back",
+        "Concern identified"
+      ],
+      "noAnswerRule": "Send SMS immediately; record No answer \u2192 SMS sent; milestone is complete unless the customer responds.",
+      "noShowRule": "Make one follow-up only; if still no response, record the milestone and continue the cycle."
+    },
+    "concernControl": {
+      "rule": "A concern remains open until a communicated outcome is resolved.",
+      "requiredBehaviour": "Communication, classification, assessment, ownership and closure are mandatory; the issue need not be TerraWest's fault and the remedy need not be free.",
+      "qualityRoute": "Recurring issues route to evidence-led DN04 Workshop / DN05 Quality review without unsupported fitter or supplier attribution."
+    },
+    "successMeasures": [
+      {
+        "measure": "Repeat customers",
+        "outcome": "Customers return as their vehicle, destinations and requirements evolve.",
+        "evidence": "Repeat-customer trend",
+        "value": null
+      },
+      {
+        "measure": "Referral customers",
+        "outcome": "Trust generates word-of-mouth customers.",
+        "evidence": "Referral-source trend",
+        "value": null
+      },
+      {
+        "measure": "Less rework",
+        "outcome": "Issues are caught earlier and repeated causes are designed out.",
+        "evidence": "Rework / recurring issue trend",
+        "value": null
+      },
+      {
+        "measure": "Promise delivered",
+        "outcome": "Required contacts and checks occur without owner chasing.",
+        "evidence": "Due / completed / overdue / unresolved exceptions",
+        "value": null
+      }
+    ],
+    "ownerPromotionRules": [
+      "material unresolved customer risk",
+      "pattern of missed required obligations after closest-accountable correction",
+      "recurring quality pattern requiring owner authority",
+      "refund, unusual resolution or spending outside delegated authority"
+    ]
+  },
+  "financialControl": {
+    "payablesAsOfSyncUtc": "2026-09-06T11:18:29.763Z",
+    "netPayables": 486233.67,
+    "overduePayables": 198167.83,
+    "payablesProvenance": "Grouped by ContactName and netted across all payable sources",
+    "treasuryAsOfDate": "2026-09-02",
+    "overdraftHeadroom": 199343,
+    "overdraftLimit": 200000,
+    "overdraftDrawn": 657,
+    "caplinkDue": 26702,
+    "caplinkDueDate": "2026-09-30"
+  }
+}
