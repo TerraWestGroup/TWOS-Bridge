@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-09T10:28:06.457484Z",
+  "generatedAt": "2026-09-09T11:03:21.788611Z",
   "latestAccountableDate": "2026-09-09",
   "sources": {
     "mechanicDesk": {
@@ -33,12 +33,12 @@
       "status": "connected_tested",
       "syncStatus": "SUCCESS",
       "lastOrganisationSyncUtc": "2026-09-06T11:17:44.973Z",
-      "lastAccountTransactionsSyncUtc": "2026-09-06T11:18:29.763Z",
+      "lastAccountTransactionsSyncUtc": "2026-09-09T11:03:15.870464Z",
       "approvedCadence": "Hourly Monday\u2013Friday with overnight recovery sync",
       "scheduleConfiguration": "active",
       "manualRefreshAvailable": true,
       "agentRefreshAvailable": true,
-      "displayFreshness": "6 Sep 2026 \u00b7 7:18 pm AWST"
+      "displayFreshness": "9 Sep 2026 \u00b7 7:03 PM AWST"
     },
     "podiumDailyDigest": {
       "status": "connected_tested",
@@ -428,7 +428,7 @@
     ]
   },
   "financialControl": {
-    "payablesAsOfSyncUtc": "2026-09-09T10:28:03.740480Z",
+    "payablesAsOfSyncUtc": "2026-09-09T11:03:15.870458Z",
     "netPayables": 323793.99,
     "overduePayables": 328.95,
     "payablesProvenance": "Grouped by ContactName and netted across all payable sources",
