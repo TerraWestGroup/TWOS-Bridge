@@ -159,7 +159,7 @@ def main():
     # returns HTTP 400 without extra ConsistencyLevel headers, so this
     # avoids that entirely -- same approach as the MechanicDesk folder scan.) ---
     podium_query = urllib.parse.urlencode({
-        "$top": "25",
+        "$top": "100",
         "$orderby": "receivedDateTime desc",
         "$select": "id,subject,receivedDateTime,from",
     })
