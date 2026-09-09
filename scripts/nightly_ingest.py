@@ -286,32 +286,35 @@ def main():
     # sender rather than subject since the two staff use different
     # subject lines. Each report is a full running log; only the most
     # recent date present is promoted (handled inside the parser). ---
-    QUOTE_SENDER_LOCATION = {
-        "sales@bunbury4x4.com.au": "bunbury",
-        "sales@busselton4x4.com.au": "busselton",
+    # --- Quote Reports: sent manually by sales staff (Luke for Bunbury,
+    # Mitch for Busselton), not on MechanicDesk's own schedule -- each
+    # filed into their own named Inbox subfolder. Each report is a full
+    # running log; only the most recent date present is promoted
+    # (handled inside the parser). ---
+    QUOTE_FOLDER_LOCATION = {
+        "Luke Bleasdale": "bunbury",
+        "Mitch Cooper": "busselton",
     }
     try:
-        quote_folder_id = fetch_child_folder_id(token, base_url, "Quote Reports")
-        quote_folder_id_enc = urllib.parse.quote(quote_folder_id, safe="")
-        quote_query = urllib.parse.urlencode({
-            "$top": "20",
-            "$orderby": "receivedDateTime desc",
-            "$select": "id,subject,receivedDateTime,hasAttachments,from",
-        })
-        quote_messages = graph_get(
-            token, f"{base_url}/mailFolders/{quote_folder_id_enc}/messages?{quote_query}"
-        ).get("value", [])
-
-        # Take the single most recent message per location.
         latest_by_location = {}
-        for m in quote_messages:
-            sender_address = m.get("from", {}).get("emailAddress", {}).get("address", "").lower()
-            location = QUOTE_SENDER_LOCATION.get(sender_address)
-            if location and location not in latest_by_location:
-                latest_by_location[location] = m
-
         with tempfile.TemporaryDirectory() as quote_tmp_dir:
-            for location, m in latest_by_location.items():
+            for folder_name, location in QUOTE_FOLDER_LOCATION.items():
+                folder_id = fetch_child_folder_id(token, base_url, folder_name)
+                folder_id_enc = urllib.parse.quote(folder_id, safe="")
+                quote_query = urllib.parse.urlencode({
+                    "$top": "5",
+                    "$orderby": "receivedDateTime desc",
+                    "$select": "id,subject,receivedDateTime,hasAttachments",
+                })
+                messages = graph_get(
+                    token, f"{base_url}/mailFolders/{folder_id_enc}/messages?{quote_query}"
+                ).get("value", [])
+                if not messages:
+                    print(f"WARNING: no Quote Report email found in the '{folder_name}' folder.")
+                    continue
+
+                m = messages[0]
+                latest_by_location[location] = m
                 if not m["hasAttachments"]:
                     print(f"WARNING: quote report email for {location} has no attachment, skipping.")
                     continue
@@ -329,10 +332,6 @@ def main():
                     "receivedAt": m["receivedDateTime"],
                 }
                 print(f"Parsed {location} Quote Report: {quote_result}")
-
-        for location in QUOTE_SENDER_LOCATION.values():
-            if location not in latest_by_location:
-                print(f"WARNING: no Quote Report email found for {location} in the Quote Reports folder.")
     except Exception as e:
         print(f"WARNING: Quote Report ingestion failed: {e}", file=sys.stderr)
 
