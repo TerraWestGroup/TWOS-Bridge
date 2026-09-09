@@ -233,6 +233,17 @@ def main():
             state["financialControl"]["treasuryAsOfDate"] = as_of_date
             state["financialControl"]["payablesAsOfSyncUtc"] = datetime.datetime.utcnow().isoformat() + "Z"
 
+            # Also refresh the freshness banner text shown on Bridge Home --
+            # this was previously never updated by this script, so it kept
+            # showing the original snapshot's sync time even after real
+            # nightly Xero pulls started succeeding.
+            now_utc = datetime.datetime.utcnow()
+            now_awst = now_utc + datetime.timedelta(hours=8)
+            display_freshness = now_awst.strftime("%-d %b %Y \u00b7 %-I:%M %p AWST")
+            state["sources"]["xeroDataSights"]["displayFreshness"] = display_freshness
+            state["sources"]["xeroDataSights"]["lastAccountTransactionsSyncUtc"] = now_utc.isoformat() + "Z"
+            state["sources"]["xeroDataSights"]["syncStatus"] = "SUCCESS"
+
             print(f"Parsed Xero financial data: bank_balance={bank_balance}, "
                   f"netPayables={net_payables}, overduePayables={overdue_payables}")
         except Exception as e:
