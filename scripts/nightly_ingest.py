@@ -237,7 +237,7 @@ def main():
     # mismatch between the addressee and the transaction-details heading
     # is surfaced as a data-quality flag rather than silently resolved. ---
     try:
-        worldline_folder_id = fetch_child_folder_id(token, base_url, "Worldline")
+        worldline_folder_id = fetch_child_folder_id(token, base_url, "ANZ Worldline")
         worldline_folder_id_enc = urllib.parse.quote(worldline_folder_id, safe="")
         worldline_query = urllib.parse.urlencode({
             "$top": "5",
