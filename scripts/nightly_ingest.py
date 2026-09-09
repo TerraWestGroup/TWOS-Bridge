@@ -31,6 +31,7 @@ from parsers.income_report import parse_income_report
 from parsers.productivity_report import parse_productivity_report
 from parsers.efficiency_report import parse_efficiency_report
 from parsers.podium_digest import parse_podium_digest
+from parsers.worldline_settlement import parse_worldline_settlement
 from xero_client import get_access_token as xero_get_access_token, get_tenant_id as xero_get_tenant_id, xero_get
 from xero_financial import get_bank_account_balance, get_payables_summary, BANK_ACCOUNT_OF_INTEREST
 
@@ -92,16 +93,17 @@ def fetch_recent_messages(token, base_url, folder_id, top=50):
     )
 
 
-def download_attachment(token, base_url, message_id, tmp_dir):
+def download_attachment(token, base_url, message_id, tmp_dir, extension=".xls"):
     """
-    Downloads the first .xls attachment on the given message and returns
-    the local file path (named after the real attachment filename).
+    Downloads the first attachment matching the given extension on the
+    given message and returns the local file path (named after the
+    real attachment filename).
     """
     msg_id_enc = urllib.parse.quote(message_id, safe="")
     attachments = graph_get(token, f"{base_url}/messages/{msg_id_enc}/attachments")
     for att in attachments.get("value", []):
         name = att.get("name", "")
-        if name.lower().endswith(".xls") and "contentBytes" in att:
+        if name.lower().endswith(extension) and "contentBytes" in att:
             path = os.path.join(tmp_dir, name)
             with open(path, "wb") as f:
                 f.write(base64.b64decode(att["contentBytes"]))
@@ -228,6 +230,54 @@ def main():
             print(f"WARNING: Xero financial ingestion failed: {e}", file=sys.stderr)
     else:
         print("WARNING: XERO_CLIENT_ID/XERO_CLIENT_SECRET not set, skipping financial ingestion.")
+
+    # --- ANZ Worldline settlement report: filed into its own "Worldline"
+    # Inbox subfolder (same pattern as Podium). PDF attachment, not .xls.
+    # Only the top summary block is promoted (unambiguous); a location
+    # mismatch between the addressee and the transaction-details heading
+    # is surfaced as a data-quality flag rather than silently resolved. ---
+    try:
+        worldline_folder_id = fetch_child_folder_id(token, base_url, "Worldline")
+        worldline_folder_id_enc = urllib.parse.quote(worldline_folder_id, safe="")
+        worldline_query = urllib.parse.urlencode({
+            "$top": "5",
+            "$orderby": "receivedDateTime desc",
+            "$select": "id,subject,receivedDateTime,hasAttachments",
+        })
+        worldline_messages = graph_get(
+            token, f"{base_url}/mailFolders/{worldline_folder_id_enc}/messages?{worldline_query}"
+        ).get("value", [])
+        if worldline_messages:
+            wl_msg = worldline_messages[0]
+            with tempfile.TemporaryDirectory() as worldline_tmp_dir:
+                pdf_path = download_attachment(token, base_url, wl_msg["id"], worldline_tmp_dir, extension=".pdf")
+                if pdf_path:
+                    worldline_result = parse_worldline_settlement(pdf_path)
+                    state["sources"]["anzWorldline"]["status"] = "connected_tested"
+                    state["sources"]["anzWorldline"]["receivedAt"] = wl_msg["receivedDateTime"]
+                    state["sources"]["anzWorldline"]["settlementDate"] = worldline_result["settlementDate"]
+                    state["sources"]["anzWorldline"]["netSettledAmount"] = worldline_result["netSettledAmount"]
+                    state["sources"]["anzWorldline"]["totalValueOfTxns"] = worldline_result["totalValueOfTxns"]
+                    state["sources"]["anzWorldline"]["txnFeesExclGst"] = worldline_result["txnFeesExclGst"]
+                    state["sources"]["anzWorldline"]["gst"] = worldline_result["gst"]
+                    if worldline_result["locationMismatch"]:
+                        state["sources"]["anzWorldline"]["statusDetail"] = (
+                            f"Settlement parsed successfully, but a data-quality issue was detected: "
+                            f"{worldline_result['locationMismatch']}. Net settled amount is real; "
+                            f"per-location attribution should not be assumed from this document."
+                        )
+                    else:
+                        state["sources"]["anzWorldline"]["statusDetail"] = (
+                            f"Settlement report parsed successfully for {worldline_result['settlementDate']}."
+                        )
+                    print(f"Parsed Worldline settlement: netSettledAmount={worldline_result['netSettledAmount']}, "
+                          f"locationMismatch={worldline_result['locationMismatch']}")
+                else:
+                    print("WARNING: Worldline email found but no .pdf attachment could be downloaded.")
+        else:
+            print("WARNING: no Worldline settlement email found in the Worldline folder.")
+    except Exception as e:
+        print(f"WARNING: Worldline ingestion failed: {e}", file=sys.stderr)
 
     with tempfile.TemporaryDirectory() as tmp_dir:
         results = {}  # (location, reportType) -> parsed dict

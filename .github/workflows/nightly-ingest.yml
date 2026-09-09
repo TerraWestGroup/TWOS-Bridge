@@ -23,7 +23,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install xlrd
+        run: pip install xlrd pdfplumber
 
       - name: Run nightly ingestion
         env:
