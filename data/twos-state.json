@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-09T09:59:54.041095Z",
+  "generatedAt": "2026-09-09T10:06:36.593598Z",
   "latestAccountableDate": "2026-09-08",
   "sources": {
     "mechanicDesk": {
@@ -52,11 +52,16 @@
       "limitations": "Daily summary evidence only; it does not establish campaign attribution, quote conversion, completed revenue or gross profit."
     },
     "anzWorldline": {
-      "status": "connected_degraded",
+      "status": "connected_tested",
       "delivery": "Scheduled Outlook PDF settlement report",
-      "receivedAt": "2026-09-03T15:34:04Z",
+      "receivedAt": "2026-09-09T01:15:12Z",
       "provenance": "Your Settlement Report from ANZ Worldline Payment Solutions received in Outlook",
-      "statusDetail": "Email delivery is proven; settlement PDF extraction into persistent Bridge measures is not yet tested."
+      "statusDetail": "Settlement parsed successfully, but a data-quality issue was detected: Document addressed to Partner ID 77230 (BUNBURY 4X4) but transaction breakdown is headed Partner ID 77231 (BUSSELTON 4X4). Net settled amount is real; per-location attribution should not be assumed from this document.",
+      "settlementDate": "08/09/2026",
+      "netSettledAmount": 861.41,
+      "totalValueOfTxns": 869.01,
+      "txnFeesExclGst": -6.91,
+      "gst": -0.69
     }
   },
   "locations": {
@@ -423,7 +428,7 @@
     ]
   },
   "financialControl": {
-    "payablesAsOfSyncUtc": "2026-09-09T09:59:52.604472Z",
+    "payablesAsOfSyncUtc": "2026-09-09T10:06:34.294225Z",
     "netPayables": 323793.99,
     "overduePayables": 138.95,
     "payablesProvenance": "Grouped by ContactName and netted across all payable sources",
