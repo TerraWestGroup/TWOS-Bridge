@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-09T08:40:47.065472Z",
+  "generatedAt": "2026-09-09T08:49:46.152128Z",
   "latestAccountableDate": "2026-09-08",
   "sources": {
     "mechanicDesk": {
@@ -45,10 +45,10 @@
       "delivery": "Scheduled Outlook email digest",
       "sender": "notifications@podium.com",
       "subjectPattern": "Podium Daily Digest (*)",
-      "reportingDate": "2026-09-02",
-      "receivedAt": "2026-09-03T14:00:19Z",
+      "reportingDate": "2026-09-07",
+      "receivedAt": "2026-09-08T14:00:49Z",
       "timezone": "Australia/Perth",
-      "provenance": "Podium Daily Digest (SEPTEMBER 02, 2026) received in Outlook",
+      "provenance": "Podium Daily Digest (SEPTEMBER 07, 2026) received in Outlook",
       "limitations": "Daily summary evidence only; it does not establish campaign attribution, quote conversion, completed revenue or gross profit."
     },
     "anzWorldline": {
@@ -106,30 +106,30 @@
   "podium": {
     "schemaVersion": "1.0",
     "sourceKey": "podiumDailyDigest",
-    "reportingDate": "2026-09-02",
+    "reportingDate": "2026-09-07",
     "inbox": {
-      "newLeads": 4,
-      "totalActiveConversations": 7,
-      "openMessages": 5
+      "newLeads": 7,
+      "totalActiveConversations": 11,
+      "openMessages": 6
     },
     "locations": {
       "bunbury": {
-        "medianResponseMinutes": null,
+        "medianResponseMinutes": 211,
         "newReviews": 0,
         "reviewInvitesSent": 0,
-        "feedbackResponses": 0,
+        "feedbackResponses": null,
         "customerSatisfaction": null,
-        "paymentsReceived": 0,
+        "paymentsReceived": null,
         "paymentRequestsSent": 0,
         "unpaidPaymentRequests": 0
       },
       "busselton": {
-        "medianResponseMinutes": null,
+        "medianResponseMinutes": 593,
         "newReviews": 0,
         "reviewInvitesSent": 0,
-        "feedbackResponses": 0,
+        "feedbackResponses": null,
         "customerSatisfaction": null,
-        "paymentsReceived": 0,
+        "paymentsReceived": null,
         "paymentRequestsSent": 0,
         "unpaidPaymentRequests": 0
       }
@@ -139,7 +139,7 @@
       "reviewInvitesSent": 0,
       "feedbackResponses": 0,
       "customerSatisfaction": null,
-      "paymentsReceived": 0,
+      "paymentsReceived": 0.0,
       "paymentRequestsSent": 0
     },
     "assessment": {
