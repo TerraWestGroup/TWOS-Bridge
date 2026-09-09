@@ -154,14 +154,20 @@ def main():
 
     # --- Podium Daily Digest (separate from MechanicDesk: lives in Inbox
     # directly, not the Mechanic Desk Reports subfolder; HTML body, not
-    # an .xls attachment) ---
+    # an .xls attachment). Fetched by listing recent Inbox messages and
+    # matching client-side (a server-side $filter on from/emailAddress/address
+    # returns HTTP 400 without extra ConsistencyLevel headers, so this
+    # avoids that entirely -- same approach as the MechanicDesk folder scan.) ---
     podium_query = urllib.parse.urlencode({
-        "$filter": "from/emailAddress/address eq 'notifications@podium.com'",
+        "$top": "25",
         "$orderby": "receivedDateTime desc",
-        "$top": "1",
-        "$select": "id,subject,receivedDateTime",
+        "$select": "id,subject,receivedDateTime,from",
     })
-    podium_messages = graph_get(token, f"{base_url}/mailFolders/Inbox/messages?{podium_query}").get("value", [])
+    inbox_messages = graph_get(token, f"{base_url}/mailFolders/Inbox/messages?{podium_query}").get("value", [])
+    podium_messages = [
+        m for m in inbox_messages
+        if m.get("from", {}).get("emailAddress", {}).get("address", "").lower() == "notifications@podium.com"
+    ]
     if podium_messages:
         podium_msg = podium_messages[0]
         podium_msg_id_enc = urllib.parse.quote(podium_msg["id"], safe="")
