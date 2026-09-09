@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-09T08:49:46.152128Z",
+  "generatedAt": "2026-09-09T09:59:54.041095Z",
   "latestAccountableDate": "2026-09-08",
   "sources": {
     "mechanicDesk": {
@@ -423,14 +423,14 @@
     ]
   },
   "financialControl": {
-    "payablesAsOfSyncUtc": "2026-09-06T11:18:29.763Z",
-    "netPayables": 486233.67,
-    "overduePayables": 198167.83,
+    "payablesAsOfSyncUtc": "2026-09-09T09:59:52.604472Z",
+    "netPayables": 323793.99,
+    "overduePayables": 138.95,
     "payablesProvenance": "Grouped by ContactName and netted across all payable sources",
-    "treasuryAsOfDate": "2026-09-02",
-    "overdraftHeadroom": 199343,
+    "treasuryAsOfDate": "2026-09-08",
+    "overdraftHeadroom": 51918.03,
     "overdraftLimit": 200000,
-    "overdraftDrawn": 657,
+    "overdraftDrawn": 148081.97,
     "caplinkDue": 26702,
     "caplinkDueDate": "2026-09-30"
   }
