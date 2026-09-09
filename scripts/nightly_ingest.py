@@ -32,6 +32,7 @@ from parsers.productivity_report import parse_productivity_report
 from parsers.efficiency_report import parse_efficiency_report
 from parsers.podium_digest import parse_podium_digest
 from parsers.worldline_settlement import parse_worldline_settlement
+from parsers.quote_report import parse_quote_report
 from xero_client import get_access_token as xero_get_access_token, get_tenant_id as xero_get_tenant_id, xero_get
 from xero_financial import get_bank_account_balance, get_payables_summary, BANK_ACCOUNT_OF_INTEREST
 
@@ -278,6 +279,62 @@ def main():
             print("WARNING: no Worldline settlement email found in the Worldline folder.")
     except Exception as e:
         print(f"WARNING: Worldline ingestion failed: {e}", file=sys.stderr)
+
+    # --- Quote Reports: sent manually by sales staff (Luke for Bunbury,
+    # Mitch for Busselton), not on MechanicDesk's own schedule -- filed
+    # into a shared "Quote Reports" Inbox subfolder, identified by
+    # sender rather than subject since the two staff use different
+    # subject lines. Each report is a full running log; only the most
+    # recent date present is promoted (handled inside the parser). ---
+    QUOTE_SENDER_LOCATION = {
+        "sales@bunbury4x4.com.au": "bunbury",
+        "sales@busselton4x4.com.au": "busselton",
+    }
+    try:
+        quote_folder_id = fetch_child_folder_id(token, base_url, "Quote Reports")
+        quote_folder_id_enc = urllib.parse.quote(quote_folder_id, safe="")
+        quote_query = urllib.parse.urlencode({
+            "$top": "20",
+            "$orderby": "receivedDateTime desc",
+            "$select": "id,subject,receivedDateTime,hasAttachments,from",
+        })
+        quote_messages = graph_get(
+            token, f"{base_url}/mailFolders/{quote_folder_id_enc}/messages?{quote_query}"
+        ).get("value", [])
+
+        # Take the single most recent message per location.
+        latest_by_location = {}
+        for m in quote_messages:
+            sender_address = m.get("from", {}).get("emailAddress", {}).get("address", "").lower()
+            location = QUOTE_SENDER_LOCATION.get(sender_address)
+            if location and location not in latest_by_location:
+                latest_by_location[location] = m
+
+        with tempfile.TemporaryDirectory() as quote_tmp_dir:
+            for location, m in latest_by_location.items():
+                if not m["hasAttachments"]:
+                    print(f"WARNING: quote report email for {location} has no attachment, skipping.")
+                    continue
+                file_path = download_attachment(token, base_url, m["id"], quote_tmp_dir, extension=".xls")
+                if not file_path:
+                    print(f"WARNING: could not download .xls attachment for {location} quote report.")
+                    continue
+                quote_result = parse_quote_report(file_path)
+                state["locations"][location]["quotes"] = {
+                    "reportDate": quote_result["reportDate"],
+                    "quoteCount": quote_result["quoteCount"],
+                    "totalValue": quote_result["totalValue"],
+                    "tagBreakdown": quote_result["tagBreakdown"],
+                    "sourceFile": os.path.basename(file_path),
+                    "receivedAt": m["receivedDateTime"],
+                }
+                print(f"Parsed {location} Quote Report: {quote_result}")
+
+        for location in QUOTE_SENDER_LOCATION.values():
+            if location not in latest_by_location:
+                print(f"WARNING: no Quote Report email found for {location} in the Quote Reports folder.")
+    except Exception as e:
+        print(f"WARNING: Quote Report ingestion failed: {e}", file=sys.stderr)
 
     with tempfile.TemporaryDirectory() as tmp_dir:
         results = {}  # (location, reportType) -> parsed dict
