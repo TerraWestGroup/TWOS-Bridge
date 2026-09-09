@@ -1048,6 +1048,22 @@
                         <p class="muted" id="financialHomeNote">Loading current dataSights financial evidence…</p>
                         <button class="btn" onclick="showView('financeView')">Open cash flow</button>
                     </div>
+                    <div class="card mini">
+                        <h3>DN02 QUOTES</h3>
+                        <div class="twocol">
+                            <div>
+                                <small>Bunbury</small>
+                                <strong id="bunburyQuoteCount">—</strong>
+                                <span id="bunburyQuoteValue" class="muted">Loading</span>
+                            </div>
+                            <div>
+                                <small>Busselton</small>
+                                <strong id="busseltonQuoteCount">—</strong>
+                                <span id="busseltonQuoteValue" class="muted">Loading</span>
+                            </div>
+                        </div>
+                        <p class="muted" id="quotesHomeNote">Loading Quote Report evidence…</p>
+                    </div>
                 </div>
                 <div class="principle">TWOS Principle: Context before challenge. Evidence before judgement. Assign to closest. Escalate only when required.</div>
             </section>
@@ -2794,6 +2810,39 @@ ${data[d][l].map(x=>`<div class="evidence" onclick="openDetail('${d}','${l}','${
             document.getElementById('financialOverdueAP').textContent = `${money(financial.overduePayables)} overdue · synced ${apDate}`;
         }
 
+        function renderQuotes(state) {
+            ['bunbury', 'busselton'].forEach(loc => {
+                const q = state?.locations?.[loc]?.quotes;
+                const countEl = document.getElementById(`${loc}QuoteCount`);
+                const valueEl = document.getElementById(`${loc}QuoteValue`);
+                if (q) {
+                    countEl.textContent = q.quoteCount;
+                    valueEl.textContent = `${money(q.totalValue)} · ${localDate(q.reportDate)}`;
+                    valueEl.className = '';
+                } else {
+                    countEl.textContent = '—';
+                    valueEl.textContent = 'Not yet connected';
+                    valueEl.className = 'muted';
+                }
+            });
+            const bunQ = state?.locations?.bunbury?.quotes;
+            const busQ = state?.locations?.busselton?.quotes;
+            if (bunQ || busQ) {
+                const date = bunQ?.reportDate || busQ?.reportDate;
+                const tagParts = [];
+                [['Bunbury', bunQ], ['Busselton', busQ]].forEach(([label, q]) => {
+                    if (!q) return;
+                    const topTag = Object.entries(q.tagBreakdown || {}).sort((a, b) => b[1] - a[1])[0];
+                    if (topTag) tagParts.push(`${label}: ${topTag[0]} (${topTag[1]})`);
+                });
+                document.getElementById('quotesHomeNote').textContent =
+                    `Manual Quote Report for ${localDate(date)} (Luke — Bunbury, Mitch — Busselton).` +
+                    (tagParts.length ? ` Most common outcome — ${tagParts.join(' · ')}.` : '');
+            } else {
+                document.getElementById('quotesHomeNote').textContent = 'Quote Report evidence not yet connected.';
+            }
+        }
+
         async function loadTwosState() {
             const status = document.getElementById('mechanicDeskStatus');
             try {
@@ -2833,6 +2882,7 @@ ${data[d][l].map(x=>`<div class="evidence" onclick="openDetail('${d}','${l}','${
                 renderPodium(state);
                 renderOwnerCommand(state);
                 renderFinancialControl(state);
+                renderQuotes(state);
                 if (!fresh) document.getElementById('sourceFreshness').prepend('STALE EVIDENCE · ');
             } catch (error) {
                 status.textContent = 'FEED FAILED';
@@ -2850,6 +2900,7 @@ ${data[d][l].map(x=>`<div class="evidence" onclick="openDetail('${d}','${l}','${
                 document.getElementById('podiumStatus').textContent = 'STATE FAILED';
                 document.getElementById('podiumStatus').className = 'bad';
                 document.getElementById('podiumFreshness').textContent = 'Persistent Podium digest state is unavailable.';
+                document.getElementById('quotesHomeNote').textContent = 'Persistent Quote Report state is unavailable.';
             }
         }
 
