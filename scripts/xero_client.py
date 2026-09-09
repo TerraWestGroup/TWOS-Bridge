@@ -17,7 +17,13 @@ import urllib.error
 TOKEN_URL = "https://identity.xero.com/connect/token"
 API_BASE = "https://api.xero.com"
 
-SCOPES = "accounting.reports.read accounting.transactions.read accounting.settings.read"
+SCOPES = (
+    "accounting.reports.aged.read "
+    "accounting.reports.balancesheet.read "
+    "accounting.reports.banksummary.read "
+    "accounting.settings.read "
+    "accounting.banktransactions.read"
+)
 
 
 def get_access_token(client_id, client_secret):
