@@ -1,0 +1,23 @@
+name: Test Microsoft Graph Connection
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  test-connection:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run Graph connection test
+        env:
+          GRAPH_TENANT_ID: ${{ secrets.GRAPH_TENANT_ID }}
+          GRAPH_CLIENT_ID: ${{ secrets.GRAPH_CLIENT_ID }}
+          GRAPH_CLIENT_SECRET: ${{ secrets.GRAPH_CLIENT_SECRET }}
+          MAILBOX_ADDRESS: ${{ secrets.MAILBOX_ADDRESS }}
+        run: python scripts/test_graph_connection.py
