@@ -22,7 +22,8 @@ SCOPES = (
     "accounting.reports.balancesheet.read "
     "accounting.reports.banksummary.read "
     "accounting.settings.read "
-    "accounting.banktransactions.read"
+    "accounting.banktransactions.read "
+    "accounting.invoices.read"
 )
 
 

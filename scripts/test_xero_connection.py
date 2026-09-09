@@ -42,6 +42,21 @@ def main():
         print(f"  - {acc.get('Name')} | code={acc.get('Code')} | status={acc.get('Status')} | "
               f"bankAccountNumber={acc.get('BankAccountNumber')}")
 
+    print("\n--- Balance Sheet report (raw structure preview) ---")
+    balance_sheet = xero_get(token, tenant_id, "/api.xro/2.0/Reports/BalanceSheet")
+    import json as _json
+    print(_json.dumps(balance_sheet, indent=2)[:6000])
+
+    print("\n--- Sample ACCPAY invoices (AUTHORISED) ---")
+    invoices = xero_get(
+        token, tenant_id, "/api.xro/2.0/Invoices",
+        params={"where": 'Type=="ACCPAY"&&Status=="AUTHORISED"', "page": "1"},
+    )
+    print(f"Total returned this page: {len(invoices.get('Invoices', []))}")
+    for inv in invoices.get("Invoices", [])[:5]:
+        print(f"  - {inv.get('Contact', {}).get('Name')} | DueDate={inv.get('DueDate')} | "
+              f"AmountDue={inv.get('AmountDue')} | Status={inv.get('Status')}")
+
     print("\nCONNECTION TEST: SUCCESS")
 
 
