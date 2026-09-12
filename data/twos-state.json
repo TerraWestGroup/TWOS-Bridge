@@ -1,16 +1,16 @@
 {
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-11T11:35:57.817707Z",
-  "latestAccountableDate": "2026-09-11",
+  "generatedAt": "2026-09-12T11:34:01.023928Z",
+  "latestAccountableDate": "2026-09-12",
   "sources": {
     "mechanicDesk": {
-      "status": "connected_tested",
-      "receivedAt": "2026-09-11T10:10:29Z",
+      "status": "connected_degraded",
+      "receivedAt": "2026-09-12T10:10:21Z",
       "expectedAtLocal": "18:10",
       "timezone": "Australia/Perth",
       "folder": "Inbox/Mechanic Desk Reports",
-      "reportCount": 6,
-      "statusDetail": "Automated nightly ingestion: 6/6 Income/Productivity/Efficiency reports parsed for 2026-09-11.",
+      "reportCount": 2,
+      "statusDetail": "Automated nightly ingestion: 2/6 Income/Productivity/Efficiency reports parsed for 2026-09-12.",
       "requiredReports": {
         "bunbury": [
           "Income",
@@ -33,22 +33,22 @@
       "status": "connected_tested",
       "syncStatus": "SUCCESS",
       "lastOrganisationSyncUtc": "2026-09-06T11:17:44.973Z",
-      "lastAccountTransactionsSyncUtc": "2026-09-11T11:35:54.248641Z",
+      "lastAccountTransactionsSyncUtc": "2026-09-12T11:33:58.603685Z",
       "approvedCadence": "Hourly Monday\u2013Friday with overnight recovery sync",
       "scheduleConfiguration": "active",
       "manualRefreshAvailable": true,
       "agentRefreshAvailable": true,
-      "displayFreshness": "11 Sep 2026 \u00b7 7:35 PM AWST"
+      "displayFreshness": "12 Sep 2026 \u00b7 7:33 PM AWST"
     },
     "podiumDailyDigest": {
       "status": "connected_tested",
       "delivery": "Scheduled Outlook email digest",
       "sender": "notifications@podium.com",
       "subjectPattern": "Podium Daily Digest (*)",
-      "reportingDate": "2026-09-09",
-      "receivedAt": "2026-09-10T14:00:21Z",
+      "reportingDate": "2026-09-10",
+      "receivedAt": "2026-09-11T14:01:00Z",
       "timezone": "Australia/Perth",
-      "provenance": "Podium Daily Digest (SEPTEMBER 09, 2026) received in Outlook",
+      "provenance": "Podium Daily Digest (SEPTEMBER 10, 2026) received in Outlook",
       "limitations": "Daily summary evidence only; it does not establish campaign attribution, quote conversion, completed revenue or gross profit."
     },
     "anzWorldline": {
@@ -67,10 +67,10 @@
   "locations": {
     "bunbury": {
       "revenue": {
-        "net": 19276.95,
-        "grossProfit": 7816.49,
-        "grossMarginPercent": 40.55,
-        "sourceFile": "daily_productivity_report_110926.xls",
+        "net": 909.09,
+        "grossProfit": 909.09,
+        "grossMarginPercent": 100.0,
+        "sourceFile": "daily_income_report_120926.xls",
         "target": 13000
       },
       "workshop": {
@@ -88,10 +88,10 @@
     },
     "busselton": {
       "revenue": {
-        "net": 6291.28,
-        "grossProfit": 3006.15,
-        "grossMarginPercent": 47.78,
-        "sourceFile": "daily_productivity_report_110926.xls",
+        "net": 0.0,
+        "grossProfit": 0.0,
+        "grossMarginPercent": 0.0,
+        "sourceFile": "daily_income_report_120926.xls",
         "target": 10000
       },
       "workshop": {
@@ -111,11 +111,11 @@
   "podium": {
     "schemaVersion": "1.0",
     "sourceKey": "podiumDailyDigest",
-    "reportingDate": "2026-09-09",
+    "reportingDate": "2026-09-10",
     "inbox": {
-      "newLeads": 3,
+      "newLeads": 5,
       "totalActiveConversations": 7,
-      "openMessages": 10
+      "openMessages": 4
     },
     "locations": {
       "bunbury": {
@@ -129,7 +129,7 @@
         "unpaidPaymentRequests": 0
       },
       "busselton": {
-        "medianResponseMinutes": null,
+        "medianResponseMinutes": 810,
         "newReviews": 0,
         "reviewInvitesSent": 0,
         "feedbackResponses": null,
@@ -428,11 +428,11 @@
     ]
   },
   "financialControl": {
-    "payablesAsOfSyncUtc": "2026-09-11T11:35:54.248632Z",
-    "netPayables": 372106.95,
-    "overduePayables": 1948.17,
+    "payablesAsOfSyncUtc": "2026-09-12T11:33:58.603679Z",
+    "netPayables": 373544.82,
+    "overduePayables": 3185.17,
     "payablesProvenance": "Grouped by ContactName and netted across all payable sources",
-    "treasuryAsOfDate": "2026-09-11",
+    "treasuryAsOfDate": "2026-09-12",
     "overdraftHeadroom": 91822.74,
     "overdraftLimit": 200000,
     "overdraftDrawn": 108177.26,
