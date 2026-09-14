@@ -1,16 +1,16 @@
 {
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-14T06:13:18.218224Z",
-  "latestAccountableDate": "2026-09-13",
+  "generatedAt": "2026-09-14T11:38:43.537893Z",
+  "latestAccountableDate": "2026-09-14",
   "sources": {
     "mechanicDesk": {
-      "status": "connected_degraded",
-      "receivedAt": "2026-09-13T10:10:26Z",
+      "status": "connected_tested",
+      "receivedAt": "2026-09-14T10:10:23Z",
       "expectedAtLocal": "18:10",
       "timezone": "Australia/Perth",
       "folder": "Inbox/Mechanic Desk Reports",
-      "reportCount": 2,
-      "statusDetail": "Automated nightly ingestion: 2/6 Income/Productivity/Efficiency reports parsed for 2026-09-13.",
+      "reportCount": 6,
+      "statusDetail": "Automated nightly ingestion: 6/6 Income/Productivity/Efficiency reports parsed for 2026-09-14.",
       "requiredReports": {
         "bunbury": [
           "Income",
@@ -33,12 +33,12 @@
       "status": "connected_tested",
       "syncStatus": "SUCCESS",
       "lastOrganisationSyncUtc": "2026-09-06T11:17:44.973Z",
-      "lastAccountTransactionsSyncUtc": "2026-09-14T06:13:15.084841Z",
+      "lastAccountTransactionsSyncUtc": "2026-09-14T11:38:32.709354Z",
       "approvedCadence": "Hourly Monday\u2013Friday with overnight recovery sync",
       "scheduleConfiguration": "active",
       "manualRefreshAvailable": true,
       "agentRefreshAvailable": true,
-      "displayFreshness": "14 Sep 2026 \u00b7 2:13 PM AWST"
+      "displayFreshness": "14 Sep 2026 \u00b7 7:38 PM AWST"
     },
     "podiumDailyDigest": {
       "status": "connected_tested",
@@ -67,44 +67,55 @@
   "locations": {
     "bunbury": {
       "revenue": {
-        "net": 0.0,
-        "grossProfit": 0.0,
-        "grossMarginPercent": 0.0,
-        "sourceFile": "daily_income_report_130926.xls",
+        "net": 2049.08,
+        "grossProfit": 726.09,
+        "grossMarginPercent": 35.43,
+        "sourceFile": "daily_efficiency_report_140926.xls",
         "target": 13000
       },
       "workshop": {
         "productivityPercent": 100.0,
-        "efficiencyPercent": 58.41,
-        "productivityCoverage": "Samuel Sutton, Daniel Fowles, Jack Rooney",
-        "efficiencyCoverage": "Samuel Sutton, Daniel Fowles, Jack Rooney",
+        "efficiencyPercent": 94.0,
+        "productivityCoverage": "Jack Rooney, Daniel Fowles, Samuel Sutton",
+        "efficiencyCoverage": "Jack Rooney, Daniel Fowles, Samuel Sutton",
         "evidenceStatus": "current",
         "sourceFiles": [
-          "daily_productivity_report_110926.xls",
-          "daily_efficiency_report_110926.xls",
-          "daily_income_report_110926.xls"
+          "daily_efficiency_report_140926.xls",
+          "daily_income_report_140926.xls",
+          "daily_productivity_report_140926.xls"
         ]
       }
     },
     "busselton": {
       "revenue": {
-        "net": 0.0,
-        "grossProfit": 0.0,
-        "grossMarginPercent": 0.0,
-        "sourceFile": "daily_income_report_130926.xls",
+        "net": 2630.27,
+        "grossProfit": 2331.37,
+        "grossMarginPercent": 88.64,
+        "sourceFile": "daily_efficiency_report_140926.xls",
         "target": 10000
       },
       "workshop": {
-        "productivityPercent": 35.02,
-        "efficiencyPercent": 163.08,
-        "productivityCoverage": "Zach Hutchison, Aaron Leonard",
+        "productivityPercent": 100.0,
+        "efficiencyPercent": 88.89,
+        "productivityCoverage": "Aaron Leonard",
         "efficiencyCoverage": "Aaron Leonard",
         "evidenceStatus": "current",
         "sourceFiles": [
-          "daily_productivity_report_110926.xls",
-          "daily_efficiency_report_110926.xls",
-          "daily_income_report_110926.xls"
+          "daily_efficiency_report_140926.xls",
+          "daily_productivity_report_140926.xls",
+          "daily_income_report_140926.xls"
         ]
+      },
+      "quotes": {
+        "reportDate": "2026-09-14",
+        "quoteCount": 3,
+        "totalValue": 8097.01,
+        "tagBreakdown": {
+          "Won - Obtain deposit and create job": 2,
+          "Sent - Contact for confirmation": 1
+        },
+        "sourceFile": "quote_report (17).xls",
+        "receivedAt": "2026-09-14T08:51:50Z"
       }
     }
   },
@@ -428,20 +439,20 @@
     ]
   },
   "financialControl": {
-    "payablesAsOfSyncUtc": "2026-09-14T06:13:15.084832Z",
-    "netPayables": 376672.49,
-    "overduePayables": 3185.17,
+    "payablesAsOfSyncUtc": "2026-09-14T11:38:32.709347Z",
+    "netPayables": 378437.49,
+    "overduePayables": 4400.17,
     "payablesProvenance": "Grouped by ContactName and netted across all payable sources",
-    "treasuryAsOfDate": "2026-09-13",
+    "treasuryAsOfDate": "2026-09-14",
     "overdraftHeadroom": 109402.22,
     "overdraftLimit": 200000,
     "overdraftDrawn": 90597.78,
     "caplinkDue": 26702,
     "caplinkDueDate": "2026-09-30",
-    "monthToDateRevenue": 158151.94,
-    "monthToDateGrossProfit": 72944.29,
-    "monthToDateGrossProfitMarginPercent": 46.12,
+    "monthToDateRevenue": 160928.29,
+    "monthToDateGrossProfit": 73095.48,
+    "monthToDateGrossProfitMarginPercent": 45.42,
     "monthToDatePeriodStart": "2026-09-01",
-    "monthToDatePeriodEnd": "2026-09-13"
+    "monthToDatePeriodEnd": "2026-09-14"
   }
 }
