@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-14T02:33:48.467409Z",
+  "generatedAt": "2026-09-14T02:40:00.747451Z",
   "latestAccountableDate": "2026-09-13",
   "sources": {
     "mechanicDesk": {
@@ -33,12 +33,12 @@
       "status": "connected_tested",
       "syncStatus": "SUCCESS",
       "lastOrganisationSyncUtc": "2026-09-06T11:17:44.973Z",
-      "lastAccountTransactionsSyncUtc": "2026-09-13T11:34:36.772370Z",
+      "lastAccountTransactionsSyncUtc": "2026-09-14T02:39:57.868925Z",
       "approvedCadence": "Hourly Monday\u2013Friday with overnight recovery sync",
       "scheduleConfiguration": "active",
       "manualRefreshAvailable": true,
       "agentRefreshAvailable": true,
-      "displayFreshness": "13 Sep 2026 \u00b7 7:34 PM AWST"
+      "displayFreshness": "14 Sep 2026 \u00b7 10:39 AM AWST"
     },
     "podiumDailyDigest": {
       "status": "connected_tested",
@@ -428,15 +428,20 @@
     ]
   },
   "financialControl": {
-    "payablesAsOfSyncUtc": "2026-09-13T11:34:36.772364Z",
+    "payablesAsOfSyncUtc": "2026-09-14T02:39:57.868917Z",
     "netPayables": 373544.82,
     "overduePayables": 3185.17,
     "payablesProvenance": "Grouped by ContactName and netted across all payable sources",
     "treasuryAsOfDate": "2026-09-13",
-    "overdraftHeadroom": 91822.74,
+    "overdraftHeadroom": 109402.22,
     "overdraftLimit": 200000,
-    "overdraftDrawn": 108177.26,
+    "overdraftDrawn": 90597.78,
     "caplinkDue": 26702,
-    "caplinkDueDate": "2026-09-30"
+    "caplinkDueDate": "2026-09-30",
+    "monthToDateRevenue": 158151.94,
+    "monthToDateGrossProfit": 75092.63,
+    "monthToDateGrossProfitMarginPercent": 47.48,
+    "monthToDatePeriodStart": "2026-09-01",
+    "monthToDatePeriodEnd": "2026-09-13"
   }
 }
