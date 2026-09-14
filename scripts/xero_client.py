@@ -21,6 +21,7 @@ SCOPES = (
     "accounting.reports.aged.read "
     "accounting.reports.balancesheet.read "
     "accounting.reports.banksummary.read "
+    "accounting.reports.profitandloss.read "
     "accounting.settings.read "
     "accounting.banktransactions.read "
     "accounting.invoices.read"
