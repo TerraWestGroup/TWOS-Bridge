@@ -77,14 +77,19 @@ def fetch_child_folder_id(token, base_url, folder_name, parent="Inbox"):
     Cooper) turned out to actually live.
     """
     list_url = f"{base_url}/mailFolders?$top=100" if parent is None else f"{base_url}/mailFolders/{parent}/childFolders?$top=50"
-    children = graph_get(token, list_url)
+    children = graph_get(token, list_url).get("value", [])
+    target = folder_name.strip().casefold()
     folder = next(
-        (f for f in children.get("value", []) if f["displayName"] == folder_name),
+        (f for f in children if f["displayName"].strip().casefold() == target),
         None,
     )
     if not folder:
         location = "top level of the mailbox" if parent is None else f"under {parent}"
-        raise ValueError(f"'{folder_name}' folder not found at {location}.")
+        available = ", ".join(f"'{f['displayName']}'" for f in children) or "(none)"
+        raise ValueError(
+            f"'{folder_name}' folder not found at {location}. "
+            f"Folders actually present there: {available}"
+        )
     return folder["id"]
 
 
@@ -326,10 +331,11 @@ def main():
         "Luke Bleasdale": "bunbury",
         "Mitch Cooper": "busselton",
     }
-    try:
-        latest_by_location = {}
-        with tempfile.TemporaryDirectory() as quote_tmp_dir:
-            for folder_name, location in QUOTE_FOLDER_LOCATION.items():
+    
+    latest_by_location = {}
+    with tempfile.TemporaryDirectory() as quote_tmp_dir:
+        for folder_name, location in QUOTE_FOLDER_LOCATION.items():
+            try:
                 folder_id = fetch_child_folder_id(token, base_url, folder_name, parent=None)
                 folder_id_enc = urllib.parse.quote(folder_id, safe="")
                 quote_query = urllib.parse.urlencode({
@@ -363,8 +369,8 @@ def main():
                     "receivedAt": m["receivedDateTime"],
                 }
                 print(f"Parsed {location} Quote Report: {quote_result}")
-    except Exception as e:
-        print(f"WARNING: Quote Report ingestion failed: {e}", file=sys.stderr)
+            except Exception as e:
+                print(f"WARNING: Quote Report ingestion failed for '{folder_name}' ({location}): {e}", file=sys.stderr)
 
     with tempfile.TemporaryDirectory() as tmp_dir:
         results = {}  # (location, reportType) -> parsed dict
