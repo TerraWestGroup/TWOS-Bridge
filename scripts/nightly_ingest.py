@@ -93,6 +93,23 @@ def fetch_child_folder_id(token, base_url, folder_name, parent="Inbox"):
     return folder["id"]
 
 
+def fetch_child_folder_id_anywhere(token, base_url, folder_name, parents=(None, "Inbox")):
+    """
+    Tries each parent location in turn (None = top level of the mailbox,
+    or a folder name whose child folders are searched) and returns the
+    first match. Folder locations have moved before (the Quote Report
+    folders), so this avoids re-hardcoding an assumption that could go
+    stale again -- if none match, the error lists what was actually
+    found in every location tried.
+    """
+    attempts = []
+    for parent in parents:
+        try:
+            return fetch_child_folder_id(token, base_url, folder_name, parent=parent)
+        except ValueError as e:
+            attempts.append(str(e))
+    raise ValueError(" | ".join(attempts))
+   
 def fetch_recent_messages(token, base_url, folder_id, top=50):
     folder_id_enc = urllib.parse.quote(folder_id, safe="")
     query = urllib.parse.urlencode({
@@ -336,7 +353,7 @@ def main():
     with tempfile.TemporaryDirectory() as quote_tmp_dir:
         for folder_name, location in QUOTE_FOLDER_LOCATION.items():
             try:
-                folder_id = fetch_child_folder_id(token, base_url, folder_name, parent=None)
+                folder_id = fetch_child_folder_id_anywhere(token, base_url, folder_name, parents=(None, "Inbox"))
                 folder_id_enc = urllib.parse.quote(folder_id, safe="")
                 quote_query = urllib.parse.urlencode({
                     "$top": "5",
