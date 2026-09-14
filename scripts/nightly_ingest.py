@@ -34,7 +34,7 @@ from parsers.podium_digest import parse_podium_digest
 from parsers.worldline_settlement import parse_worldline_settlement
 from parsers.quote_report import parse_quote_report
 from xero_client import get_access_token as xero_get_access_token, get_tenant_id as xero_get_tenant_id, xero_get
-from xero_financial import get_bank_account_balance, get_payables_summary, BANK_ACCOUNT_OF_INTEREST
+from xero_financial import get_bank_account_balance, get_payables_summary, get_profit_and_loss_summary, BANK_ACCOUNT_OF_INTEREST
 
 STATE_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "twos-state.json")
 
@@ -222,7 +222,19 @@ def main():
             net_payables, overdue_payables = get_payables_summary(
                 xero_get, xero_token, xero_tenant_id, as_of_date
             )
+           
 
+            month_start = datetime.date.fromisoformat(as_of_date).replace(day=1).isoformat()
+            pnl = get_profit_and_loss_summary(xero_get, xero_token, xero_tenant_id, month_start, as_of_date)
+
+            state["financialControl"]["monthToDateRevenue"] = pnl["revenue"]
+            state["financialControl"]["monthToDateGrossProfit"] = pnl["grossProfit"]
+            state["financialControl"]["monthToDateGrossProfitMarginPercent"] = pnl["grossProfitMarginPercent"]
+            state["financialControl"]["monthToDatePeriodStart"] = month_start
+            state["financialControl"]["monthToDatePeriodEnd"] = as_of_date
+
+            print(f"Parsed Xero P&L: revenue={pnl['revenue']}, grossProfit={pnl['grossProfit']}, "
+                  f"gpMarginPercent={pnl['grossProfitMarginPercent']} ({month_start} to {as_of_date})")
             if bank_balance is not None:
                 overdraft_drawn = round(-bank_balance, 2) if bank_balance < 0 else 0.0
                 overdraft_limit = state["financialControl"]["overdraftLimit"]  # not derivable from Xero; keep existing
