@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-13T11:34:40.810627Z",
+  "generatedAt": "2026-09-14T01:53:23.759878Z",
   "latestAccountableDate": "2026-09-13",
   "sources": {
     "mechanicDesk": {
@@ -45,10 +45,10 @@
       "delivery": "Scheduled Outlook email digest",
       "sender": "notifications@podium.com",
       "subjectPattern": "Podium Daily Digest (*)",
-      "reportingDate": "2026-09-11",
-      "receivedAt": "2026-09-12T14:00:15Z",
+      "reportingDate": "2026-09-12",
+      "receivedAt": "2026-09-13T14:00:28Z",
       "timezone": "Australia/Perth",
-      "provenance": "Podium Daily Digest (SEPTEMBER 11, 2026) received in Outlook",
+      "provenance": "Podium Daily Digest (SEPTEMBER 12, 2026) received in Outlook",
       "limitations": "Daily summary evidence only; it does not establish campaign attribution, quote conversion, completed revenue or gross profit."
     },
     "anzWorldline": {
@@ -111,15 +111,15 @@
   "podium": {
     "schemaVersion": "1.0",
     "sourceKey": "podiumDailyDigest",
-    "reportingDate": "2026-09-11",
+    "reportingDate": "2026-09-12",
     "inbox": {
-      "newLeads": 2,
-      "totalActiveConversations": 15,
-      "openMessages": 4
+      "newLeads": 1,
+      "totalActiveConversations": 1,
+      "openMessages": 5
     },
     "locations": {
       "bunbury": {
-        "medianResponseMinutes": 182,
+        "medianResponseMinutes": null,
         "newReviews": 0,
         "reviewInvitesSent": 0,
         "feedbackResponses": null,
