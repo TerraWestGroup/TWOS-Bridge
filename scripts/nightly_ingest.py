@@ -391,6 +391,7 @@ def main():
 
     with tempfile.TemporaryDirectory() as tmp_dir:
         results = {}  # (location, reportType) -> parsed dict
+        result_files = {}  # (location, reportType) -> filename, so sourceFile is never guessed from list order
         source_files = {"bunbury": [], "busselton": []}
         latest_received = None
 
@@ -411,6 +412,7 @@ def main():
                 continue
 
             results[(m["location"], m["reportType"])] = parsed
+            result_files[(m["location"], m["reportType"])] = os.path.basename(file_path)
             source_files[m["location"]].append(os.path.basename(file_path))
             if latest_received is None or m["receivedDateTime"] > latest_received:
                 latest_received = m["receivedDateTime"]
@@ -426,8 +428,9 @@ def main():
                 state["locations"][location]["revenue"]["net"] = income["net"]
                 state["locations"][location]["revenue"]["grossProfit"] = income["grossProfit"]
                 state["locations"][location]["revenue"]["grossMarginPercent"] = income["grossMarginPercent"]
-                if source_files[location]:
-                    state["locations"][location]["revenue"]["sourceFile"] = source_files[location][0]
+                income_file = result_files.get((location, "Income"))
+                if income_file:
+                    state["locations"][location]["revenue"]["sourceFile"] = income_file
 
             if productivity:
                 state["locations"][location]["workshop"]["productivityPercent"] = productivity["productivityPercent"]
