@@ -1,16 +1,16 @@
 {
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-15T11:36:46.428653Z",
-  "latestAccountableDate": "2026-09-15",
+  "generatedAt": "2026-09-16T11:37:47.832751Z",
+  "latestAccountableDate": "2026-09-16",
   "sources": {
     "mechanicDesk": {
       "status": "connected_tested",
-      "receivedAt": "2026-09-15T10:10:33Z",
+      "receivedAt": "2026-09-16T10:10:23Z",
       "expectedAtLocal": "18:10",
       "timezone": "Australia/Perth",
       "folder": "Inbox/Mechanic Desk Reports",
       "reportCount": 6,
-      "statusDetail": "Automated nightly ingestion: 6/6 Income/Productivity/Efficiency reports parsed for 2026-09-15.",
+      "statusDetail": "Automated nightly ingestion: 6/6 Income/Productivity/Efficiency reports parsed for 2026-09-16.",
       "requiredReports": {
         "bunbury": [
           "Income",
@@ -33,77 +33,77 @@
       "status": "connected_tested",
       "syncStatus": "SUCCESS",
       "lastOrganisationSyncUtc": "2026-09-06T11:17:44.973Z",
-      "lastAccountTransactionsSyncUtc": "2026-09-15T11:36:41.524267Z",
+      "lastAccountTransactionsSyncUtc": "2026-09-16T11:37:43.316357Z",
       "approvedCadence": "Hourly Monday\u2013Friday with overnight recovery sync",
       "scheduleConfiguration": "active",
       "manualRefreshAvailable": true,
       "agentRefreshAvailable": true,
-      "displayFreshness": "15 Sep 2026 \u00b7 7:36 PM AWST"
+      "displayFreshness": "16 Sep 2026 \u00b7 7:37 PM AWST"
     },
     "podiumDailyDigest": {
       "status": "connected_tested",
       "delivery": "Scheduled Outlook email digest",
       "sender": "notifications@podium.com",
       "subjectPattern": "Podium Daily Digest (*)",
-      "reportingDate": "2026-09-13",
-      "receivedAt": "2026-09-14T14:00:49Z",
+      "reportingDate": "2026-09-14",
+      "receivedAt": "2026-09-15T14:00:16Z",
       "timezone": "Australia/Perth",
-      "provenance": "Podium Daily Digest (SEPTEMBER 13, 2026) received in Outlook",
+      "provenance": "Podium Daily Digest (SEPTEMBER 14, 2026) received in Outlook",
       "limitations": "Daily summary evidence only; it does not establish campaign attribution, quote conversion, completed revenue or gross profit."
     },
     "anzWorldline": {
       "status": "connected_tested",
       "delivery": "Scheduled Outlook PDF settlement report",
-      "receivedAt": "2026-09-14T15:08:06Z",
+      "receivedAt": "2026-09-16T01:57:47Z",
       "provenance": "Your Settlement Report from ANZ Worldline Payment Solutions received in Outlook",
-      "statusDetail": "Settlement report parsed successfully for 14/09/2026.",
-      "settlementDate": "14/09/2026",
-      "netSettledAmount": 9846.07,
-      "totalValueOfTxns": 9932.99,
-      "txnFeesExclGst": -79.02,
-      "gst": -7.9
+      "statusDetail": "Settlement report parsed successfully for 15/09/2026.",
+      "settlementDate": "15/09/2026",
+      "netSettledAmount": 10318.91,
+      "totalValueOfTxns": 10410.0,
+      "txnFeesExclGst": -82.81,
+      "gst": -8.28
     }
   },
   "locations": {
     "bunbury": {
       "revenue": {
-        "net": 3428.64,
-        "grossProfit": 1348.31,
-        "grossMarginPercent": 39.32,
-        "sourceFile": "daily_income_report_150926.xls",
+        "net": -14199.93,
+        "grossProfit": -21013.94,
+        "grossMarginPercent": -147.99,
+        "sourceFile": "daily_income_report_160926.xls",
         "target": 13000
       },
       "workshop": {
         "productivityPercent": 100.0,
-        "efficiencyPercent": 239.52,
-        "productivityCoverage": "Samuel Sutton",
-        "efficiencyCoverage": "Samuel Sutton",
+        "efficiencyPercent": 125.4,
+        "productivityCoverage": "Samuel Sutton, Daniel Fowles",
+        "efficiencyCoverage": "Samuel Sutton, Daniel Fowles",
         "evidenceStatus": "current",
         "sourceFiles": [
-          "daily_efficiency_report_150926.xls",
-          "daily_productivity_report_150926.xls",
-          "daily_income_report_150926.xls"
+          "daily_efficiency_report_160926.xls",
+          "daily_income_report_160926.xls",
+          "daily_productivity_report_160926.xls"
         ]
       }
     },
     "busselton": {
       "revenue": {
-        "net": 5177.27,
-        "grossProfit": 1200.47,
-        "grossMarginPercent": 23.19,
-        "sourceFile": "daily_income_report_150926.xls",
+        "net": 5476.21,
+        "grossProfit": 2960.15,
+        "grossMarginPercent": 54.05,
+        "sourceFile": "daily_income_report_160926.xls",
         "target": 10000
       },
       "workshop": {
         "productivityPercent": 100.0,
-        "efficiencyPercent": 120.0,
-        "productivityCoverage": "Aaron Leonard",
-        "efficiencyCoverage": "Aaron Leonard",
+        "efficiencyPercent": 93.55,
+        "productivityCoverage": "Aaron Leonard, Jayden Brookes",
+        "efficiencyCoverage": "Aaron Leonard, Jayden Brookes",
         "evidenceStatus": "current",
         "sourceFiles": [
-          "daily_efficiency_report_150926.xls",
-          "daily_productivity_report_150926.xls",
-          "daily_income_report_150926.xls"
+          "daily_productivity_report_160926.xls",
+          "daily_income_report_160926.xls",
+          "daily_efficiency_report_160926.xls"
         ]
       },
       "quotes": {
@@ -122,11 +122,11 @@
   "podium": {
     "schemaVersion": "1.0",
     "sourceKey": "podiumDailyDigest",
-    "reportingDate": "2026-09-13",
+    "reportingDate": "2026-09-14",
     "inbox": {
-      "newLeads": 1,
-      "totalActiveConversations": 0,
-      "openMessages": 4
+      "newLeads": 7,
+      "totalActiveConversations": 16,
+      "openMessages": 5
     },
     "locations": {
       "bunbury": {
@@ -439,20 +439,20 @@
     ]
   },
   "financialControl": {
-    "payablesAsOfSyncUtc": "2026-09-15T11:36:41.524260Z",
-    "netPayables": 390662.57,
-    "overduePayables": 6204.99,
+    "payablesAsOfSyncUtc": "2026-09-16T11:37:43.316348Z",
+    "netPayables": 395347.53,
+    "overduePayables": 5989.99,
     "payablesProvenance": "Grouped by ContactName and netted across all payable sources",
-    "treasuryAsOfDate": "2026-09-15",
-    "overdraftHeadroom": 109402.22,
+    "treasuryAsOfDate": "2026-09-16",
+    "overdraftHeadroom": 123638.73,
     "overdraftLimit": 200000,
-    "overdraftDrawn": 90597.78,
+    "overdraftDrawn": 76361.27,
     "caplinkDue": 26702,
     "caplinkDueDate": "2026-09-30",
-    "monthToDateRevenue": 169534.2,
-    "monthToDateGrossProfit": 76923.03,
-    "monthToDateGrossProfitMarginPercent": 45.37,
+    "monthToDateRevenue": 184972.03,
+    "monthToDateGrossProfit": 83678.96,
+    "monthToDateGrossProfitMarginPercent": 45.24,
     "monthToDatePeriodStart": "2026-09-01",
-    "monthToDatePeriodEnd": "2026-09-15"
+    "monthToDatePeriodEnd": "2026-09-16"
   }
 }
