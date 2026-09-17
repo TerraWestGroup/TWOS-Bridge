@@ -1,16 +1,16 @@
 {
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-16T11:37:47.832751Z",
-  "latestAccountableDate": "2026-09-16",
+  "generatedAt": "2026-09-17T11:36:02.667174Z",
+  "latestAccountableDate": "2026-09-17",
   "sources": {
     "mechanicDesk": {
       "status": "connected_tested",
-      "receivedAt": "2026-09-16T10:10:23Z",
+      "receivedAt": "2026-09-17T10:10:57Z",
       "expectedAtLocal": "18:10",
       "timezone": "Australia/Perth",
       "folder": "Inbox/Mechanic Desk Reports",
       "reportCount": 6,
-      "statusDetail": "Automated nightly ingestion: 6/6 Income/Productivity/Efficiency reports parsed for 2026-09-16.",
+      "statusDetail": "Automated nightly ingestion: 6/6 Income/Productivity/Efficiency reports parsed for 2026-09-17.",
       "requiredReports": {
         "bunbury": [
           "Income",
@@ -33,12 +33,12 @@
       "status": "connected_tested",
       "syncStatus": "SUCCESS",
       "lastOrganisationSyncUtc": "2026-09-06T11:17:44.973Z",
-      "lastAccountTransactionsSyncUtc": "2026-09-16T11:37:43.316357Z",
+      "lastAccountTransactionsSyncUtc": "2026-09-17T11:35:57.551182Z",
       "approvedCadence": "Hourly Monday\u2013Friday with overnight recovery sync",
       "scheduleConfiguration": "active",
       "manualRefreshAvailable": true,
       "agentRefreshAvailable": true,
-      "displayFreshness": "16 Sep 2026 \u00b7 7:37 PM AWST"
+      "displayFreshness": "17 Sep 2026 \u00b7 7:35 PM AWST"
     },
     "podiumDailyDigest": {
       "status": "connected_tested",
@@ -54,56 +54,56 @@
     "anzWorldline": {
       "status": "connected_tested",
       "delivery": "Scheduled Outlook PDF settlement report",
-      "receivedAt": "2026-09-16T01:57:47Z",
+      "receivedAt": "2026-09-16T15:31:14Z",
       "provenance": "Your Settlement Report from ANZ Worldline Payment Solutions received in Outlook",
-      "statusDetail": "Settlement report parsed successfully for 15/09/2026.",
-      "settlementDate": "15/09/2026",
-      "netSettledAmount": 10318.91,
-      "totalValueOfTxns": 10410.0,
-      "txnFeesExclGst": -82.81,
-      "gst": -8.28
+      "statusDetail": "Settlement report parsed successfully for 16/09/2026.",
+      "settlementDate": "16/09/2026",
+      "netSettledAmount": 9111.4,
+      "totalValueOfTxns": 9191.83,
+      "txnFeesExclGst": -73.12,
+      "gst": -7.31
     }
   },
   "locations": {
     "bunbury": {
       "revenue": {
-        "net": -14199.93,
-        "grossProfit": -21013.94,
-        "grossMarginPercent": -147.99,
-        "sourceFile": "daily_income_report_160926.xls",
+        "net": 2803.0,
+        "grossProfit": 1243.63,
+        "grossMarginPercent": 44.37,
+        "sourceFile": "daily_income_report_170926.xls",
         "target": 13000
       },
       "workshop": {
         "productivityPercent": 100.0,
-        "efficiencyPercent": 125.4,
-        "productivityCoverage": "Samuel Sutton, Daniel Fowles",
-        "efficiencyCoverage": "Samuel Sutton, Daniel Fowles",
+        "efficiencyPercent": 157.17,
+        "productivityCoverage": "Daniel Fowles",
+        "efficiencyCoverage": "Daniel Fowles",
         "evidenceStatus": "current",
         "sourceFiles": [
-          "daily_efficiency_report_160926.xls",
-          "daily_income_report_160926.xls",
-          "daily_productivity_report_160926.xls"
+          "daily_efficiency_report_170926.xls",
+          "daily_productivity_report_170926.xls",
+          "daily_income_report_170926.xls"
         ]
       }
     },
     "busselton": {
       "revenue": {
-        "net": 5476.21,
-        "grossProfit": 2960.15,
-        "grossMarginPercent": 54.05,
-        "sourceFile": "daily_income_report_160926.xls",
+        "net": 2946.36,
+        "grossProfit": 1218.0,
+        "grossMarginPercent": 41.34,
+        "sourceFile": "daily_income_report_170926.xls",
         "target": 10000
       },
       "workshop": {
         "productivityPercent": 100.0,
-        "efficiencyPercent": 93.55,
-        "productivityCoverage": "Aaron Leonard, Jayden Brookes",
-        "efficiencyCoverage": "Aaron Leonard, Jayden Brookes",
+        "efficiencyPercent": 100.0,
+        "productivityCoverage": "Jayden Brookes",
+        "efficiencyCoverage": "Jayden Brookes",
         "evidenceStatus": "current",
         "sourceFiles": [
-          "daily_productivity_report_160926.xls",
-          "daily_income_report_160926.xls",
-          "daily_efficiency_report_160926.xls"
+          "daily_efficiency_report_170926.xls",
+          "daily_productivity_report_170926.xls",
+          "daily_income_report_170926.xls"
         ]
       },
       "quotes": {
@@ -439,20 +439,20 @@
     ]
   },
   "financialControl": {
-    "payablesAsOfSyncUtc": "2026-09-16T11:37:43.316348Z",
-    "netPayables": 395347.53,
-    "overduePayables": 5989.99,
+    "payablesAsOfSyncUtc": "2026-09-17T11:35:57.551175Z",
+    "netPayables": 410385.95,
+    "overduePayables": 473.45,
     "payablesProvenance": "Grouped by ContactName and netted across all payable sources",
-    "treasuryAsOfDate": "2026-09-16",
-    "overdraftHeadroom": 123638.73,
+    "treasuryAsOfDate": "2026-09-17",
+    "overdraftHeadroom": 136359.6,
     "overdraftLimit": 200000,
-    "overdraftDrawn": 76361.27,
+    "overdraftDrawn": 63640.4,
     "caplinkDue": 26702,
     "caplinkDueDate": "2026-09-30",
-    "monthToDateRevenue": 184972.03,
-    "monthToDateGrossProfit": 83678.96,
-    "monthToDateGrossProfitMarginPercent": 45.24,
+    "monthToDateRevenue": 190721.38,
+    "monthToDateGrossProfit": 82548.9,
+    "monthToDateGrossProfitMarginPercent": 43.28,
     "monthToDatePeriodStart": "2026-09-01",
-    "monthToDatePeriodEnd": "2026-09-16"
+    "monthToDatePeriodEnd": "2026-09-17"
   }
 }
