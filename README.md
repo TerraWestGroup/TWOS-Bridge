@@ -21,13 +21,17 @@ Any push to `main` re-deploys the whole site, including whatever is currently in
 
 Each source degrades independently: a failure in one leaves the rest of the state refreshed and the failed section unchanged, rather than taking the whole close down.
 
-## DN04 workshop evidence coverage
+## DN04 workshop evidence
 
-Productivity and Efficiency aggregate over whoever recorded hours that day. If one fitter logs time and three worked, the location reads 100% productivity and that figure is true of one person. The ingestion used to mark workshop evidence `current` whenever either report parsed at all, so the thinnest figures presented exactly like complete ones.
+Productivity and Efficiency are ratios, so they hide their own denominator. 100% productivity over 5.09 recorded hours and 100% over a full workshop day are the same number and very different facts. On the 17 September 2026 close Bunbury read 100% productivity and 157.17% efficiency, struck over 5.09 hours from one fitter, and the Divisions Overview showed only the percentages.
 
-`assess_workshop_coverage()` in `nightly_ingest.py` now compares the fitters named on the day's jobs against the fitters the timesheet reports cover, and marks the evidence `partial` when someone worked without recording hours, or when coverage is a single fitter. The fitter count is published as `workshop.fitterCount` and rendered next to every percentage, so a one-fitter figure cannot read as a workshop-wide one. `scripts/test_workshop_coverage.py` pins the rule.
+Both parsers now return `recordedHours`, and `assess_workshop_coverage()` in `nightly_ingest.py` publishes it alongside `fitterCount` so every percentage carries what it was computed over: `100.0% · 5.09 h · 1 fitter`.
 
-This is the test the 2 September 2026 Wave 2 Shadow assessment applied by hand, concluding that "performance attribution is prohibited until coverage is reconciled". The same condition was still true on 17 September, at both locations, with nothing reporting it — because Wave 2 Shadow is a hand-written snapshot that no job refreshes. Connecting it is a separate and larger piece of work.
+**No threshold is set on what counts as enough.** These exports carry no rostered hours or capacity data, so the code does not decide that a thin day means missing timesheets — it publishes the hours and leaves the judgement to whoever reads them. Fitter count alone means nothing either: a genuinely quiet day worked by one fitter is complete evidence, and the reports routinely carry two or three fitters (three at Bunbury on 9 September).
+
+The one thing it does assert is a contradiction: a fitter named on the day's jobs who recorded no hours at all. That marks the evidence `partial` and `attributionSafe` false. It is the test the 2 September 2026 Wave 2 Shadow assessment applied by hand, concluding "performance attribution is prohibited until coverage is reconciled". `scripts/test_workshop_coverage.py` pins the rule.
+
+Wave 2 Shadow itself remains a hand-written snapshot that no job refreshes; connecting it is separate and larger work.
 
 ## DN06 Customer After-Care
 
