@@ -168,6 +168,75 @@ def download_attachment(token, base_url, message_id, tmp_dir, extension=".xls"):
     return None
 
 
+def _names(raw):
+    """Splits a comma-joined name list into a clean set, case-folded for matching."""
+    return {n.strip() for n in str(raw or "").split(",") if n.strip()}
+
+
+def assess_workshop_coverage(productivity, efficiency, job):
+    """
+    Decides whether the day's Productivity and Efficiency percentages can
+    honestly stand as LOCATION figures, or only as the figures of whoever
+    happened to record hours.
+
+    Why this exists: both reports aggregate over whoever appears in them.
+    If one fitter logs time and three worked, the location reads 100%
+    productivity and the number is true of one person. The ingestion used
+    to mark evidence "current" whenever either report parsed at all, so
+    the thinnest figures presented exactly like complete ones.
+
+    The test is the one the Wave 2 Shadow assessment of 2 September 2026
+    already applied by hand: compare the fitters named on the day's jobs
+    against the fitters the timesheet reports actually cover. Anyone who
+    worked but is missing from coverage makes the percentage partial and
+    performance attribution unsafe.
+
+    Returns the workshop fields to merge, always including the fitter
+    count so a single-fitter figure can never render as a workshop-wide
+    one.
+    """
+    covered = _names(productivity and productivity.get("productivityCoverage")) \
+        | _names(efficiency and efficiency.get("efficiencyCoverage"))
+
+    worked = set()
+    if job:
+        for j in job.get("jobs", []):
+            worked |= _names(j.get("mechanics"))
+
+    covered_fold = {n.casefold() for n in covered}
+    missing = sorted(n for n in worked if n.casefold() not in covered_fold)
+
+    fields = {
+        "fitterCount": len(covered),
+        "coverageNames": sorted(covered),
+        "attributionSafe": not missing,
+    }
+
+    if missing:
+        fields["evidenceStatus"] = "partial"
+        fields["coverageNote"] = (
+            f"{len(missing)} fitter(s) worked on the day's jobs but recorded no hours "
+            f"({', '.join(missing)}). The percentages cover {len(covered) or 'no'} fitter(s) "
+            f"and are not a location figure; performance attribution is not safe."
+        )
+    elif len(covered) <= 1:
+        # Not a contradiction in the evidence, but a single-fitter figure
+        # is still not a location measure, so it is never presented as one.
+        fields["evidenceStatus"] = "partial"
+        fields["coverageNote"] = (
+            f"Recorded hours cover a single fitter"
+            f"{' (' + sorted(covered)[0] + ')' if covered else ''}. "
+            f"The percentage is true of that fitter, not of the workshop."
+        )
+    else:
+        fields["evidenceStatus"] = "current"
+        fields["coverageNote"] = (
+            f"Recorded hours cover all {len(covered)} fitter(s) named on the day's jobs."
+        )
+
+    return fields
+
+
 def update_after_care(state, results, latest_date):
     """
     Merges the day's Job and Job WIP evidence into state["afterCare"].
@@ -646,8 +715,12 @@ def main():
                 state["locations"][location]["workshop"]["efficiencyCoverage"] = efficiency["efficiencyCoverage"]
 
             if productivity or efficiency:
-                state["locations"][location]["workshop"]["evidenceStatus"] = "current"
+                job = results.get((location, "Job"))
+                coverage = assess_workshop_coverage(productivity, efficiency, job)
+                state["locations"][location]["workshop"].update(coverage)
                 state["locations"][location]["workshop"]["sourceFiles"] = source_files[location]
+                if coverage["evidenceStatus"] == "partial":
+                    print(f"  {location} workshop evidence PARTIAL: {coverage['coverageNote']}")
 
         # --- DN06 Customer After-Care (TWOS-AC-001 v1.1 / QJT-001 v1.1) ---
         # Day 0 comes from the Job Report (tag present AND invoice
