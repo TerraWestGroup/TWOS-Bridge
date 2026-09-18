@@ -504,9 +504,9 @@
             "due": "2026-10-19",
             "conditional": true,
             "shifted": true,
-            "generatesObligation": false,
-            "applicable": false,
-            "applicabilityBasis": "No suspension, GVM or airbag work on this job -- consultant to confirm before suppressing"
+            "generatesObligation": true,
+            "applicable": true,
+            "applicabilityBasis": "Fitted work -- check fastener torque, alignment and adjustment after a month's use"
           },
           {
             "code": "6M",
@@ -733,6 +733,23 @@
         "owner": "Mitch Cooper",
         "ownerBasis": "created_by",
         "fitter": "Jayden Brookes",
+        "milestone": "1 month",
+        "code": "1M",
+        "type": "Conditional technical follow-up",
+        "due": "2026-10-19",
+        "dayZero": "2026-09-17",
+        "daysAway": 31
+      },
+      {
+        "job": "BUSJOB2202",
+        "location": "busselton",
+        "customer": "MARC PAPALIA",
+        "vehicle": "2026 BYD SHARK",
+        "registration": "1JBF666",
+        "mobile": "0408109984",
+        "owner": "Mitch Cooper",
+        "ownerBasis": "created_by",
+        "fitter": "Jayden Brookes",
         "milestone": "6 months",
         "code": "6M",
         "type": "Build Health Check + consultation",
@@ -775,23 +792,7 @@
         "daysAway": 731
       }
     ],
-    "suppressedList": [
-      {
-        "job": "BUSJOB2202",
-        "location": "busselton",
-        "customer": "MARC PAPALIA",
-        "vehicle": "2026 BYD SHARK",
-        "registration": "1JBF666",
-        "mobile": "0408109984",
-        "owner": "Mitch Cooper",
-        "ownerBasis": "created_by",
-        "milestone": "1 month",
-        "code": "1M",
-        "type": "Conditional technical follow-up",
-        "due": "2026-10-19",
-        "basis": "No suspension, GVM or airbag work on this job -- consultant to confirm before suppressing"
-      }
-    ],
+    "suppressedList": [],
     "concernList": [],
     "outcomeCapture": {
       "status": "not_connected",
