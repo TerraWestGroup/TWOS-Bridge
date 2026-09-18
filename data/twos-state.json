@@ -1,16 +1,16 @@
 {
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-17T11:36:02.667174Z",
-  "latestAccountableDate": "2026-09-17",
+  "generatedAt": "2026-09-18T11:35:38.681774Z",
+  "latestAccountableDate": "2026-09-18",
   "sources": {
     "mechanicDesk": {
       "status": "connected_tested",
-      "receivedAt": "2026-09-17T10:10:57Z",
+      "receivedAt": "2026-09-18T10:10:23Z",
       "expectedAtLocal": "18:10",
       "timezone": "Australia/Perth",
       "folder": "Inbox/Mechanic Desk Reports",
       "reportCount": 6,
-      "statusDetail": "Automated nightly ingestion: 6/6 Income/Productivity/Efficiency reports parsed for 2026-09-17.",
+      "statusDetail": "Automated nightly ingestion: 6/6 Income/Productivity/Efficiency reports parsed for 2026-09-18.",
       "requiredReports": {
         "bunbury": [
           "Income",
@@ -33,12 +33,12 @@
       "status": "connected_tested",
       "syncStatus": "SUCCESS",
       "lastOrganisationSyncUtc": "2026-09-06T11:17:44.973Z",
-      "lastAccountTransactionsSyncUtc": "2026-09-17T11:35:57.551182Z",
+      "lastAccountTransactionsSyncUtc": "2026-09-18T11:35:34.223598Z",
       "approvedCadence": "Hourly Monday\u2013Friday with overnight recovery sync",
       "scheduleConfiguration": "active",
       "manualRefreshAvailable": true,
       "agentRefreshAvailable": true,
-      "displayFreshness": "17 Sep 2026 \u00b7 7:35 PM AWST"
+      "displayFreshness": "18 Sep 2026 \u00b7 7:35 PM AWST"
     },
     "podiumDailyDigest": {
       "status": "connected_tested",
@@ -54,71 +54,77 @@
     "anzWorldline": {
       "status": "connected_tested",
       "delivery": "Scheduled Outlook PDF settlement report",
-      "receivedAt": "2026-09-16T15:31:14Z",
+      "receivedAt": "2026-09-17T15:27:28Z",
       "provenance": "Your Settlement Report from ANZ Worldline Payment Solutions received in Outlook",
-      "statusDetail": "Settlement report parsed successfully for 16/09/2026.",
-      "settlementDate": "16/09/2026",
-      "netSettledAmount": 9111.4,
-      "totalValueOfTxns": 9191.83,
-      "txnFeesExclGst": -73.12,
-      "gst": -7.31
+      "statusDetail": "Settlement report parsed successfully for 17/09/2026.",
+      "settlementDate": "17/09/2026",
+      "netSettledAmount": 9027.21,
+      "totalValueOfTxns": 9106.91,
+      "txnFeesExclGst": -72.45,
+      "gst": -7.25
     }
   },
   "locations": {
     "bunbury": {
       "revenue": {
-        "net": 2803.0,
-        "grossProfit": 1243.63,
-        "grossMarginPercent": 44.37,
-        "sourceFile": "daily_income_report_170926.xls",
+        "net": 12809.91,
+        "grossProfit": 6553.05,
+        "grossMarginPercent": 51.16,
+        "sourceFile": "daily_income_report_180926.xls",
         "target": 13000
       },
       "workshop": {
         "productivityPercent": 100.0,
-        "efficiencyPercent": 157.17,
-        "productivityCoverage": "Daniel Fowles",
-        "efficiencyCoverage": "Daniel Fowles",
+        "efficiencyPercent": 148.77,
+        "productivityCoverage": "Samuel Sutton, Daniel Fowles",
+        "efficiencyCoverage": "Samuel Sutton, Daniel Fowles",
         "evidenceStatus": "current",
         "sourceFiles": [
-          "daily_efficiency_report_170926.xls",
-          "daily_productivity_report_170926.xls",
-          "daily_income_report_170926.xls"
+          "daily_job_wip_report_180926.xls",
+          "daily_income_report_180926.xls",
+          "daily_job_report_180926.xls",
+          "daily_productivity_report_180926.xls",
+          "daily_efficiency_report_180926.xls"
         ],
-        "fitterCount": 1,
+        "fitterCount": 2,
         "coverageNames": [
-          "Daniel Fowles"
+          "Daniel Fowles",
+          "Samuel Sutton"
         ],
-        "recordedHours": 5.09,
+        "recordedHours": 6.5,
         "attributionSafe": true,
-        "coverageNote": "Percentages struck over 5.09 recorded hours from 1 fitter(s); every fitter named on the day's jobs recorded hours."
+        "coverageNote": "Percentages struck over 6.5 recorded hours from 2 fitter(s); every fitter named on the day's jobs recorded hours."
       }
     },
     "busselton": {
       "revenue": {
-        "net": 2946.36,
-        "grossProfit": 1218.0,
-        "grossMarginPercent": 41.34,
-        "sourceFile": "daily_income_report_170926.xls",
+        "net": 10054.85,
+        "grossProfit": 5874.24,
+        "grossMarginPercent": 58.42,
+        "sourceFile": "daily_income_report_180926.xls",
         "target": 10000
       },
       "workshop": {
         "productivityPercent": 100.0,
-        "efficiencyPercent": 100.0,
-        "productivityCoverage": "Jayden Brookes",
-        "efficiencyCoverage": "Jayden Brookes",
-        "evidenceStatus": "current",
+        "efficiencyPercent": 35.9,
+        "productivityCoverage": "Aaron Leonard, Zach Hutchison",
+        "efficiencyCoverage": "Aaron Leonard, Zach Hutchison",
+        "evidenceStatus": "partial",
         "sourceFiles": [
-          "daily_efficiency_report_170926.xls",
-          "daily_productivity_report_170926.xls",
-          "daily_income_report_170926.xls"
+          "daily_efficiency_report_180926.xls",
+          "daily_income_report_180926.xls",
+          "daily_job_wip_report_180926.xls",
+          "daily_productivity_report_180926.xls",
+          "daily_job_report_180926.xls"
         ],
-        "fitterCount": 1,
+        "fitterCount": 2,
         "coverageNames": [
-          "Jayden Brookes"
+          "Aaron Leonard",
+          "Zach Hutchison"
         ],
-        "recordedHours": 3.0,
-        "attributionSafe": true,
-        "coverageNote": "Percentages struck over 3 recorded hours from 1 fitter(s); every fitter named on the day's jobs recorded hours."
+        "recordedHours": 11.17,
+        "attributionSafe": false,
+        "coverageNote": "1 fitter(s) worked on the day's jobs but recorded no hours (Jayden Brookes). The percentages are struck over 11.17 recorded hours from 2 fitter(s); performance attribution is not safe."
       },
       "quotes": {
         "reportDate": "2026-09-14",
@@ -323,7 +329,7 @@
       "statusLabel": "MechanicDesk AFTER-CARE tag and job finalisation connected",
       "requiredSource": "MechanicDesk daily Job Report (tag + finalisation) and Job WIP Report (enrolment, owner, open rework)",
       "requiredAdapter": "scripts/parsers/job_report.py, scripts/parsers/job_wip_report.py, scripts/aftercare.py",
-      "lastSuccessfulIngestionAt": "2026-09-18T03:02:00Z",
+      "lastSuccessfulIngestionAt": "2026-09-18T11:35:38.681759Z",
       "locationsRead": [
         "bunbury",
         "busselton"
@@ -332,12 +338,12 @@
       "seededAt": "2026-09-18"
     },
     "operatingPosition": {
-      "activeCycles": 1,
+      "activeCycles": 2,
       "dueToday": 0,
       "completedToday": 0,
       "overdue": 0,
       "unresolvedConcerns": 0,
-      "awaitingDayZero": 8,
+      "awaitingDayZero": 6,
       "recurringQualitySignals": null,
       "ownerAttentionRequired": false,
       "ownerAttentionReason": "No After-Care matter requires Owner attention; obligations sit with the accountable consultants."
@@ -477,6 +483,115 @@
     ],
     "register": [
       {
+        "job": "BUNJOB3473",
+        "location": "bunbury",
+        "invoiceNo": "BUNINV5514",
+        "dayZero": "2026-09-18",
+        "customer": "Tyler Woolcock",
+        "mobile": "0475622346",
+        "vehicle": "2023 Isuzu D-Max",
+        "registration": null,
+        "description": "Deluxe Bull Bar",
+        "tags": [
+          "BULLBAR",
+          "AFTER-CARE"
+        ],
+        "owner": null,
+        "ownerBasis": "created_by",
+        "fitter": "Samuel Sutton",
+        "enrolledAt": "2026-09-18",
+        "supersededBy": null,
+        "schedule": [
+          {
+            "code": "72H",
+            "label": "72 hours",
+            "tier": "active",
+            "type": "Genuine Build Consultant call",
+            "owner": "Build Consultant",
+            "rawDue": "2026-09-21",
+            "due": "2026-09-21",
+            "conditional": false,
+            "shifted": false,
+            "generatesObligation": true
+          },
+          {
+            "code": "1M",
+            "label": "1 month",
+            "tier": "active",
+            "type": "Retorque / technical follow-up",
+            "owner": "Workshop / Consultant",
+            "rawDue": "2026-10-18",
+            "due": "2026-10-19",
+            "conditional": false,
+            "shifted": true,
+            "generatesObligation": true,
+            "technicalNote": "Load-bearing fitment (Bull Bar, Bullbar) -- retorque, not just an adjustment check"
+          },
+          {
+            "code": "6M",
+            "label": "6 months",
+            "tier": "active",
+            "type": "Build Health Check + consultation",
+            "owner": "Consultant + Fitter",
+            "rawDue": "2027-03-18",
+            "due": "2027-03-18",
+            "conditional": false,
+            "shifted": false,
+            "generatesObligation": true
+          },
+          {
+            "code": "12M",
+            "label": "12 months",
+            "tier": "active",
+            "type": "Build Health Check + consultation",
+            "owner": "Consultant + Fitter",
+            "rawDue": "2027-09-18",
+            "due": "2027-09-17",
+            "conditional": false,
+            "shifted": true,
+            "generatesObligation": true
+          },
+          {
+            "code": "18M",
+            "label": "18 months",
+            "tier": "passive",
+            "type": "Conditional contact only",
+            "owner": "Build Consultant",
+            "rawDue": "2028-03-18",
+            "due": "2028-03-17",
+            "conditional": false,
+            "shifted": true,
+            "generatesObligation": false
+          },
+          {
+            "code": "24M",
+            "label": "24 months",
+            "tier": "active",
+            "type": "Build Health Check + 10% voucher",
+            "owner": "Consultant + Fitter",
+            "rawDue": "2028-09-18",
+            "due": "2028-09-18",
+            "conditional": false,
+            "shifted": false,
+            "generatesObligation": true
+          },
+          {
+            "code": "AMBIENT",
+            "label": "24-36 months",
+            "tier": "ambient",
+            "type": "Newsletter and referral credit only",
+            "owner": "DN06 Growth",
+            "rawDue": "2029-09-18",
+            "due": "2029-09-18",
+            "conditional": false,
+            "shifted": false,
+            "windowStart": "2028-09-18",
+            "windowEnd": "2029-09-18",
+            "generatesObligation": false
+          }
+        ]
+      },
+      {
         "job": "BUSJOB2202",
         "location": "busselton",
         "invoiceNo": "BUSINV3475",
@@ -589,136 +704,170 @@
     ],
     "awaitingDayZero": [
       {
-        "job": "BUNJOB3395",
-        "customer": "Pambou Constructions",
-        "vehicle": "2025 FORD RANGER WILDTRAK Dual Cab",
-        "description": "TC Boxes Tray & Canopy Build",
-        "startDate": "2026-09-14",
-        "invoiceTotal": 30838.43,
+        "job": "BUNJOB3462",
+        "description": "Long Range Tank",
+        "customer": "Garret Piper",
+        "vehicle": "2024 RAM 1500 DT LARAMIE",
+        "registration": "",
+        "tags": [
+          "LONG RANGE FUEL TANK",
+          "AFTER-CARE"
+        ],
+        "startDate": "2026-10-07",
+        "invoiceTotal": 3653.82,
+        "mechanics": "",
         "owner": "Jelena Gordon",
         "ownerBasis": "created_by",
-        "location": "bunbury",
-        "tags": [
-          "TC BOXES BUILD",
-          "AFTER-CARE"
-        ]
+        "location": "bunbury"
       },
       {
-        "job": "BUNJOB3430",
-        "customer": "Marty Lamb",
-        "vehicle": "2025 FORD RANGER WILDTRAK",
-        "description": "Premium Raid Canopy & Raid Roof Rack",
-        "startDate": "2026-09-17",
-        "invoiceTotal": 9089.49,
-        "owner": "Luke Bleasdale",
-        "ownerBasis": "created_by",
-        "location": "bunbury",
+        "job": "BUNJOB3514",
+        "description": "Bull Bar",
+        "customer": "Bradley Mitchem",
+        "vehicle": "2022 ISUZU MUX",
+        "registration": "",
         "tags": [
-          "CANOPY",
-          "ROOF RACK",
-          "AFTER-CARE"
-        ]
-      },
-      {
-        "job": "BUNJOB3473",
-        "customer": "Tyler Woolcock",
-        "vehicle": "2023 Isuzu D-Max",
-        "description": "Deluxe Bull Bar",
-        "startDate": "2026-09-18",
-        "invoiceTotal": 2934.4,
-        "owner": "Luke Bleasdale",
-        "ownerBasis": "created_by",
-        "location": "bunbury",
-        "tags": [
+          "ORDERED",
           "BULLBAR",
           "AFTER-CARE"
-        ]
+        ],
+        "startDate": "2026-10-02",
+        "invoiceTotal": 4014.0,
+        "mechanics": "",
+        "owner": "Jelena Gordon",
+        "ownerBasis": "created_by",
+        "location": "bunbury"
+      },
+      {
+        "job": "BUNJOB3510",
+        "description": "Long Range Fuel Tank",
+        "customer": "Jack Biondi",
+        "vehicle": "2017 Mitsubishi Triton",
+        "registration": "",
+        "tags": [
+          "LONG RANGE FUEL TANK",
+          "ORDERED",
+          "AFTER-CARE"
+        ],
+        "startDate": "2026-09-27",
+        "invoiceTotal": 2304.75,
+        "mechanics": "",
+        "owner": "Jelena Gordon",
+        "ownerBasis": "created_by",
+        "location": "bunbury"
+      },
+      {
+        "job": "BUNJOB3465",
+        "description": "Drawers, Cargo Barrier, Fridge Cage, Neo Spot Lights",
+        "customer": "Rob Nielsen",
+        "vehicle": "2012 TOYOTA 200S LANDCRUISER GX",
+        "registration": "",
+        "tags": [
+          "ORDERED",
+          "DRAWER SYSTEM",
+          "DRIVING LIGHTS",
+          "MISC",
+          "AFTER-CARE"
+        ],
+        "startDate": "2026-09-24",
+        "invoiceTotal": 6322.6,
+        "mechanics": "",
+        "owner": "Jelena Gordon",
+        "ownerBasis": "created_by",
+        "location": "bunbury"
       },
       {
         "job": "BUNJOB3502",
+        "description": "Suspension",
         "customer": "Josh Krome",
         "vehicle": "2026 BYD SHARK 6 Performance 2.0L",
-        "description": "Suspension",
-        "startDate": "2026-09-22",
-        "invoiceTotal": 3835.0,
-        "owner": "Jelena Gordon",
-        "ownerBasis": "created_by",
-        "location": "bunbury",
+        "registration": "",
         "tags": [
           "SUSPENSION",
           "ORDERED",
           "AFTER-CARE"
-        ]
-      },
-      {
-        "job": "BUNJOB3510",
-        "customer": "Jack Biondi",
-        "vehicle": "2017 Mitsubishi Triton",
-        "description": "Long Range Fuel Tank",
+        ],
         "startDate": "2026-09-22",
-        "invoiceTotal": 2304.75,
+        "invoiceTotal": 3835.0,
+        "mechanics": "",
         "owner": "Jelena Gordon",
         "ownerBasis": "created_by",
-        "location": "bunbury",
-        "tags": [
-          "LONG RANGE FUEL TANK",
-          "ORDERED",
-          "AFTER-CARE"
-        ]
+        "location": "bunbury"
       },
       {
-        "job": "BUNJOB3465",
-        "customer": "Rob Nielsen",
-        "vehicle": "2012 TOYOTA 200S LANDCRUISER GX",
-        "description": "Drawers, Cargo Barrier, Fridge Cage, Neo Spot Lights",
-        "startDate": "2026-09-24",
-        "invoiceTotal": 6322.6,
+        "job": "BUNJOB3395",
+        "description": "TC Boxes Tray & Canopy Build",
+        "customer": "Pambou Constructions",
+        "vehicle": "2025 FORD RANGER WILDTRAK Dual Cab",
+        "registration": "",
+        "tags": [
+          "TC BOXES BUILD",
+          "AFTER-CARE"
+        ],
+        "startDate": "2026-09-14",
+        "invoiceTotal": 31995.67,
+        "mechanics": "Daniel Fowles, Jack Rooney, Samuel Sutton",
         "owner": "Jelena Gordon",
         "ownerBasis": "created_by",
-        "location": "bunbury",
-        "tags": [
-          "ORDERED",
-          "DRAWER SYSTEM",
-          "AFTER-CARE"
-        ]
-      },
-      {
-        "job": "BUNJOB3514",
-        "customer": "Bradley Mitchem",
-        "vehicle": "2022 ISUZU MUX",
-        "description": "Bull Bar",
-        "startDate": "2026-10-02",
-        "invoiceTotal": 4014.0,
-        "owner": "Jelena Gordon",
-        "ownerBasis": "created_by",
-        "location": "bunbury",
-        "tags": [
-          "ORDERED",
-          "BULLBAR",
-          "AFTER-CARE"
-        ]
-      },
-      {
-        "job": "BUNJOB3462",
-        "customer": "Garret Piper",
-        "vehicle": "2024 RAM 1500 DT LARAMIE",
-        "description": "Long Range Tank",
-        "startDate": "2026-10-07",
-        "invoiceTotal": 3653.82,
-        "owner": "Jelena Gordon",
-        "ownerBasis": "created_by",
-        "location": "bunbury",
-        "tags": [
-          "LONG RANGE FUEL TANK",
-          "AFTER-CARE"
-        ]
+        "location": "bunbury"
       }
     ],
-    "reworkOpen": [],
+    "reworkOpen": [
+      {
+        "job": "BUNJOB3508",
+        "description": "No power to 7 pin plug on tow bar",
+        "customer": "John Carroll",
+        "vehicle": "2018+ JAYCO MOTORHOME 1IJI068",
+        "registration": "1IJI068",
+        "tags": [
+          "Rework - review required"
+        ],
+        "startDate": "2026-09-22",
+        "invoiceTotal": 0.0,
+        "mechanics": "",
+        "owner": "Jelena Gordon",
+        "ownerBasis": "salesperson",
+        "location": "bunbury"
+      },
+      {
+        "job": "BUSJOB2196",
+        "description": "AIRBAG REFIT / REINSTALL?",
+        "customer": "Voyager Estate",
+        "vehicle": "2024 TOYOTA HILUX AU35957",
+        "registration": "AU35957",
+        "tags": [
+          "Rework - Review Required",
+          "AIR BAGS"
+        ],
+        "startDate": "2026-09-22",
+        "invoiceTotal": 0.0,
+        "mechanics": "",
+        "owner": "Mitch Cooper",
+        "ownerBasis": "created_by",
+        "location": "busselton"
+      }
+    ],
     "outcomes": {},
     "dueTodayList": [],
     "overdueList": [],
     "upcomingList": [
+      {
+        "job": "BUNJOB3473",
+        "location": "bunbury",
+        "customer": "Tyler Woolcock",
+        "vehicle": "2023 Isuzu D-Max",
+        "registration": null,
+        "mobile": "0475622346",
+        "owner": null,
+        "ownerBasis": "created_by",
+        "fitter": "Samuel Sutton",
+        "milestone": "72 hours",
+        "code": "72H",
+        "type": "Genuine Build Consultant call",
+        "due": "2026-09-21",
+        "dayZero": "2026-09-18",
+        "daysAway": 3
+      },
       {
         "job": "BUSJOB2202",
         "location": "busselton",
@@ -754,6 +903,23 @@
         "daysAway": 28
       },
       {
+        "job": "BUNJOB3473",
+        "location": "bunbury",
+        "customer": "Tyler Woolcock",
+        "vehicle": "2023 Isuzu D-Max",
+        "registration": null,
+        "mobile": "0475622346",
+        "owner": null,
+        "ownerBasis": "created_by",
+        "fitter": "Samuel Sutton",
+        "milestone": "1 month",
+        "code": "1M",
+        "type": "Retorque / technical follow-up",
+        "due": "2026-10-19",
+        "dayZero": "2026-09-18",
+        "daysAway": 31
+      },
+      {
         "job": "BUSJOB2202",
         "location": "busselton",
         "customer": "MARC PAPALIA",
@@ -771,6 +937,40 @@
         "daysAway": 180
       },
       {
+        "job": "BUNJOB3473",
+        "location": "bunbury",
+        "customer": "Tyler Woolcock",
+        "vehicle": "2023 Isuzu D-Max",
+        "registration": null,
+        "mobile": "0475622346",
+        "owner": null,
+        "ownerBasis": "created_by",
+        "fitter": "Samuel Sutton",
+        "milestone": "6 months",
+        "code": "6M",
+        "type": "Build Health Check + consultation",
+        "due": "2027-03-18",
+        "dayZero": "2026-09-18",
+        "daysAway": 181
+      },
+      {
+        "job": "BUNJOB3473",
+        "location": "bunbury",
+        "customer": "Tyler Woolcock",
+        "vehicle": "2023 Isuzu D-Max",
+        "registration": null,
+        "mobile": "0475622346",
+        "owner": null,
+        "ownerBasis": "created_by",
+        "fitter": "Samuel Sutton",
+        "milestone": "12 months",
+        "code": "12M",
+        "type": "Build Health Check + consultation",
+        "due": "2027-09-17",
+        "dayZero": "2026-09-18",
+        "daysAway": 364
+      },
+      {
         "job": "BUSJOB2202",
         "location": "busselton",
         "customer": "MARC PAPALIA",
@@ -786,6 +986,23 @@
         "due": "2027-09-17",
         "dayZero": "2026-09-17",
         "daysAway": 364
+      },
+      {
+        "job": "BUNJOB3473",
+        "location": "bunbury",
+        "customer": "Tyler Woolcock",
+        "vehicle": "2023 Isuzu D-Max",
+        "registration": null,
+        "mobile": "0475622346",
+        "owner": null,
+        "ownerBasis": "created_by",
+        "fitter": "Samuel Sutton",
+        "milestone": "24 months",
+        "code": "24M",
+        "type": "Build Health Check + 10% voucher",
+        "due": "2028-09-18",
+        "dayZero": "2026-09-18",
+        "daysAway": 731
       },
       {
         "job": "BUSJOB2202",
@@ -826,24 +1043,32 @@
         "owner": "DN06 Growth",
         "title": "The customer handout still promises the v1.0 journey",
         "detail": "TerraWest_After-Care_Customer_Handout_v1.0 promises a 24-hour check, a 3-month call and a 36-month Build Health Check. v1.1 moves first contact to 72 hours, removes the 3-month call and downgrades 24-36 months to ambient marketing. Any handout already given to a customer is a promise TWOS will not schedule. Reissue the handout against v1.1, or restore the 3-month call to v1.1, before the programme's automated obligations go live."
+      },
+      {
+        "id": "owner-proxy",
+        "origin": "computed",
+        "severity": "warning",
+        "owner": "DN02 Sales",
+        "title": "Build Consultant is assigned by proxy",
+        "detail": "8 of 8 jobs in or awaiting the programme have no Saleperson recorded in MechanicDesk, so their After-Care obligations are assigned from the booking's Created By instead. The 72-hour call may land with someone who never met the customer. Across the wider open job book, Saleperson is filled on 16 rows."
       }
     ]
   },
   "financialControl": {
-    "payablesAsOfSyncUtc": "2026-09-17T11:35:57.551175Z",
-    "netPayables": 410385.95,
-    "overduePayables": 473.45,
+    "payablesAsOfSyncUtc": "2026-09-18T11:35:34.223589Z",
+    "netPayables": 438130.18,
+    "overduePayables": 349.5,
     "payablesProvenance": "Grouped by ContactName and netted across all payable sources",
-    "treasuryAsOfDate": "2026-09-17",
-    "overdraftHeadroom": 136359.6,
+    "treasuryAsOfDate": "2026-09-18",
+    "overdraftHeadroom": 141589.26,
     "overdraftLimit": 200000,
-    "overdraftDrawn": 63640.4,
+    "overdraftDrawn": 58410.74,
     "caplinkDue": 26702,
     "caplinkDueDate": "2026-09-30",
-    "monthToDateRevenue": 190721.38,
-    "monthToDateGrossProfit": 82548.9,
-    "monthToDateGrossProfitMarginPercent": 43.28,
+    "monthToDateRevenue": 209883.95,
+    "monthToDateGrossProfit": 73323.16,
+    "monthToDateGrossProfitMarginPercent": 34.94,
     "monthToDatePeriodStart": "2026-09-01",
-    "monthToDatePeriodEnd": "2026-09-17"
+    "monthToDatePeriodEnd": "2026-09-18"
   }
 }
