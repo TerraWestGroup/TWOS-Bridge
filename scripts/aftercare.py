@@ -99,13 +99,33 @@ MILESTONES = [
     },
 ]
 
-# Work whose presence makes the 1-month technical follow-up applicable.
-# Absence does not cancel the milestone silently -- it is marked
-# not-applicable with its basis stated, for the consultant to confirm.
-RETORQUE_KEYWORDS = (
+# The 1-month technical follow-up APPLIES BY DEFAULT to anything the
+# workshop physically fitted. An earlier version of this engine had it
+# the other way round -- an allowlist of suspension, GVM and airbag work,
+# suppressing everything else -- which was wrong: a roller shutter, bull
+# bar, canopy, roof rack, drawer system or towbar is bolted to the
+# vehicle and its fasteners want checking and adjusting after a month of
+# real use just as much as a leaf pack does. Getting that default
+# backwards means silently skipping a check on most qualifying builds.
+#
+# The asymmetry matters. An unnecessary check costs a phone call; a
+# missed one on a bolted structural accessory is a quality and safety
+# matter. So the milestone stands unless the job is evidenced as
+# non-fitment work.
+#
+# Suppression requires the controlled SUPPLY ONLY tag (QJT-001 section 7,
+# BLUE - SUPPLY ONLY: "No workshop fitment is required") -- not a guess
+# from the description. These items simply raise the check from routine
+# to safety-critical in the stated basis, so the consultant and fitter
+# know which kind of visit it is.
+HIGH_TORQUE_KEYWORDS = (
     "SUSPENSION", "GVM", "AIRBAG", "AIR BAG", "LEAF", "SHOCK", "COIL",
     "STRUT", "LIFT KIT", "TORSION", "ADD-A-LEAF", "ADD A LEAF",
+    "BULLBAR", "BULL BAR", "TOWBAR", "TOW BAR", "RECOVERY POINT",
+    "ROOF RACK", "WHEEL", "BRAKE",
 )
+
+SUPPLY_ONLY_TAG = "SUPPLY ONLY"
 
 # Western Australian public holidays. New Year's Day, Australia Day,
 # Anzac Day, Christmas and Boxing Day are computed (with the standard
@@ -215,15 +235,26 @@ def add_months(d, months):
 def retorque_applicable(description, tags):
     """
     Decides whether the conditional 1-month technical follow-up applies,
-    and returns (applicable, basis). Never silently suppresses: the basis
-    string is carried into the state so the consultant sees the reasoning
-    and can override it.
+    and returns (applicable, basis).
+
+    Applies by default: anything fitted to the vehicle gets a physical
+    check. Only an explicit SUPPLY ONLY tag suppresses it, because that
+    is the one controlled signal that the workshop fitted nothing. The
+    basis string is carried into the state either way, so the consultant
+    sees the reasoning and can overrule it.
     """
-    haystack = " ".join([str(description or "")] + [str(t) for t in (tags or [])]).upper()
-    hits = [k for k in RETORQUE_KEYWORDS if k in haystack]
+    tag_list = [str(t).strip().upper() for t in (tags or [])]
+    if SUPPLY_ONLY_TAG in tag_list:
+        return False, "Tagged SUPPLY ONLY -- nothing was fitted by us, so there is nothing to check"
+
+    haystack = " ".join([str(description or "")] + tag_list).upper()
+    hits = sorted({k for k in HIGH_TORQUE_KEYWORDS if k in haystack})
     if hits:
-        return True, f"Retorque-relevant work detected: {', '.join(sorted(set(hits))).title()}"
-    return False, "No suspension, GVM or airbag work on this job -- consultant to confirm before suppressing"
+        return True, (
+            f"Load-bearing fitment ({', '.join(h.title() for h in hits)}) -- "
+            f"retorque required, not just an adjustment check"
+        )
+    return True, "Fitted work -- check fastener torque, alignment and adjustment after a month's use"
 
 
 def build_schedule(day_zero_iso, description="", tags=None):
@@ -336,6 +367,37 @@ def merge_register(existing, finalised_jobs, location, today_iso):
 
     register.sort(key=lambda c: (c["dayZero"], c["job"]), reverse=True)
     return register, added, superseded
+
+
+def refresh_schedules(register):
+    """
+    Recomputes every cycle's schedule from its Day 0.
+
+    The register stores FACTS -- Day 0, customer, vehicle, owner, the tags
+    the job carried at finalisation. The schedule is DERIVED from those,
+    so it is rebuilt on every run rather than frozen at enrolment. Without
+    this, a change to the journey or to a milestone's applicability rule
+    would apply only to cycles enrolled after the change, and every
+    existing customer would silently stay on the superseded schedule --
+    which is exactly what happened when the 1-month rule was corrected.
+
+    Safe to do because nothing cycle-specific lives in the schedule:
+    recorded outcomes are held separately in afterCare.outcomes, keyed by
+    job and milestone code.
+
+    Returns the number of cycles whose schedule actually changed.
+    """
+    changed = 0
+    for cycle in register:
+        if not cycle.get("dayZero"):
+            continue
+        rebuilt = build_schedule(
+            cycle["dayZero"], cycle.get("description"), cycle.get("tags")
+        )
+        if rebuilt != cycle.get("schedule"):
+            cycle["schedule"] = rebuilt
+            changed += 1
+    return changed
 
 
 def _outcome_key(job, code):

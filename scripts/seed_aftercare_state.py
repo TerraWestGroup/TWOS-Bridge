@@ -151,6 +151,10 @@ def main():
         if cycle["job"] in added:
             cycle["seededFrom"] = "Busselton Job Report, 17 Sep 2026 close"
 
+    rebuilt = aftercare.refresh_schedules(register)
+    if rebuilt:
+        print(f"Rebuilt {rebuilt} cycle schedule(s) against the current journey rules.")
+
     ac["register"] = register
     ac["awaitingDayZero"] = SEED_AWAITING
     ac["reworkOpen"] = ac.get("reworkOpen") or []

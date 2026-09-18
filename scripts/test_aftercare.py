@@ -25,7 +25,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 import xlwt
 
 from aftercare import (
-    build_schedule, merge_register, compute_position,
+    build_schedule, merge_register, compute_position, refresh_schedules,
     add_months, next_business_day, is_business_day, wa_holidays,
     retorque_applicable,
 )
@@ -90,19 +90,36 @@ check("18 months is passive", by_code["18M"]["tier"], "passive")
 check("18 months raises no obligation", by_code["18M"]["generatesObligation"], False)
 check("ambient window ends 36 months out", by_code["AMBIENT"]["windowEnd"], "2029-09-17")
 check("ambient raises no obligation", by_code["AMBIENT"]["generatesObligation"], False)
-check("roller shutter has no retorque item", by_code["1M"]["applicable"], False)
-check("non-applicable 1M raises no obligation", by_code["1M"]["generatesObligation"], False)
+check("a fitted roller shutter DOES get the 1-month check", by_code["1M"]["applicable"], True)
+check("and therefore raises an obligation", by_code["1M"]["generatesObligation"], True)
 
-section("Conditional 1-month applicability")
+section("Conditional 1-month applicability -- applies by default")
 
-check("suspension work is retorque-relevant",
+# The rule is deliberately inverted from an earlier version: anything
+# fitted gets the check, and only an explicit SUPPLY ONLY tag suppresses
+# it. A missed retorque on a bolted accessory is a safety matter; an
+# unnecessary check is a phone call.
+check("suspension work applies",
       retorque_applicable("Rear Suspension Upgrade", ["SUSPENSION"])[0], True)
-check("GVM work is retorque-relevant",
-      retorque_applicable("GVM Upgrade - Pre-Rego", ["GVM UPGRADE"])[0], True)
-check("a UHF fit is not", retorque_applicable("UHF", ["MISC"])[0], False)
+check("GVM work applies", retorque_applicable("GVM Upgrade - Pre-Rego", ["GVM UPGRADE"])[0], True)
+check("a bull bar applies", retorque_applicable("Deluxe Bull Bar", ["BULLBAR"])[0], True)
+check("a roller shutter applies", retorque_applicable("ROLLER SHUTTER, SUPPLY AND FIT", ["SLIDEAWAY"])[0], True)
+check("a canopy applies", retorque_applicable("Premium Raid Canopy", ["CANOPY"])[0], True)
+check("a drawer system applies", retorque_applicable("Drawers, Cargo Barrier", ["DRAWER SYSTEM"])[0], True)
+check("a UHF fit still applies -- it was fitted",
+      retorque_applicable("UHF", ["MISC"])[0], True)
+check("SUPPLY ONLY is the one thing that suppresses it",
+      retorque_applicable("Bull Bar -- SUPPLY ONLY", ["BULLBAR", "SUPPLY ONLY"])[0], False)
 
-suspension = {m["code"]: m for m in build_schedule("2026-09-17", "Rear Suspension Upgrade", ["SUSPENSION", "AFTER-CARE"])}
-check("applicable 1M does raise an obligation", suspension["1M"]["generatesObligation"], True)
+check("load-bearing fitment is named as a retorque",
+      "retorque required" in retorque_applicable("Deluxe Bull Bar", ["BULLBAR"])[1], True)
+check("other fitment is named as an adjustment check",
+      "adjustment" in retorque_applicable("UHF", ["MISC"])[1], True)
+check("a suppressed milestone says why",
+      "nothing was fitted" in retorque_applicable("Bar", ["SUPPLY ONLY"])[1], True)
+
+supply_only = {m["code"]: m for m in build_schedule("2026-09-17", "Bull Bar", ["SUPPLY ONLY", "AFTER-CARE"])}
+check("a supply-only 1M raises no obligation", supply_only["1M"]["generatesObligation"], False)
 
 # --------------------------------------------------------------------
 section("Register merge and the Day 0 rule")
@@ -131,6 +148,18 @@ register3, added3, superseded3 = merge_register(register2, retag, "busselton", "
 check("a later qualifying build enrols", added3, ["BUSJOB2400"])
 check("the earlier cycle on that rego is superseded", superseded3, ["BUSJOB2202"])
 check("the superseded cycle is retained, not deleted", len(register3), 2)
+
+section("Rule changes reach cycles enrolled before them")
+
+# The register stores Day 0; the schedule is derived. A cycle carrying a
+# schedule built under superseded rules must be rebuilt, or every
+# existing customer silently stays on the old journey.
+stale = [dict(register[0])]
+stale[0]["schedule"] = [m for m in stale[0]["schedule"] if m["code"] != "1M"]
+check("a stale schedule is detected and rebuilt", refresh_schedules(stale), 1)
+check("the rebuilt schedule has all seven milestones", len(stale[0]["schedule"]), 7)
+check("rebuilding is idempotent once current", refresh_schedules(stale), 0)
+check("Day 0 is untouched by a rebuild", stale[0]["dayZero"], "2026-09-17")
 
 # --------------------------------------------------------------------
 section("Operating position")

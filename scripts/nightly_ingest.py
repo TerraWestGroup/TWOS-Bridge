@@ -235,6 +235,13 @@ def update_after_care(state, results, latest_date):
             refreshed.extend(after_care_open_by_location.get(location, []))
         awaiting = kept + refreshed
 
+    # Rebuild derived schedules before computing the position, so a
+    # change to the journey or to a milestone rule reaches cycles that
+    # were enrolled before it.
+    rebuilt = aftercare.refresh_schedules(register)
+    if rebuilt:
+        print(f"After-Care: rebuilt {rebuilt} cycle schedule(s) against the current journey rules")
+
     position = aftercare.compute_position(
         register, awaiting, rework_open, latest_date, ac.get("outcomes") or {}
     )
