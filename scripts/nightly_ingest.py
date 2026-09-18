@@ -175,28 +175,37 @@ def _names(raw):
 
 def assess_workshop_coverage(productivity, efficiency, job):
     """
-    Decides whether the day's Productivity and Efficiency percentages can
-    honestly stand as LOCATION figures, or only as the figures of whoever
-    happened to record hours.
+    Publishes what the day's Productivity and Efficiency percentages were
+    actually computed over, and flags the one case where the evidence
+    contradicts itself.
 
-    Why this exists: both reports aggregate over whoever appears in them.
-    If one fitter logs time and three worked, the location reads 100%
-    productivity and the number is true of one person. The ingestion used
-    to mark evidence "current" whenever either report parsed at all, so
-    the thinnest figures presented exactly like complete ones.
+    Why this exists: both reports aggregate over whoever recorded hours.
+    The percentages are ratios, so they hide their own denominator --
+    100% productivity over 5.09 recorded hours and 100% over a full
+    workshop day are the same number and very different facts. Bunbury
+    closed 17 September 2026 at 100% productivity and 157% efficiency
+    struck over 5.09 hours, and the Divisions Overview showed only the
+    percentages.
 
-    The test is the one the Wave 2 Shadow assessment of 2 September 2026
-    already applied by hand: compare the fitters named on the day's jobs
-    against the fitters the timesheet reports actually cover. Anyone who
-    worked but is missing from coverage makes the percentage partial and
-    performance attribution unsafe.
+    So recordedHours travels with every figure. That is the number that
+    makes a percentage interpretable, and it is published without
+    judgement: there is no rostered-hours or capacity data in these
+    exports, so this code sets no threshold on what "enough" is and does
+    not infer that a thin day means missing timesheets.
 
-    Returns the workshop fields to merge, always including the fitter
-    count so a single-fitter figure can never render as a workshop-wide
-    one.
+    The one thing it does assert is a contradiction: a fitter named on
+    the day's jobs who recorded no hours at all. That is the test the
+    Wave 2 Shadow assessment of 2 September 2026 applied by hand, and it
+    makes performance attribution unsafe. Fitter count alone does not --
+    a genuinely quiet day worked by one fitter is complete evidence, not
+    partial evidence.
     """
     covered = _names(productivity and productivity.get("productivityCoverage")) \
         | _names(efficiency and efficiency.get("efficiencyCoverage"))
+
+    hours = [r.get("recordedHours") for r in (productivity, efficiency)
+             if r and r.get("recordedHours") is not None]
+    recorded_hours = max(hours) if hours else None
 
     worked = set()
     if job:
@@ -209,29 +218,24 @@ def assess_workshop_coverage(productivity, efficiency, job):
     fields = {
         "fitterCount": len(covered),
         "coverageNames": sorted(covered),
+        "recordedHours": recorded_hours,
         "attributionSafe": not missing,
     }
+
+    hours_text = f"{recorded_hours:g} recorded hours" if recorded_hours is not None else "recorded hours"
 
     if missing:
         fields["evidenceStatus"] = "partial"
         fields["coverageNote"] = (
             f"{len(missing)} fitter(s) worked on the day's jobs but recorded no hours "
-            f"({', '.join(missing)}). The percentages cover {len(covered) or 'no'} fitter(s) "
-            f"and are not a location figure; performance attribution is not safe."
-        )
-    elif len(covered) <= 1:
-        # Not a contradiction in the evidence, but a single-fitter figure
-        # is still not a location measure, so it is never presented as one.
-        fields["evidenceStatus"] = "partial"
-        fields["coverageNote"] = (
-            f"Recorded hours cover a single fitter"
-            f"{' (' + sorted(covered)[0] + ')' if covered else ''}. "
-            f"The percentage is true of that fitter, not of the workshop."
+            f"({', '.join(missing)}). The percentages are struck over {hours_text} from "
+            f"{len(covered) or 'no'} fitter(s); performance attribution is not safe."
         )
     else:
         fields["evidenceStatus"] = "current"
         fields["coverageNote"] = (
-            f"Recorded hours cover all {len(covered)} fitter(s) named on the day's jobs."
+            f"Percentages struck over {hours_text} from {len(covered)} fitter(s); "
+            f"every fitter named on the day's jobs recorded hours."
         )
 
     return fields

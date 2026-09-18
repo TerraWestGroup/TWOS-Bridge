@@ -32,12 +32,12 @@ def check(label, actual, expected):
         FAILURES.append(label)
 
 
-def prod(names):
-    return {"productivityPercent": 100.0, "productivityCoverage": names}
+def prod(names, hours=8.0):
+    return {"productivityPercent": 100.0, "productivityCoverage": names, "recordedHours": hours}
 
 
-def eff(names):
-    return {"efficiencyPercent": 150.0, "efficiencyCoverage": names}
+def eff(names, hours=8.0):
+    return {"efficiencyPercent": 150.0, "efficiencyCoverage": names, "recordedHours": hours}
 
 
 def jobs(*mechanics):
@@ -65,21 +65,34 @@ check("attribution is not safe", r["attributionSafe"], False)
 check("the missing fitters are named",
       "Aaron Leonard" in r["coverageNote"] and "Jayden Brookes" in r["coverageNote"], True)
 
-print("\nSingle-fitter coverage, no contradiction")
-# The real 17 Sep 2026 position at both locations: the only fitter who
-# recorded hours is also the only one named on the day's jobs. Nothing
-# contradicts the evidence, but one fitter is still not a workshop.
-r = assess_workshop_coverage(prod("Daniel Fowles"), eff("Daniel Fowles"), jobs("Daniel Fowles"))
-check("-> partial anyway", r["evidenceStatus"], "partial")
+print("\nA quiet day worked by one fitter is complete, not partial")
+# The real 17 Sep 2026 Bunbury position: Daniel Fowles recorded 5.09
+# hours and is the only fitter named on the day's jobs. Nothing
+# contradicts the evidence, so it is not partial -- but the percentage
+# must carry the 5.09 hours it was struck over, because a ratio hides
+# its own denominator.
+r = assess_workshop_coverage(prod("Daniel Fowles", 5.09), eff("Daniel Fowles", 5.09),
+                             jobs("Daniel Fowles", "Daniel Fowles", ""))
+check("-> current, not partial", r["evidenceStatus"], "current")
 check("no missing fitter is alleged", r["attributionSafe"], True)
-check("the note says it is one fitter, not the workshop",
-      "not of the workshop" in r["coverageNote"], True)
+check("recorded hours travel with the figure", r["recordedHours"], 5.09)
+check("and appear in the note", "5.09 recorded hours" in r["coverageNote"], True)
 check("fitter count is 1", r["fitterCount"], 1)
+
+print("\nNo threshold is invented for what counts as enough hours")
+r = assess_workshop_coverage(prod("Daniel Fowles", 0.25), eff("Daniel Fowles", 0.25),
+                             jobs("Daniel Fowles"))
+check("a quarter-hour day is still not called partial", r["evidenceStatus"], "current")
+check("the hours are simply published", r["recordedHours"], 0.25)
 
 print("\nEdge cases")
 r = assess_workshop_coverage(prod("Aaron Leonard, Jayden Brookes"), None, jobs("aaron leonard"))
 check("name matching ignores case", r["attributionSafe"], True)
 check("two covered with no contradiction -> current", r["evidenceStatus"], "current")
+check("hours survive a missing efficiency report", r["recordedHours"], 8.0)
+
+r = assess_workshop_coverage(None, None, jobs("Daniel Fowles"))
+check("no reports at all -> hours are null, not zero", r["recordedHours"], None)
 
 r = assess_workshop_coverage(prod("Aaron Leonard, Jayden Brookes"), None, jobs("", None))
 check("jobs with no mechanic recorded raise nothing", r["evidenceStatus"], "current")
