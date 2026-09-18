@@ -78,12 +78,18 @@
         "efficiencyPercent": 157.17,
         "productivityCoverage": "Daniel Fowles",
         "efficiencyCoverage": "Daniel Fowles",
-        "evidenceStatus": "current",
+        "evidenceStatus": "partial",
         "sourceFiles": [
           "daily_efficiency_report_170926.xls",
           "daily_productivity_report_170926.xls",
           "daily_income_report_170926.xls"
-        ]
+        ],
+        "fitterCount": 1,
+        "coverageNames": [
+          "Daniel Fowles"
+        ],
+        "attributionSafe": true,
+        "coverageNote": "Recorded hours cover a single fitter (Daniel Fowles). The percentage is true of that fitter, not of the workshop."
       }
     },
     "busselton": {
@@ -99,12 +105,18 @@
         "efficiencyPercent": 100.0,
         "productivityCoverage": "Jayden Brookes",
         "efficiencyCoverage": "Jayden Brookes",
-        "evidenceStatus": "current",
+        "evidenceStatus": "partial",
         "sourceFiles": [
           "daily_efficiency_report_170926.xls",
           "daily_productivity_report_170926.xls",
           "daily_income_report_170926.xls"
-        ]
+        ],
+        "fitterCount": 1,
+        "coverageNames": [
+          "Jayden Brookes"
+        ],
+        "attributionSafe": true,
+        "coverageNote": "Recorded hours cover a single fitter (Jayden Brookes). The percentage is true of that fitter, not of the workshop."
       },
       "quotes": {
         "reportDate": "2026-09-14",
