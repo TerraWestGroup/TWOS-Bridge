@@ -344,18 +344,18 @@
         "type": "Genuine Build Consultant call",
         "owner": "Build Consultant",
         "rule": "Confirm satisfaction, function, understanding and concerns. No answer -> approved SMS, attempt recorded.",
-        "dueRule": "Next business day where 72 hours lands on a weekend or public holiday",
+        "dueRule": "Nearest business day where 72 hours lands on a weekend or public holiday",
         "conditional": false
       },
       {
         "code": "1M",
         "label": "1 month",
         "tier": "active",
-        "type": "Conditional technical follow-up",
+        "type": "Retorque / technical follow-up",
         "owner": "Workshop / Consultant",
-        "rule": "Retorque or technical follow-up where applicable. Fixed at 1 month -- no km-based trigger exists in MechanicDesk. A completed required retorque satisfies and suppresses this milestone.",
-        "dueRule": "Next business day; technical requirement takes precedence",
-        "conditional": true
+        "rule": "Fixed at 1 month. There is no km-based trigger or skip condition -- the milestone always occurs at 1 month regardless of any earlier suspension retorque (TWOS-AC-001 sections 4 and 5).",
+        "dueRule": "Nearest business day",
+        "conditional": false
       },
       {
         "code": "6M",
@@ -364,7 +364,7 @@
         "type": "Build Health Check + consultation",
         "owner": "Consultant + Fitter",
         "rule": "Morning preferred; allow customer 30 minutes; fitter allocation approximately 15 minutes; complimentary general inspection and coffee.",
-        "dueRule": "Six-month business-day milestone",
+        "dueRule": "Nearest business day at six months",
         "conditional": false
       },
       {
@@ -374,7 +374,7 @@
         "type": "Build Health Check + consultation",
         "owner": "Consultant + Fitter",
         "rule": "Relationship-led physical check under the Build Health Check standard.",
-        "dueRule": "Twelve-month business-day milestone",
+        "dueRule": "Nearest business day at twelve months",
         "conditional": false
       },
       {
@@ -394,7 +394,7 @@
         "type": "Build Health Check + 10% voucher",
         "owner": "Consultant + Fitter",
         "rule": "Final active touchpoint. 10% voucher issued here, valid 6 months, not combinable with other offers.",
-        "dueRule": "Twenty-four-month business-day milestone",
+        "dueRule": "Nearest business day at twenty-four months",
         "conditional": false
       },
       {
@@ -498,15 +498,14 @@
             "code": "1M",
             "label": "1 month",
             "tier": "active",
-            "type": "Conditional technical follow-up",
+            "type": "Retorque / technical follow-up",
             "owner": "Workshop / Consultant",
             "rawDue": "2026-10-17",
-            "due": "2026-10-19",
-            "conditional": true,
+            "due": "2026-10-16",
+            "conditional": false,
             "shifted": true,
             "generatesObligation": true,
-            "applicable": true,
-            "applicabilityBasis": "Fitted work -- check fastener torque, alignment and adjustment after a month's use"
+            "technicalNote": "Check fastener torque, alignment and adjustment after a month's use"
           },
           {
             "code": "6M",
@@ -735,10 +734,10 @@
         "fitter": "Jayden Brookes",
         "milestone": "1 month",
         "code": "1M",
-        "type": "Conditional technical follow-up",
-        "due": "2026-10-19",
+        "type": "Retorque / technical follow-up",
+        "due": "2026-10-16",
         "dayZero": "2026-09-17",
-        "daysAway": 31
+        "daysAway": 28
       },
       {
         "job": "BUSJOB2202",
