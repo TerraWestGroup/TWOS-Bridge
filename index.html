@@ -2844,8 +2844,14 @@ ${data[d][l].map(x=>`<div class="evidence" onclick="openDetail('${d}','${l}','${
             position.className = pct >= 100 ? 'good' : pct >= 80 ? 'warn' : 'bad';
         }
 
-        function renderPercentMetric(value, partial = false) {
-            return value === null || value === undefined ? 'Evidence unavailable' : `${Number(value).toFixed(1)}%${partial ? ' · partial' : ''}`;
+        function renderPercentMetric(value, partial = false, fitterCount = null) {
+            if (value === null || value === undefined) return 'Evidence unavailable';
+            // The fitter count travels with the number. Productivity and
+            // Efficiency aggregate over whoever recorded hours, so a figure
+            // covering one fitter must never read as a workshop-wide one.
+            const cover = fitterCount === null || fitterCount === undefined
+                ? '' : ` · ${fitterCount} fitter${fitterCount === 1 ? '' : 's'}`;
+            return `${Number(value).toFixed(1)}%${cover}${partial ? ' · partial' : ''}`;
         }
 
         function renderFinancialControl(state) {
@@ -2928,10 +2934,10 @@ ${data[d][l].map(x=>`<div class="evidence" onclick="openDetail('${d}','${l}','${
                 data.DN02.Busselton.find(x => x[0] === 'Revenue')[1] = busPct;
                 data.DN04.Bunbury.find(x => x[0] === 'Revenue')[1] = bunPct;
                 data.DN04.Busselton.find(x => x[0] === 'Revenue')[1] = busPct;
-                data.DN04.Bunbury.find(x => x[0] === 'Productivity')[1] = renderPercentMetric(state.locations.bunbury.workshop.productivityPercent, state.locations.bunbury.workshop.evidenceStatus === 'partial');
-                data.DN04.Bunbury.find(x => x[0] === 'Efficiency')[1] = renderPercentMetric(state.locations.bunbury.workshop.efficiencyPercent, state.locations.bunbury.workshop.evidenceStatus === 'partial');
-                data.DN04.Busselton.find(x => x[0] === 'Productivity')[1] = renderPercentMetric(state.locations.busselton.workshop.productivityPercent, state.locations.busselton.workshop.evidenceStatus === 'partial');
-                data.DN04.Busselton.find(x => x[0] === 'Efficiency')[1] = renderPercentMetric(state.locations.busselton.workshop.efficiencyPercent, state.locations.busselton.workshop.evidenceStatus === 'partial');
+                data.DN04.Bunbury.find(x => x[0] === 'Productivity')[1] = renderPercentMetric(state.locations.bunbury.workshop.productivityPercent, state.locations.bunbury.workshop.evidenceStatus === 'partial', state.locations.bunbury.workshop.fitterCount);
+                data.DN04.Bunbury.find(x => x[0] === 'Efficiency')[1] = renderPercentMetric(state.locations.bunbury.workshop.efficiencyPercent, state.locations.bunbury.workshop.evidenceStatus === 'partial', state.locations.bunbury.workshop.fitterCount);
+                data.DN04.Busselton.find(x => x[0] === 'Productivity')[1] = renderPercentMetric(state.locations.busselton.workshop.productivityPercent, state.locations.busselton.workshop.evidenceStatus === 'partial', state.locations.busselton.workshop.fitterCount);
+                data.DN04.Busselton.find(x => x[0] === 'Efficiency')[1] = renderPercentMetric(state.locations.busselton.workshop.efficiencyPercent, state.locations.busselton.workshop.evidenceStatus === 'partial', state.locations.busselton.workshop.fitterCount);
                 renderWave2Shadow(state);
                 renderAfterCare(state);
                 renderPodium(state);

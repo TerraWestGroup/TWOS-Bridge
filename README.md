@@ -21,6 +21,14 @@ Any push to `main` re-deploys the whole site, including whatever is currently in
 
 Each source degrades independently: a failure in one leaves the rest of the state refreshed and the failed section unchanged, rather than taking the whole close down.
 
+## DN04 workshop evidence coverage
+
+Productivity and Efficiency aggregate over whoever recorded hours that day. If one fitter logs time and three worked, the location reads 100% productivity and that figure is true of one person. The ingestion used to mark workshop evidence `current` whenever either report parsed at all, so the thinnest figures presented exactly like complete ones.
+
+`assess_workshop_coverage()` in `nightly_ingest.py` now compares the fitters named on the day's jobs against the fitters the timesheet reports cover, and marks the evidence `partial` when someone worked without recording hours, or when coverage is a single fitter. The fitter count is published as `workshop.fitterCount` and rendered next to every percentage, so a one-fitter figure cannot read as a workshop-wide one. `scripts/test_workshop_coverage.py` pins the rule.
+
+This is the test the 2 September 2026 Wave 2 Shadow assessment applied by hand, concluding that "performance attribution is prohibited until coverage is reconciled". The same condition was still true on 17 September, at both locations, with nothing reporting it — because Wave 2 Shadow is a hand-written snapshot that no job refreshes. Connecting it is a separate and larger piece of work.
+
 ## DN06 Customer After-Care
 
 The After-Care control (TWOS-AC-001 v1.1, tag control QJT-001 v1.1) is driven entirely by the GOLD `AFTER-CARE` tag in MechanicDesk — there is no separate customer database.
