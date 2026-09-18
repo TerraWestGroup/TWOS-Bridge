@@ -1209,11 +1209,12 @@
             <section id="afterCareView" class="hidden">
                 <h2>DN06 · Customer After-Care</h2>
                 <p class="muted" id="afterCareSubtitle">Loading approved program state…</p>
-                <div class="summary">
+                <div class="summary five">
                     <div class="stat">Active cycles<b id="afterCareActive">—</b><span class="muted">MechanicDesk AFTER-CARE tag</span></div>
                     <div class="stat">Due today<b id="afterCareDue">—</b><span class="muted">consultant obligations</span></div>
                     <div class="stat">Overdue<b id="afterCareOverdue">—</b><span class="muted">accountability exceptions</span></div>
                     <div class="stat">Unresolved concerns<b id="afterCareUnresolved">—</b><span class="muted">outcome not yet closed</span></div>
+                    <div class="stat">Awaiting Day 0<b id="afterCareAwaiting">—</b><span class="muted">tagged, not yet finalised</span></div>
                 </div>
                 <div class="card" style="padding:18px">
                     <h3 style="margin-top:0">CUSTOMER PROMISE</h3>
@@ -1222,7 +1223,21 @@
                 </div>
                 <div class="card" style="padding:16px;margin-top:14px">
                     <h3 style="margin-top:0">THREE-YEAR JOURNEY</h3>
-                    <table class="table"><thead><tr><th>Milestone</th><th>Customer experience</th><th>Owner</th><th>Control rule</th></tr></thead><tbody id="afterCareMilestones"><tr><td colspan="4">Loading state…</td></tr></tbody></table>
+                    <table class="table"><thead><tr><th>Milestone</th><th>Tier</th><th>Customer experience</th><th>Owner</th><th>Control rule</th></tr></thead><tbody id="afterCareMilestones"><tr><td colspan="5">Loading state…</td></tr></tbody></table>
+                </div>
+                <div class="card" style="padding:16px;margin-top:14px">
+                    <h3 style="margin-top:0">LIVE OBLIGATIONS</h3>
+                    <table class="table"><thead><tr><th>State</th><th>Customer</th><th>Vehicle</th><th>Milestone</th><th>Due</th><th>Owner</th></tr></thead><tbody id="afterCareObligations"></tbody></table>
+                    <p class="muted" id="afterCareOutcomeLimit" style="margin-bottom:0"></p>
+                </div>
+                <div class="card" style="padding:16px;margin-top:14px">
+                    <h3 style="margin-top:0">AWAITING DAY 0</h3>
+                    <p class="muted" style="margin-top:0">A job tagged AFTER-CARE without a finalisation date is an incomplete Day 0 and does not drive obligations (QJT-001 clause 34). These enrol when their invoice is finalised.</p>
+                    <table class="table"><thead><tr><th>Job</th><th>Customer</th><th>Vehicle</th><th>Build</th><th>Booked</th><th>Location</th></tr></thead><tbody id="afterCareAwaitingBody"></tbody></table>
+                </div>
+                <div class="card" style="padding:16px;margin-top:14px">
+                    <h3 style="margin-top:0">CONTROL GAPS</h3>
+                    <table class="table"><thead><tr><th>Severity</th><th>Gap</th><th>Owner</th></tr></thead><tbody id="afterCareExceptions"></tbody></table>
                 </div>
                 <div class="lowergrid" style="margin-top:14px">
                     <div class="card mini"><h3>DAILY CONSULTANT WORKFLOW</h3><p id="afterCareWorkflow"></p><div id="afterCareOutcomes"></div><p class="muted" id="afterCareNoAnswer"></p></div>
@@ -2639,15 +2654,49 @@ ${data[d][l].map(x=>`<div class="evidence" onclick="openDetail('${d}','${l}','${
             document.getElementById('afterCareHomeDue').textContent = connected ? afterCareMetric(position.dueToday) : '—';
             document.getElementById('afterCareHomeUnresolved').textContent = connected ? afterCareMetric(position.unresolvedConcerns) : '—';
             document.getElementById('afterCareHomeNote').textContent = connected ? 'Latest accountable After-Care position from MechanicDesk.' : 'Approved standard is active; MechanicDesk tagged-job operating feed is not yet connected.';
-            document.getElementById('afterCareSubtitle').textContent = `${ac.program.documentId} · ${ac.program.status} · ${ac.program.owner} · System of record: ${ac.program.systemOfRecord}`;
+            const version = ac.program.version ? ` v${ac.program.version}` : '';
+            document.getElementById('afterCareSubtitle').textContent = `${ac.program.documentId}${version} · ${ac.program.status} · ${ac.program.owner} · System of record: ${ac.program.systemOfRecord}${ac.program.tagStandard ? ` · Tag control: ${ac.program.tagStandard}` : ''}`;
             document.getElementById('afterCareActive').textContent = afterCareMetric(position.activeCycles);
             document.getElementById('afterCareDue').textContent = afterCareMetric(position.dueToday);
             document.getElementById('afterCareOverdue').textContent = afterCareMetric(position.overdue);
             document.getElementById('afterCareUnresolved').textContent = afterCareMetric(position.unresolvedConcerns);
-            ['afterCareActive','afterCareDue','afterCareOverdue','afterCareUnresolved'].forEach(id => document.getElementById(id).className = metricClass);
+            document.getElementById('afterCareAwaiting').textContent = afterCareMetric(position.awaitingDayZero);
+            ['afterCareActive','afterCareDue','afterCareOverdue','afterCareUnresolved','afterCareAwaiting'].forEach(id => document.getElementById(id).className = metricClass);
+            // Overdue and unresolved concerns are the two that mean someone
+            // has to do something, so they carry their own state rather than
+            // reading like the rest of the row when they are non-zero.
+            if (connected && position.overdue > 0) document.getElementById('afterCareOverdue').className = 'bad';
+            if (connected && position.unresolvedConcerns > 0) document.getElementById('afterCareUnresolved').className = 'bad';
+            if (connected && position.awaitingDayZero > 0) document.getElementById('afterCareAwaiting').className = 'warn';
             document.getElementById('afterCarePromise').textContent = ac.program.promise;
             document.getElementById('afterCarePrinciple').textContent = ac.program.designPrinciple;
-            document.getElementById('afterCareMilestones').innerHTML = ac.milestones.map(m => `<tr><td><b>${escapeHtml(m.label)}</b><br><span class="muted">${escapeHtml(m.dueRule)}</span></td><td>${escapeHtml(m.type)}</td><td>${escapeHtml(m.owner)}</td><td>${escapeHtml(m.rule)}</td></tr>`).join('');
+            const tierBadge = { active: 'good', passive: 'warn', ambient: 'muted' };
+            document.getElementById('afterCareMilestones').innerHTML = ac.milestones.map(m => `<tr><td><b>${escapeHtml(m.label)}</b><br><span class="muted">${escapeHtml(m.dueRule)}</span></td><td><span class="${tierBadge[m.tier] || 'muted'} status">${escapeHtml((m.tier || 'active').toUpperCase())}</span></td><td>${escapeHtml(m.type)}</td><td>${escapeHtml(m.owner)}</td><td>${escapeHtml(m.rule)}</td></tr>`).join('');
+
+            // Live obligations: overdue first, then today, then what is
+            // coming. A consultant should be able to work straight off
+            // this without opening MechanicDesk to find out who to ring.
+            const obligations = [
+                ...(ac.overdueList || []).map(x => ({ ...x, state: 'OVERDUE', cls: 'bad' })),
+                ...(ac.dueTodayList || []).map(x => ({ ...x, state: 'DUE TODAY', cls: 'warn' })),
+                ...(ac.upcomingList || []).map(x => ({ ...x, state: 'SCHEDULED', cls: 'good' })),
+                ...(ac.suppressedList || []).map(x => ({ ...x, state: 'NOT APPLICABLE', cls: 'muted' })),
+            ];
+            document.getElementById('afterCareObligations').innerHTML = obligations.length
+                ? obligations.map(x => `<tr><td><span class="${x.cls} status">${x.state}</span></td><td><b>${escapeHtml(x.customer || '—')}</b>${x.mobile ? `<br><span class="muted">${escapeHtml(x.mobile)}</span>` : ''}</td><td>${escapeHtml(x.vehicle || '—')}${x.registration ? `<br><span class="muted">${escapeHtml(x.registration)}</span>` : ''}</td><td>${escapeHtml(x.milestone)}<br><span class="muted">${escapeHtml(x.basis || x.type)}</span></td><td>${localDate(x.due)}${x.daysLate ? `<br><span class="muted">${x.daysLate} day(s) late</span>` : ''}</td><td>${escapeHtml(x.owner || 'Unassigned')}${x.ownerBasis === 'created_by' ? '<br><span class="muted">booking owner (proxy)</span>' : ''}</td></tr>`).join('')
+                : '<tr><td><span class="good status">CLEAR</span></td><td colspan="5">No After-Care obligation is currently due, overdue or scheduled.</td></tr>';
+            document.getElementById('afterCareOutcomeLimit').textContent = ac.outcomeCapture && ac.outcomeCapture.status !== 'connected_tested'
+                ? ac.outcomeCapture.limitation
+                : '';
+
+            document.getElementById('afterCareAwaitingBody').innerHTML = (ac.awaitingDayZero || []).length
+                ? ac.awaitingDayZero.map(x => `<tr><td><b>${escapeHtml(x.job)}</b></td><td>${escapeHtml(x.customer || '—')}</td><td>${escapeHtml(x.vehicle || '—')}</td><td>${escapeHtml(x.description || '—')}</td><td>${x.startDate ? localDate(x.startDate) : '—'}</td><td>${escapeHtml((x.location || '').replace(/^./, c => c.toUpperCase()))}</td></tr>`).join('')
+                : '<tr><td colspan="6">No jobs are currently tagged AFTER-CARE awaiting finalisation.</td></tr>';
+
+            const severityClass = { critical: 'bad', warning: 'warn', info: 'muted' };
+            document.getElementById('afterCareExceptions').innerHTML = (ac.exceptions || []).length
+                ? ac.exceptions.map(e => `<tr><td><span class="${severityClass[e.severity] || 'muted'} status">${escapeHtml((e.severity || 'info').toUpperCase())}</span></td><td><b>${escapeHtml(e.title)}</b><br><span class="muted">${escapeHtml(e.detail)}</span></td><td>${escapeHtml(e.owner || '—')}</td></tr>`).join('')
+                : '<tr><td><span class="good status">CLEAR</span></td><td colspan="2">No open control gaps in the After-Care path.</td></tr>';
             document.getElementById('afterCareWorkflow').textContent = ac.dailyWorkflow.delivery;
             document.getElementById('afterCareOutcomes').innerHTML = ac.dailyWorkflow.outcomes.map(x => `<span class="badge">${escapeHtml(x)}</span>`).join(' ');
             document.getElementById('afterCareNoAnswer').textContent = `${ac.dailyWorkflow.noAnswerRule} No-show: ${ac.dailyWorkflow.noShowRule}`;

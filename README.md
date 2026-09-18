@@ -15,24 +15,50 @@ This repo deploys directly via the Azure Static Web Apps deployment token (not a
 
 Any push to `main` re-deploys the whole site, including whatever is currently in `data/twos-state.json`.
 
-## What's still needed: nightly automated ingestion
+## Nightly ingestion
 
-The end goal is a scheduled job that runs every evening, without anyone watching, and:
+`.github/workflows/nightly-ingest.yml` runs at 11:30 UTC (19:30 AWST), after the ~18:10 AWST MechanicDesk delivery. It runs `scripts/nightly_ingest.py`, which reads the MechanicDesk reports, the Podium Daily Digest, the ANZ Worldline settlement PDF, the manually-sent Quote Reports and Xero, merges what it has real evidence for into `data/twos-state.json`, commits, and deploys.
 
-1. Reads new MechanicDesk `.xls` reports from the Outlook "Mechanic Desk Reports" folder (Bunbury + Busselton).
-2. Reads the latest Podium Daily Digest email.
-3. Reads new ANZ Worldline settlement PDFs.
-4. Queries dataSights for the latest Xero financial evidence.
-5. Regenerates `data/twos-state.json` from all of the above.
-6. Commits and pushes the updated file to `main`, which triggers the deploy workflow above automatically.
-7. If any step fails, raises an Owner-attention flag rather than silently leaving stale data live.
+Each source degrades independently: a failure in one leaves the rest of the state refreshed and the failed section unchanged, rather than taking the whole close down.
 
-This requires:
-- An Azure AD app registration with `Mail.Read` (Application permission) on Microsoft Graph, for unattended Outlook access.
-- dataSights credentials suitable for scripted/scheduled queries (or reliance on dataSights's own `trigger_xero_sync` schedule).
-- A GitHub Actions workflow (`.github/workflows/nightly-refresh.yml`, not yet created) wired to run on a cron schedule, using the above credentials as repo secrets, and to perform steps 1–6.
+## DN06 Customer After-Care
 
-None of the credential-dependent pieces are built yet — this repo currently only handles deployment of whatever's manually placed in `data/twos-state.json`.
+The After-Care control (TWOS-AC-001 v1.1, tag control QJT-001 v1.1) is driven entirely by the GOLD `AFTER-CARE` tag in MechanicDesk — there is no separate customer database.
+
+| File | Role |
+| --- | --- |
+| `scripts/parsers/job_report.py` | Day 0 detection — tag present **and** invoice finalised **and** a real finished date |
+| `scripts/parsers/job_wip_report.py` | Enrolment awaiting Day 0, owner attribution, open reworks |
+| `scripts/aftercare.py` | The milestone engine — journey definition, WA business-day shifting, the cycle register, the operating position |
+| `scripts/test_aftercare.py` | Checks for all of the above, including both parsers against synthetic workbooks |
+| `scripts/probe_job_reports.py` | Read-only diagnostic against the live mailbox; prints the real report headers and what it finds. Self-contained — it carries its own small parsing logic rather than importing the production parsers, so it can be added or run on its own |
+| `scripts/seed_aftercare_state.py` | One-off seed of cycles that pre-date this feed |
+
+### Two rules that matter
+
+**The register is appended to, never rebuilt.** The daily Job Report contains only that day's jobs, so a cycle that started last month is simply absent from today's export. `afterCare.register` in the state file is the system of record for Day 0 — losing it loses every cycle not in today's report. This is why `seed_aftercare_state.py` exists: BUSJOB2202 was finalised on 17 September 2026, before this feed was built, and would otherwise never have raised its 72-hour call.
+
+**A tagged job is not a cycle.** QJT-001 clause 34: a job tagged `AFTER-CARE` without a finalisation date is an incomplete Day 0 and must not drive obligations. Those appear on the Bridge as *Awaiting Day 0* and enrol the moment their invoice is finalised.
+
+### What is connected and what is not
+
+The tag and finalisation feed is connected (`afterCare.integration`). Outcome capture is not (`afterCare.outcomeCapture`) — MechanicDesk holds no field recording that a 72-hour call happened or how it went. Until one of the three options listed in that block is chosen, **Overdue means a due date passed with no recorded outcome, not a proven missed obligation**, and the Bridge says so on screen. These are deliberately two separate statuses so the Bridge cannot imply it knows something it does not.
+
+### Before trusting a changed report
+
+Run the **Probe Job Reports** workflow from the Actions tab. It prints the live reports' real header rows and what it finds, and writes nothing. The production parsers resolve columns tolerantly and raise an error naming every column actually present, so a spelling change surfaces as a diagnosable warning rather than a silently missing field — but the probe tells you before a nightly run does.
+
+Run `python scripts/test_aftercare.py` for the engine checks; it needs `xlrd` and `xlwt` and touches nothing outside the process.
+
+### Never read these reports through extracted text
+
+The 18 September 2026 probe settled this. Read through a text extraction, the Job WIP report's Tags column is cut at roughly 26 characters, which hid `AFTER-CARE` on two Bunbury jobs whose other tags ran long and produced an enrolment count of 6 against a true 8. Read from the raw `.xls` attachment, as the parsers do, the whole tag string comes through. Any future tooling that reaches these reports by any other route needs checking against this.
+
+The same run corrected a second assumption worth recording: MechanicDesk's `Saleperson` field is not universally empty — it was filled on 17 of Bunbury's 98 open jobs and none of Busselton's 35 — but it was empty on every job then in or awaiting the programme. That is why the owner-proxy exception is computed from the programme's own jobs rather than from a global count, which would never have fired.
+
+### Maintaining the holiday table
+
+`aftercare.PROCLAIMED_HOLIDAYS` carries the WA King's Birthday, which is proclaimed annually and moves. Everything else (including Easter) is computed. The table currently covers to the date published as `afterCare.integration.holidayTableCoverageTo`; extend it before that date passes, or milestones may be scheduled onto a public holiday.
 
 ## Note: logo asset
 
