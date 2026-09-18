@@ -1,1 +1,36 @@
+name: Probe Job Reports
 
+# Read-only check of the MechanicDesk Job and Job WIP reports, ahead of
+# connecting DN06 Customer After-Care. Prints each report's real header
+# row and what it finds, then stops. Writes no state, makes no commit,
+# deploys nothing. Manual trigger only -- never scheduled.
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # pdfplumber is required because the probe imports nightly_ingest
+      # for its Graph helpers, which loads the Worldline PDF parser.
+      - name: Install dependencies
+        run: pip install xlrd pdfplumber
+
+      - name: Probe the Job and Job WIP reports
+        env:
+          GRAPH_TENANT_ID: ${{ secrets.GRAPH_TENANT_ID }}
+          GRAPH_CLIENT_ID: ${{ secrets.GRAPH_CLIENT_ID }}
+          GRAPH_CLIENT_SECRET: ${{ secrets.GRAPH_CLIENT_SECRET }}
+          MAILBOX_ADDRESS: ${{ secrets.MAILBOX_ADDRESS }}
+        run: python scripts/probe_job_reports.py
