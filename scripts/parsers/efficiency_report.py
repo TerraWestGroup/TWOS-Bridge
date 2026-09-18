@@ -17,7 +17,12 @@ import xlrd
 
 def parse_efficiency_report(file_path):
     """
-    Returns {"efficiencyPercent": float, "efficiencyCoverage": "Name, Name"}
+    Returns {"efficiencyPercent": float, "efficiencyCoverage": "Name, Name",
+             "recordedHours": float}
+
+    recordedHours is the denominator the percentage is computed over. An
+    efficiency figure of 157% means little without knowing it was struck
+    over 5.09 recorded hours rather than a full workshop day.
     """
     wb = xlrd.open_workbook(file_path)
     sheet = wb.sheet_by_index(0)
@@ -52,6 +57,7 @@ def parse_efficiency_report(file_path):
     return {
         "efficiencyPercent": round(efficiency_percent, 2),
         "efficiencyCoverage": ", ".join(employees),
+        "recordedHours": round(total_hours_sum, 2),
     }
 
 

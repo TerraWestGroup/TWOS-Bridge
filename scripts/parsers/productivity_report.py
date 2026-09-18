@@ -17,7 +17,13 @@ import xlrd
 
 def parse_productivity_report(file_path):
     """
-    Returns {"productivityPercent": float, "productivityCoverage": "Name, Name"}
+    Returns {"productivityPercent": float, "productivityCoverage": "Name, Name",
+             "recordedHours": float}
+
+    recordedHours is the denominator the percentage is computed over, and
+    is returned because the percentage alone is not interpretable without
+    it: 100% of 5.09 recorded hours and 100% of a full workshop day are
+    the same number and very different facts.
     """
     wb = xlrd.open_workbook(file_path)
     sheet = wb.sheet_by_index(0)
@@ -52,6 +58,7 @@ def parse_productivity_report(file_path):
     return {
         "productivityPercent": round(productivity_percent, 2),
         "productivityCoverage": ", ".join(employees),
+        "recordedHours": round(total_hours_sum, 2),
     }
 
 
