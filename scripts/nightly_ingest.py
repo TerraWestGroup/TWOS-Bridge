@@ -33,6 +33,9 @@ from parsers.efficiency_report import parse_efficiency_report
 from parsers.podium_digest import parse_podium_digest
 from parsers.worldline_settlement import parse_worldline_settlement
 from parsers.quote_report import parse_quote_report
+from parsers.job_report import parse_job_report
+from parsers.job_wip_report import parse_job_wip_report
+import aftercare
 from xero_client import get_access_token as xero_get_access_token, get_tenant_id as xero_get_tenant_id, xero_get
 from xero_financial import get_bank_account_balance, get_payables_summary, get_profit_and_loss_summary, BANK_ACCOUNT_OF_INTEREST
 
@@ -51,6 +54,29 @@ REPORT_PARSERS = {
     "Productivity": parse_productivity_report,
     "Efficiency": parse_efficiency_report,
 }
+
+# DN06 Customer After-Care reads two further MechanicDesk reports. They
+# are kept separate from REPORT_PARSERS above so that the mechanicDesk
+# source-health count keeps meaning exactly what it meant before
+# (6/6 Income/Productivity/Efficiency), and an After-Care parse failure
+# degrades only the After-Care control rather than the whole close.
+AFTER_CARE_PARSERS = {
+    "Job": parse_job_report,
+    "Job Wip": parse_job_wip_report,
+}
+
+
+def normalise_report_type(report_type):
+    """
+    MechanicDesk's subject lines are not perfectly consistent in case
+    ("Job Wip" vs "Job WIP"), so report types are matched case-folded
+    and mapped back to the canonical key used by the parser tables.
+    """
+    folded = " ".join(report_type.split()).casefold()
+    for known in list(REPORT_PARSERS) + list(AFTER_CARE_PARSERS):
+        if known.casefold() == folded:
+            return known
+    return None
 
 
 def get_env(name):
@@ -142,6 +168,163 @@ def download_attachment(token, base_url, message_id, tmp_dir, extension=".xls"):
     return None
 
 
+def update_after_care(state, results, latest_date):
+    """
+    Merges the day's Job and Job WIP evidence into state["afterCare"].
+
+    Deliberately conservative about what it claims:
+
+    * A cycle starts only where the AFTER-CARE tag AND a finalised
+      invoice AND a real finished date are all present (QJT-001 7A,
+      clause 34). Tagged-but-open jobs are reported as awaiting Day 0,
+      never as active cycles.
+    * The register is appended to and never truncated, because the daily
+      Job Report only contains that day's jobs.
+    * The tagged-job feed being connected does NOT mean outcome capture
+      is connected. They are tracked as two separate statuses so the
+      Bridge cannot imply it knows a call was made when nothing records
+      that.
+    * Where a location's reports are missing from this close, that
+      location's awaiting-Day-0 figure is left as it was rather than
+      being silently reported as zero.
+    """
+    ac = state.get("afterCare")
+    if not ac:
+        raise ValueError("state has no afterCare block to update")
+
+    register = ac.get("register") or []
+    awaiting = list(ac.get("awaitingDayZero") or [])
+    rework_open = []
+    added_total, superseded_total = [], []
+    locations_read = []
+    salesperson_populated = 0
+    after_care_open_by_location = {}
+
+    for location in ("bunbury", "busselton"):
+        job = results.get((location, "Job"))
+        wip = results.get((location, "Job Wip"))
+        if job is None and wip is None:
+            continue
+        locations_read.append(location)
+
+        if job is not None:
+            register, added, superseded = aftercare.merge_register(
+                register, job["afterCareFinalised"], location, latest_date
+            )
+            added_total.extend(added)
+            superseded_total.extend(superseded)
+
+        if wip is not None:
+            for record in wip["afterCareOpen"]:
+                record = dict(record, location=location)
+                after_care_open_by_location.setdefault(location, []).append(record)
+            rework_open.extend(dict(r, location=location) for r in wip["reworkOpen"])
+            salesperson_populated += wip["salespersonPopulated"]
+
+    # Rebuild awaiting-Day-0 only for the locations actually read this
+    # close, so a missing Busselton report cannot erase Busselton's
+    # pending enrolments.
+    if after_care_open_by_location or locations_read:
+        kept = [
+            a for a in awaiting
+            if a.get("location") not in after_care_open_by_location
+            and a.get("location") not in locations_read
+        ]
+        refreshed = []
+        for location in locations_read:
+            refreshed.extend(after_care_open_by_location.get(location, []))
+        awaiting = kept + refreshed
+
+    position = aftercare.compute_position(
+        register, awaiting, rework_open, latest_date, ac.get("outcomes") or {}
+    )
+
+    # The journey itself is published from the engine rather than kept as
+    # a separate hand-maintained copy in the state file, so the table the
+    # Bridge shows and the dates it calculates can never drift apart.
+    ac["milestones"] = [
+        {
+            "code": m["code"], "label": m["label"], "tier": m["tier"],
+            "type": m["type"], "owner": m["owner"], "rule": m["rule"],
+            "dueRule": m["dueRule"], "conditional": m["conditional"],
+        }
+        for m in aftercare.MILESTONES
+    ]
+
+    ac["register"] = register
+    ac["awaitingDayZero"] = awaiting
+    ac["reworkOpen"] = rework_open
+    ac["operatingPosition"] = {
+        "activeCycles": position["activeCycles"],
+        "dueToday": position["dueToday"],
+        "completedToday": position["completedToday"],
+        "overdue": position["overdue"],
+        "unresolvedConcerns": position["unresolvedConcerns"],
+        "awaitingDayZero": position["awaitingDayZero"],
+        "recurringQualitySignals": None,
+        "ownerAttentionRequired": bool(
+            position["unresolvedConcerns"] > 0 or position["overdue"] >= 3
+        ),
+        "ownerAttentionReason": (
+            f"{position['unresolvedConcerns']} unresolved After-Care concern(s) open on an enrolled vehicle."
+            if position["unresolvedConcerns"] > 0
+            else f"{position['overdue']} After-Care obligations are past their due date with no recorded outcome."
+            if position["overdue"] >= 3
+            else "No After-Care matter requires Owner attention; obligations sit with the accountable consultants."
+        ),
+    }
+    ac["dueTodayList"] = position["dueTodayList"]
+    ac["overdueList"] = position["overdueList"]
+    ac["upcomingList"] = position["upcomingList"]
+    ac["suppressedList"] = position["suppressedList"]
+    ac["concernList"] = position["concernList"]
+
+    ac["integration"]["status"] = "connected_tested" if locations_read else "connected_degraded"
+    ac["integration"]["statusLabel"] = (
+        "MechanicDesk AFTER-CARE tag and job finalisation connected"
+        if locations_read else "After-Care reports missing from this close"
+    )
+    ac["integration"]["lastSuccessfulIngestionAt"] = (
+        datetime.datetime.utcnow().isoformat() + "Z" if locations_read
+        else ac["integration"].get("lastSuccessfulIngestionAt")
+    )
+    ac["integration"]["locationsRead"] = locations_read
+    ac["integration"]["holidayTableCoverageTo"] = aftercare.HOLIDAY_TABLE_COVERAGE_TO
+
+    # Computed exceptions are rebuilt each run; declared ones (governance
+    # matters recorded in the state file by hand) are preserved.
+    declared = [e for e in (ac.get("exceptions") or []) if e.get("origin") == "declared"]
+    computed = []
+
+    # Keyed off the programme's own jobs, not a global count. Saleperson
+    # is populated on a minority of the wider job book (17 of Bunbury's
+    # 98 at the 17 Sep 2026 close), so a "zero across both locations"
+    # test would never fire while every After-Care obligation was still
+    # being assigned by proxy.
+    proxied = [c for c in register if not c.get("supersededBy") and c.get("ownerBasis") != "salesperson"]
+    proxied += [a for a in awaiting if a.get("ownerBasis") != "salesperson"]
+    if proxied:
+        total = len(register) + len(awaiting)
+        computed.append({
+            "id": "owner-proxy", "origin": "computed", "severity": "warning",
+            "owner": "DN02 Sales",
+            "title": "Build Consultant is assigned by proxy",
+            "detail": f"{len(proxied)} of {total} jobs in or awaiting the programme have no Saleperson recorded "
+                      f"in MechanicDesk, so their After-Care obligations are assigned from the booking's "
+                      f"Created By instead. The 72-hour call may land with someone who never met the customer. "
+                      f"Across the wider open job book, Saleperson is filled on {salesperson_populated} rows.",
+        })
+    ac["exceptions"] = declared + computed
+
+    print(
+        f"After-Care: {position['activeCycles']} active cycle(s), "
+        f"{position['dueToday']} due today, {position['overdue']} overdue, "
+        f"{position['unresolvedConcerns']} unresolved concern(s), "
+        f"{position['awaitingDayZero']} awaiting Day 0 "
+        f"(+{len(added_total)} enrolled, {len(superseded_total)} superseded this run)"
+    )
+
+
 def main():
     tenant_id = get_env("GRAPH_TENANT_ID")
     client_id = get_env("GRAPH_CLIENT_ID")
@@ -164,8 +347,9 @@ def main():
         match = SUBJECT_PATTERN.match(m["subject"].strip())
         if not match:
             continue
-        location_label, report_type = match.groups()
-        if report_type not in REPORT_PARSERS or location_label not in LOCATION_KEY:
+        location_label, raw_report_type = match.groups()
+        report_type = normalise_report_type(raw_report_type)
+        if report_type is None or location_label not in LOCATION_KEY:
             continue
         matched.append({
             "id": m["id"],
@@ -404,11 +588,16 @@ def main():
                 print(f"WARNING: could not download .xls attachment for {m['location']} {m['reportType']}.")
                 continue
 
-            parser = REPORT_PARSERS[m["reportType"]]
+            is_after_care = m["reportType"] in AFTER_CARE_PARSERS
+            parser = AFTER_CARE_PARSERS[m["reportType"]] if is_after_care else REPORT_PARSERS[m["reportType"]]
             try:
                 parsed = parser(file_path)
             except Exception as e:
-                print(f"ERROR parsing {m['location']} {m['reportType']}: {e}", file=sys.stderr)
+                # An After-Care parse failure must not take the close down
+                # with it -- the revenue and workshop evidence is
+                # independent of it.
+                level = "WARNING" if is_after_care else "ERROR"
+                print(f"{level} parsing {m['location']} {m['reportType']}: {e}", file=sys.stderr)
                 continue
 
             results[(m["location"], m["reportType"])] = parsed
@@ -416,7 +605,16 @@ def main():
             source_files[m["location"]].append(os.path.basename(file_path))
             if latest_received is None or m["receivedDateTime"] > latest_received:
                 latest_received = m["receivedDateTime"]
-            print(f"Parsed {m['location']} {m['reportType']}: {parsed}")
+
+            if m["reportType"] == "Job":
+                print(f"Parsed {m['location']} Job: {len(parsed['jobs'])} jobs, "
+                      f"{len(parsed['afterCareFinalised'])} AFTER-CARE finalised")
+            elif m["reportType"] == "Job Wip":
+                print(f"Parsed {m['location']} Job Wip: {parsed['openJobs']} open, "
+                      f"{len(parsed['afterCareOpen'])} AFTER-CARE awaiting Day 0, "
+                      f"{len(parsed['reworkOpen'])} rework open")
+            else:
+                print(f"Parsed {m['location']} {m['reportType']}: {parsed}")
 
         # Merge into state, per location
         for location in ("bunbury", "busselton"):
@@ -444,12 +642,22 @@ def main():
                 state["locations"][location]["workshop"]["evidenceStatus"] = "current"
                 state["locations"][location]["workshop"]["sourceFiles"] = source_files[location]
 
+        # --- DN06 Customer After-Care (TWOS-AC-001 v1.1 / QJT-001 v1.1) ---
+        # Day 0 comes from the Job Report (tag present AND invoice
+        # finalised); enrolment-in-waiting and open reworks come from the
+        # Job WIP book. The cycle register is APPENDED to, never rebuilt:
+        # a cycle that started last month is not in today's export.
+        try:
+            update_after_care(state, results, latest_date)
+        except Exception as e:
+            print(f"WARNING: After-Care ingestion failed: {e}", file=sys.stderr)
+
         # Update top-level evidence metadata
         state["latestAccountableDate"] = latest_date
         state["generatedAt"] = datetime.datetime.utcnow().isoformat() + "Z"
 
         expected_count = len(LOCATION_KEY) * len(REPORT_PARSERS)
-        actual_count = len(results)
+        actual_count = len([k for k in results if k[1] in REPORT_PARSERS])
         state["sources"]["mechanicDesk"]["status"] = "connected_tested" if actual_count == expected_count else "connected_degraded"
         state["sources"]["mechanicDesk"]["receivedAt"] = latest_received or state["sources"]["mechanicDesk"].get("receivedAt")
         state["sources"]["mechanicDesk"]["reportCount"] = actual_count
