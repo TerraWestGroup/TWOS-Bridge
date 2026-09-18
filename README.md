@@ -34,6 +34,13 @@ The After-Care control (TWOS-AC-001 v1.1, tag control QJT-001 v1.1) is driven en
 | `scripts/probe_job_reports.py` | Read-only diagnostic against the live mailbox; prints the real report headers and what it finds. Self-contained — it carries its own small parsing logic rather than importing the production parsers, so it can be added or run on its own |
 | `scripts/seed_aftercare_state.py` | One-off seed of cycles that pre-date this feed |
 
+### The standard is the authority, not this code
+
+`TWOS-AC-001 Customer After-Care Program v1.1` lives in SharePoint under `01 Controlled Standards/Carté Marketing Knowledge`. It carries a sensitivity label, so tooling that cannot decrypt it will not be able to read it — check it in the browser, and check the engine against it rather than the other way round. Two rules in it are easy to get wrong and were got wrong here first:
+
+- **The 1-month milestone is unconditional.** Section 4: it "always occurs at 1 month regardless of any earlier suspension retorque". Section 5: no km-based trigger, no early-completion skip. Nothing suppresses it — not supply-only, not an absence of load-bearing parts, not a retorque already done at 500 km. `aftercare.py` therefore contains no suppression logic for it at all, and `LOAD_BEARING_KEYWORDS` only describes what kind of visit it is.
+- **Milestones move to the NEAREST business day, not the next.** Section 5. A Saturday milestone moves back to the Friday; a Sunday one moves forward to the Monday. Moving everything forward puts every Saturday milestone two days late. Ties resolve forward so nothing is actioned before it matures.
+
 ### Two rules that matter
 
 **The register is appended to, never rebuilt.** The daily Job Report contains only that day's jobs, so a cycle that started last month is simply absent from today's export. `afterCare.register` in the state file is the system of record for Day 0 — losing it loses every cycle not in today's report. This is why `seed_aftercare_state.py` exists: BUSJOB2202 was finalised on 17 September 2026, before this feed was built, and would otherwise never have raised its 72-hour call.
