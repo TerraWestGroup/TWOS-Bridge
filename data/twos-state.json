@@ -293,95 +293,119 @@
     "schemaVersion": "1.0",
     "program": {
       "documentId": "TWOS-AC-001",
-      "version": "1.0",
+      "version": "1.1",
       "status": "Executive Standard \u2014 Approved Design",
       "owner": "DN06 Growth / Customer Relationship",
       "systemOfRecord": "MechanicDesk",
       "appliesTo": "All current and future TerraWest 4x4 locations",
-      "sourceDocument": "TWOS_Customer_After-Care_Program_v1.0.docx",
+      "sourceDocument": "TWOS_Customer_After-Care_Program_v1.1.docx",
       "promise": "We maintain a relationship with our customer and their vehicle for three years, helping ensure the build continues to work for their life, their destinations and what they want to do next.",
-      "designPrinciple": "Technology manages the timing. The Build Consultant owns the relationship. The fitter owns the technical check. TWOS makes sure the promise is delivered."
+      "designPrinciple": "Technology manages the timing. The Build Consultant owns the relationship. The fitter owns the technical check. TWOS makes sure the promise is delivered.",
+      "tagStandard": "QJT-001 v1.1 (GOLD - AFTER-CARE)",
+      "changeNote": "v1.1 follows the 4-11 September 2026 team review: first contact 24h -> 72h, the 3-month call removed, 18 months passive, the 10% voucher moved to 24 months at 6 months' validity, and 24-36 months ambient marketing only."
     },
     "integration": {
-      "status": "not_connected",
-      "statusLabel": "Standard approved \u00b7 operating feed not connected",
-      "requiredSource": "MechanicDesk AFTER-CARE tag, job finalisation, vehicle history and milestone outcomes",
-      "requiredAdapter": "Read qualifying tagged jobs; calculate business-day milestones; write due cards and outcome references without creating a parallel customer database",
-      "lastSuccessfulIngestionAt": null
+      "status": "connected_tested",
+      "statusLabel": "MechanicDesk AFTER-CARE tag and job finalisation connected",
+      "requiredSource": "MechanicDesk daily Job Report (tag + finalisation) and Job WIP Report (enrolment, owner, open rework)",
+      "requiredAdapter": "scripts/parsers/job_report.py, scripts/parsers/job_wip_report.py, scripts/aftercare.py",
+      "lastSuccessfulIngestionAt": "2026-09-18T03:02:00Z",
+      "locationsRead": [
+        "bunbury",
+        "busselton"
+      ],
+      "holidayTableCoverageTo": "2029-12-31",
+      "seededAt": "2026-09-18"
     },
     "operatingPosition": {
-      "activeCycles": null,
-      "dueToday": null,
-      "completedToday": null,
-      "overdue": null,
-      "unresolvedConcerns": null,
+      "activeCycles": 1,
+      "dueToday": 0,
+      "completedToday": 0,
+      "overdue": 0,
+      "unresolvedConcerns": 0,
+      "awaitingDayZero": 8,
       "recurringQualitySignals": null,
       "ownerAttentionRequired": false,
-      "ownerAttentionReason": "No live After-Care operating evidence is connected; implementation status remains below Owner Command unless authority or a material unresolved risk is identified."
+      "ownerAttentionReason": "No After-Care matter requires Owner attention; obligations sit with the accountable consultants."
     },
     "eligibility": {
       "decisionOwner": "Build Consultant",
-      "trigger": "AFTER-CARE tag + job finalisation",
-      "dayZero": "Job finalisation",
+      "trigger": "GOLD AFTER-CARE tag applied at job finalisation (QJT-001 7A)",
+      "dayZero": "Job finalisation date, where the tag is present and the invoice is finalised",
       "minimumReference": "Bull-bar installation scale/significance; consultant judgement applies",
-      "restartRule": "A later significant build may restart the three-year cycle while preserving vehicle history"
+      "restartRule": "A later qualifying build on the same vehicle starts a new Day 0 and supersedes the earlier schedule without deleting vehicle history",
+      "incompleteDayZeroRule": "A job tagged AFTER-CARE without a finalisation date must not drive scheduled obligations (QJT-001 clause 34)"
     },
     "milestones": [
       {
-        "code": "24H",
-        "label": "24 hours",
+        "code": "72H",
+        "label": "72 hours",
+        "tier": "active",
         "type": "Genuine Build Consultant call",
         "owner": "Build Consultant",
-        "rule": "Confirm satisfaction, function, understanding and concerns. No answer \u2192 SMS.",
-        "dueRule": "Next business day"
+        "rule": "Confirm satisfaction, function, understanding and concerns. No answer -> approved SMS, attempt recorded.",
+        "dueRule": "Next business day where 72 hours lands on a weekend or public holiday",
+        "conditional": false
       },
       {
         "code": "1M",
-        "label": "~1 month",
+        "label": "1 month",
+        "tier": "active",
         "type": "Conditional technical follow-up",
         "owner": "Workshop / Consultant",
-        "rule": "Applicable retorque or technical follow-up. A completed required 500 km suspension retorque satisfies and suppresses this milestone.",
-        "dueRule": "Nearest business day; technical requirement takes precedence"
-      },
-      {
-        "code": "3M",
-        "label": "3 months",
-        "type": "Genuine Build Consultant call",
-        "owner": "Build Consultant",
-        "rule": "Understand real-life use and changing destinations, dreams or requirements. No answer \u2192 SMS.",
-        "dueRule": "Three-month business-day milestone"
+        "rule": "Retorque or technical follow-up where applicable. Fixed at 1 month -- no km-based trigger exists in MechanicDesk. A completed required retorque satisfies and suppresses this milestone.",
+        "dueRule": "Next business day; technical requirement takes precedence",
+        "conditional": true
       },
       {
         "code": "6M",
         "label": "6 months",
+        "tier": "active",
         "type": "Build Health Check + consultation",
         "owner": "Consultant + Fitter",
         "rule": "Morning preferred; allow customer 30 minutes; fitter allocation approximately 15 minutes; complimentary general inspection and coffee.",
-        "dueRule": "Six-month business-day milestone"
+        "dueRule": "Six-month business-day milestone",
+        "conditional": false
       },
       {
         "code": "12M",
         "label": "12 months",
+        "tier": "active",
         "type": "Build Health Check + consultation",
         "owner": "Consultant + Fitter",
         "rule": "Relationship-led physical check under the Build Health Check standard.",
-        "dueRule": "Twelve-month business-day milestone"
+        "dueRule": "Twelve-month business-day milestone",
+        "conditional": false
+      },
+      {
+        "code": "18M",
+        "label": "18 months",
+        "tier": "passive",
+        "type": "Conditional contact only",
+        "owner": "Build Consultant",
+        "rule": "No scheduled obligation. Raised only where vehicle history, an open concern or a recorded customer trigger warrants it.",
+        "dueRule": "Passive -- generates no consultant obligation",
+        "conditional": false
       },
       {
         "code": "24M",
         "label": "24 months",
-        "type": "Build Health Check + consultation",
+        "tier": "active",
+        "type": "Build Health Check + 10% voucher",
         "owner": "Consultant + Fitter",
-        "rule": "Check the build and explore evolving vehicle use and future requirements naturally.",
-        "dueRule": "Twenty-four-month business-day milestone"
+        "rule": "Final active touchpoint. 10% voucher issued here, valid 6 months, not combinable with other offers.",
+        "dueRule": "Twenty-four-month business-day milestone",
+        "conditional": false
       },
       {
-        "code": "36M",
-        "label": "36 months",
-        "type": "Build Health Check + consultation + thank-you",
-        "owner": "Consultant + Fitter",
-        "rule": "Final scheduled check and issue 10% After-Care voucher, valid 12 months and not with another offer.",
-        "dueRule": "Thirty-six-month business-day milestone"
+        "code": "AMBIENT",
+        "label": "24-36 months",
+        "tier": "ambient",
+        "type": "Newsletter and referral credit only",
+        "owner": "DN06 Growth",
+        "rule": "No consultant obligation generated. Customer remains in ordinary marketing contact, subject to do-not-contact and unresolved-issue suppression.",
+        "dueRule": "Window from the 24-month milestone to cycle end",
+        "conditional": false
       }
     ],
     "dailyWorkflow": {
@@ -436,6 +460,359 @@
       "pattern of missed required obligations after closest-accountable correction",
       "recurring quality pattern requiring owner authority",
       "refund, unusual resolution or spending outside delegated authority"
+    ],
+    "register": [
+      {
+        "job": "BUSJOB2202",
+        "location": "busselton",
+        "invoiceNo": "BUSINV3475",
+        "dayZero": "2026-09-17",
+        "customer": "MARC PAPALIA",
+        "mobile": "0408109984",
+        "vehicle": "2026 BYD SHARK",
+        "registration": "1JBF666",
+        "description": "ROLLER SHUTTER, SUPPLY AND FIT",
+        "tags": [
+          "SLIDEAWAY",
+          "AFTER-CARE"
+        ],
+        "owner": "Mitch Cooper",
+        "ownerBasis": "created_by",
+        "fitter": "Jayden Brookes",
+        "enrolledAt": "2026-09-18",
+        "supersededBy": null,
+        "schedule": [
+          {
+            "code": "72H",
+            "label": "72 hours",
+            "tier": "active",
+            "type": "Genuine Build Consultant call",
+            "owner": "Build Consultant",
+            "rawDue": "2026-09-20",
+            "due": "2026-09-21",
+            "conditional": false,
+            "shifted": true,
+            "generatesObligation": true
+          },
+          {
+            "code": "1M",
+            "label": "1 month",
+            "tier": "active",
+            "type": "Conditional technical follow-up",
+            "owner": "Workshop / Consultant",
+            "rawDue": "2026-10-17",
+            "due": "2026-10-19",
+            "conditional": true,
+            "shifted": true,
+            "generatesObligation": false,
+            "applicable": false,
+            "applicabilityBasis": "No suspension, GVM or airbag work on this job -- consultant to confirm before suppressing"
+          },
+          {
+            "code": "6M",
+            "label": "6 months",
+            "tier": "active",
+            "type": "Build Health Check + consultation",
+            "owner": "Consultant + Fitter",
+            "rawDue": "2027-03-17",
+            "due": "2027-03-17",
+            "conditional": false,
+            "shifted": false,
+            "generatesObligation": true
+          },
+          {
+            "code": "12M",
+            "label": "12 months",
+            "tier": "active",
+            "type": "Build Health Check + consultation",
+            "owner": "Consultant + Fitter",
+            "rawDue": "2027-09-17",
+            "due": "2027-09-17",
+            "conditional": false,
+            "shifted": false,
+            "generatesObligation": true
+          },
+          {
+            "code": "18M",
+            "label": "18 months",
+            "tier": "passive",
+            "type": "Conditional contact only",
+            "owner": "Build Consultant",
+            "rawDue": "2028-03-17",
+            "due": "2028-03-17",
+            "conditional": false,
+            "shifted": false,
+            "generatesObligation": false
+          },
+          {
+            "code": "24M",
+            "label": "24 months",
+            "tier": "active",
+            "type": "Build Health Check + 10% voucher",
+            "owner": "Consultant + Fitter",
+            "rawDue": "2028-09-17",
+            "due": "2028-09-18",
+            "conditional": false,
+            "shifted": true,
+            "generatesObligation": true
+          },
+          {
+            "code": "AMBIENT",
+            "label": "24-36 months",
+            "tier": "ambient",
+            "type": "Newsletter and referral credit only",
+            "owner": "DN06 Growth",
+            "rawDue": "2029-09-17",
+            "due": "2029-09-17",
+            "conditional": false,
+            "shifted": false,
+            "windowStart": "2028-09-18",
+            "windowEnd": "2029-09-17",
+            "generatesObligation": false
+          }
+        ],
+        "seededFrom": "Busselton Job Report, 17 Sep 2026 close"
+      }
+    ],
+    "awaitingDayZero": [
+      {
+        "job": "BUNJOB3395",
+        "customer": "Pambou Constructions",
+        "vehicle": "2025 FORD RANGER WILDTRAK Dual Cab",
+        "description": "TC Boxes Tray & Canopy Build",
+        "startDate": "2026-09-14",
+        "invoiceTotal": 30838.43,
+        "owner": "Jelena Gordon",
+        "ownerBasis": "created_by",
+        "location": "bunbury",
+        "tags": [
+          "TC BOXES BUILD",
+          "AFTER-CARE"
+        ]
+      },
+      {
+        "job": "BUNJOB3430",
+        "customer": "Marty Lamb",
+        "vehicle": "2025 FORD RANGER WILDTRAK",
+        "description": "Premium Raid Canopy & Raid Roof Rack",
+        "startDate": "2026-09-17",
+        "invoiceTotal": 9089.49,
+        "owner": "Luke Bleasdale",
+        "ownerBasis": "created_by",
+        "location": "bunbury",
+        "tags": [
+          "CANOPY",
+          "ROOF RACK",
+          "AFTER-CARE"
+        ]
+      },
+      {
+        "job": "BUNJOB3473",
+        "customer": "Tyler Woolcock",
+        "vehicle": "2023 Isuzu D-Max",
+        "description": "Deluxe Bull Bar",
+        "startDate": "2026-09-18",
+        "invoiceTotal": 2934.4,
+        "owner": "Luke Bleasdale",
+        "ownerBasis": "created_by",
+        "location": "bunbury",
+        "tags": [
+          "BULLBAR",
+          "AFTER-CARE"
+        ]
+      },
+      {
+        "job": "BUNJOB3502",
+        "customer": "Josh Krome",
+        "vehicle": "2026 BYD SHARK 6 Performance 2.0L",
+        "description": "Suspension",
+        "startDate": "2026-09-22",
+        "invoiceTotal": 3835.0,
+        "owner": "Jelena Gordon",
+        "ownerBasis": "created_by",
+        "location": "bunbury",
+        "tags": [
+          "SUSPENSION",
+          "ORDERED",
+          "AFTER-CARE"
+        ]
+      },
+      {
+        "job": "BUNJOB3510",
+        "customer": "Jack Biondi",
+        "vehicle": "2017 Mitsubishi Triton",
+        "description": "Long Range Fuel Tank",
+        "startDate": "2026-09-22",
+        "invoiceTotal": 2304.75,
+        "owner": "Jelena Gordon",
+        "ownerBasis": "created_by",
+        "location": "bunbury",
+        "tags": [
+          "LONG RANGE FUEL TANK",
+          "ORDERED",
+          "AFTER-CARE"
+        ]
+      },
+      {
+        "job": "BUNJOB3465",
+        "customer": "Rob Nielsen",
+        "vehicle": "2012 TOYOTA 200S LANDCRUISER GX",
+        "description": "Drawers, Cargo Barrier, Fridge Cage, Neo Spot Lights",
+        "startDate": "2026-09-24",
+        "invoiceTotal": 6322.6,
+        "owner": "Jelena Gordon",
+        "ownerBasis": "created_by",
+        "location": "bunbury",
+        "tags": [
+          "ORDERED",
+          "DRAWER SYSTEM",
+          "AFTER-CARE"
+        ]
+      },
+      {
+        "job": "BUNJOB3514",
+        "customer": "Bradley Mitchem",
+        "vehicle": "2022 ISUZU MUX",
+        "description": "Bull Bar",
+        "startDate": "2026-10-02",
+        "invoiceTotal": 4014.0,
+        "owner": "Jelena Gordon",
+        "ownerBasis": "created_by",
+        "location": "bunbury",
+        "tags": [
+          "ORDERED",
+          "BULLBAR",
+          "AFTER-CARE"
+        ]
+      },
+      {
+        "job": "BUNJOB3462",
+        "customer": "Garret Piper",
+        "vehicle": "2024 RAM 1500 DT LARAMIE",
+        "description": "Long Range Tank",
+        "startDate": "2026-10-07",
+        "invoiceTotal": 3653.82,
+        "owner": "Jelena Gordon",
+        "ownerBasis": "created_by",
+        "location": "bunbury",
+        "tags": [
+          "LONG RANGE FUEL TANK",
+          "AFTER-CARE"
+        ]
+      }
+    ],
+    "reworkOpen": [],
+    "outcomes": {},
+    "dueTodayList": [],
+    "overdueList": [],
+    "upcomingList": [
+      {
+        "job": "BUSJOB2202",
+        "location": "busselton",
+        "customer": "MARC PAPALIA",
+        "vehicle": "2026 BYD SHARK",
+        "registration": "1JBF666",
+        "mobile": "0408109984",
+        "owner": "Mitch Cooper",
+        "ownerBasis": "created_by",
+        "fitter": "Jayden Brookes",
+        "milestone": "72 hours",
+        "code": "72H",
+        "type": "Genuine Build Consultant call",
+        "due": "2026-09-21",
+        "dayZero": "2026-09-17",
+        "daysAway": 3
+      },
+      {
+        "job": "BUSJOB2202",
+        "location": "busselton",
+        "customer": "MARC PAPALIA",
+        "vehicle": "2026 BYD SHARK",
+        "registration": "1JBF666",
+        "mobile": "0408109984",
+        "owner": "Mitch Cooper",
+        "ownerBasis": "created_by",
+        "fitter": "Jayden Brookes",
+        "milestone": "6 months",
+        "code": "6M",
+        "type": "Build Health Check + consultation",
+        "due": "2027-03-17",
+        "dayZero": "2026-09-17",
+        "daysAway": 180
+      },
+      {
+        "job": "BUSJOB2202",
+        "location": "busselton",
+        "customer": "MARC PAPALIA",
+        "vehicle": "2026 BYD SHARK",
+        "registration": "1JBF666",
+        "mobile": "0408109984",
+        "owner": "Mitch Cooper",
+        "ownerBasis": "created_by",
+        "fitter": "Jayden Brookes",
+        "milestone": "12 months",
+        "code": "12M",
+        "type": "Build Health Check + consultation",
+        "due": "2027-09-17",
+        "dayZero": "2026-09-17",
+        "daysAway": 364
+      },
+      {
+        "job": "BUSJOB2202",
+        "location": "busselton",
+        "customer": "MARC PAPALIA",
+        "vehicle": "2026 BYD SHARK",
+        "registration": "1JBF666",
+        "mobile": "0408109984",
+        "owner": "Mitch Cooper",
+        "ownerBasis": "created_by",
+        "fitter": "Jayden Brookes",
+        "milestone": "24 months",
+        "code": "24M",
+        "type": "Build Health Check + 10% voucher",
+        "due": "2028-09-18",
+        "dayZero": "2026-09-17",
+        "daysAway": 731
+      }
+    ],
+    "suppressedList": [
+      {
+        "job": "BUSJOB2202",
+        "location": "busselton",
+        "customer": "MARC PAPALIA",
+        "vehicle": "2026 BYD SHARK",
+        "registration": "1JBF666",
+        "mobile": "0408109984",
+        "owner": "Mitch Cooper",
+        "ownerBasis": "created_by",
+        "milestone": "1 month",
+        "code": "1M",
+        "type": "Conditional technical follow-up",
+        "due": "2026-10-19",
+        "basis": "No suspension, GVM or airbag work on this job -- consultant to confirm before suppressing"
+      }
+    ],
+    "concernList": [],
+    "outcomeCapture": {
+      "status": "not_connected",
+      "statusLabel": "Obligations can be raised; outcomes cannot yet be recorded",
+      "limitation": "MechanicDesk holds no field for a completed After-Care contact, so Overdue currently means a due date passed without a recorded outcome -- not a proven missed obligation.",
+      "options": [
+        "A MechanicDesk note convention the ingestion parses",
+        "A Planner task per obligation, closed by the consultant",
+        "A TWOS-side outcome store written back to twos-state.json"
+      ],
+      "decisionOwner": "Lindsay Allan / DN06"
+    },
+    "exceptions": [
+      {
+        "id": "handout-v10",
+        "origin": "declared",
+        "severity": "critical",
+        "owner": "DN06 Growth",
+        "title": "The customer handout still promises the v1.0 journey",
+        "detail": "TerraWest_After-Care_Customer_Handout_v1.0 promises a 24-hour check, a 3-month call and a 36-month Build Health Check. v1.1 moves first contact to 72 hours, removes the 3-month call and downgrades 24-36 months to ambient marketing. Any handout already given to a customer is a promise TWOS will not schedule. Reissue the handout against v1.1, or restore the 3-month call to v1.1, before the programme's automated obligations go live."
+      }
     ]
   },
   "financialControl": {
