@@ -26,8 +26,8 @@ import xlwt
 
 from aftercare import (
     build_schedule, merge_register, compute_position, refresh_schedules,
-    add_months, next_business_day, is_business_day, wa_holidays,
-    retorque_applicable,
+    add_months, nearest_business_day, is_business_day, wa_holidays,
+    technical_note,
 )
 from parsers.job_report import parse_job_report
 from parsers.job_wip_report import parse_job_wip_report
@@ -60,8 +60,13 @@ check("17 Sep 2026 + 24 months",
 section("WA business days")
 
 check("Sat 19 Sep 2026 is not a business day", is_business_day(datetime.date(2026, 9, 19)), False)
-check("Sun 20 Sep 2026 shifts to Mon 21 Sep",
-      next_business_day(datetime.date(2026, 9, 20)), datetime.date(2026, 9, 21))
+check("Sun 20 Sep 2026 moves forward to Mon 21 Sep",
+      nearest_business_day(datetime.date(2026, 9, 20)), datetime.date(2026, 9, 21))
+# NEAREST, not next: a Saturday is closer to the Friday before it.
+check("Sat 17 Oct 2026 moves BACK to Fri 16 Oct",
+      nearest_business_day(datetime.date(2026, 10, 17)), datetime.date(2026, 10, 16))
+check("a business day is never moved",
+      nearest_business_day(datetime.date(2027, 3, 17)), datetime.date(2027, 3, 17))
 check("Anzac Day 2026 is a holiday", datetime.date(2026, 4, 25) in wa_holidays(2026), True)
 check("Good Friday 2027 is 26 Mar", datetime.date(2027, 3, 26) in wa_holidays(2027), True)
 check("Christmas 2027 (Sat) observed Mon 27 Dec",
@@ -69,7 +74,7 @@ check("Christmas 2027 (Sat) observed Mon 27 Dec",
 check("Proclaimed King's Birthday 28 Sep 2026 is a holiday",
       datetime.date(2026, 9, 28) in wa_holidays(2026), True)
 check("Milestone landing on the 2026 King's Birthday shifts to Tue 29 Sep",
-      next_business_day(datetime.date(2026, 9, 28)), datetime.date(2026, 9, 29))
+      nearest_business_day(datetime.date(2026, 9, 28)), datetime.date(2026, 9, 29))
 
 # --------------------------------------------------------------------
 section("Milestone schedule -- BUSJOB2202, Day 0 = 17 Sep 2026")
@@ -82,7 +87,7 @@ check("72h raw date is Sun 20 Sep", by_code["72H"]["rawDue"], "2026-09-20")
 check("72h shifts to Mon 21 Sep", by_code["72H"]["due"], "2026-09-21")
 check("72h is flagged as shifted", by_code["72H"]["shifted"], True)
 check("1 month raw date is Sat 17 Oct", by_code["1M"]["rawDue"], "2026-10-17")
-check("1 month shifts to Mon 19 Oct", by_code["1M"]["due"], "2026-10-19")
+check("1 month shifts BACK to Fri 16 Oct (nearest, not next)", by_code["1M"]["due"], "2026-10-16")
 check("6 months lands Wed 17 Mar 2027 unshifted", by_code["6M"]["due"], "2027-03-17")
 check("12 months lands Fri 17 Sep 2027", by_code["12M"]["due"], "2027-09-17")
 check("24 months (Sun) shifts to Mon 18 Sep 2028", by_code["24M"]["due"], "2028-09-18")
@@ -90,36 +95,30 @@ check("18 months is passive", by_code["18M"]["tier"], "passive")
 check("18 months raises no obligation", by_code["18M"]["generatesObligation"], False)
 check("ambient window ends 36 months out", by_code["AMBIENT"]["windowEnd"], "2029-09-17")
 check("ambient raises no obligation", by_code["AMBIENT"]["generatesObligation"], False)
-check("a fitted roller shutter DOES get the 1-month check", by_code["1M"]["applicable"], True)
-check("and therefore raises an obligation", by_code["1M"]["generatesObligation"], True)
+check("the 1-month milestone is unconditional", by_code["1M"]["conditional"], False)
+check("and always raises an obligation", by_code["1M"]["generatesObligation"], True)
 
-section("Conditional 1-month applicability -- applies by default")
+section("The 1-month milestone is unconditional")
 
-# The rule is deliberately inverted from an earlier version: anything
-# fitted gets the check, and only an explicit SUPPLY ONLY tag suppresses
-# it. A missed retorque on a bolted accessory is a safety matter; an
-# unnecessary check is a phone call.
-check("suspension work applies",
-      retorque_applicable("Rear Suspension Upgrade", ["SUSPENSION"])[0], True)
-check("GVM work applies", retorque_applicable("GVM Upgrade - Pre-Rego", ["GVM UPGRADE"])[0], True)
-check("a bull bar applies", retorque_applicable("Deluxe Bull Bar", ["BULLBAR"])[0], True)
-check("a roller shutter applies", retorque_applicable("ROLLER SHUTTER, SUPPLY AND FIT", ["SLIDEAWAY"])[0], True)
-check("a canopy applies", retorque_applicable("Premium Raid Canopy", ["CANOPY"])[0], True)
-check("a drawer system applies", retorque_applicable("Drawers, Cargo Barrier", ["DRAWER SYSTEM"])[0], True)
-check("a UHF fit still applies -- it was fitted",
-      retorque_applicable("UHF", ["MISC"])[0], True)
-check("SUPPLY ONLY is the one thing that suppresses it",
-      retorque_applicable("Bull Bar -- SUPPLY ONLY", ["BULLBAR", "SUPPLY ONLY"])[0], False)
+# TWOS-AC-001 section 4: it "always occurs at 1 month regardless of any
+# earlier suspension retorque". Section 5: no km-based trigger, no
+# early-completion skip. Nothing may suppress it -- not supply-only, not
+# a job with no load-bearing parts, not a retorque already done.
+for desc, tags in [("Rear Suspension Upgrade", ["SUSPENSION"]),
+                   ("ROLLER SHUTTER, SUPPLY AND FIT", ["SLIDEAWAY"]),
+                   ("UHF", ["MISC"]),
+                   ("Bull Bar -- SUPPLY ONLY", ["BULLBAR", "SUPPLY ONLY"]),
+                   ("Retorque already completed at 500km", ["SUSPENSION"])]:
+    sched = {m["code"]: m for m in build_schedule("2026-09-17", desc, tags + ["AFTER-CARE"])}
+    check(f"1M always raises an obligation: {desc[:38]}",
+          sched["1M"]["generatesObligation"], True)
 
-check("load-bearing fitment is named as a retorque",
-      "retorque required" in retorque_applicable("Deluxe Bull Bar", ["BULLBAR"])[1], True)
+check("load-bearing work is named as a retorque",
+      "retorque" in technical_note("Deluxe Bull Bar", ["BULLBAR"]), True)
 check("other fitment is named as an adjustment check",
-      "adjustment" in retorque_applicable("UHF", ["MISC"])[1], True)
-check("a suppressed milestone says why",
-      "nothing was fitted" in retorque_applicable("Bar", ["SUPPLY ONLY"])[1], True)
-
-supply_only = {m["code"]: m for m in build_schedule("2026-09-17", "Bull Bar", ["SUPPLY ONLY", "AFTER-CARE"])}
-check("a supply-only 1M raises no obligation", supply_only["1M"]["generatesObligation"], False)
+      "adjustment" in technical_note("UHF", ["MISC"]), True)
+check("the note is carried on the milestone",
+      "technicalNote" in {m["code"]: m for m in build_schedule("2026-09-17", "UHF", ["MISC"])}["1M"], True)
 
 # --------------------------------------------------------------------
 section("Register merge and the Day 0 rule")

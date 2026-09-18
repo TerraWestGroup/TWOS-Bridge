@@ -40,17 +40,18 @@ MILESTONES = [
         "type": "Genuine Build Consultant call",
         "owner": "Build Consultant",
         "rule": "Confirm satisfaction, function, understanding and concerns. No answer -> approved SMS, attempt recorded.",
-        "dueRule": "Next business day where 72 hours lands on a weekend or public holiday",
+        "dueRule": "Nearest business day where 72 hours lands on a weekend or public holiday",
         "conditional": False,
     },
     {
         "code": "1M", "label": "1 month", "tier": "active",
         "offset": {"months": 1},
-        "type": "Conditional technical follow-up",
+        "type": "Retorque / technical follow-up",
         "owner": "Workshop / Consultant",
-        "rule": "Retorque or technical follow-up where applicable. Fixed at 1 month -- no km-based trigger exists in MechanicDesk. A completed required retorque satisfies and suppresses this milestone.",
-        "dueRule": "Next business day; technical requirement takes precedence",
-        "conditional": True,
+        "rule": "Fixed at 1 month. There is no km-based trigger or skip condition -- the milestone always "
+                "occurs at 1 month regardless of any earlier suspension retorque (TWOS-AC-001 sections 4 and 5).",
+        "dueRule": "Nearest business day",
+        "conditional": False,
     },
     {
         "code": "6M", "label": "6 months", "tier": "active",
@@ -58,7 +59,7 @@ MILESTONES = [
         "type": "Build Health Check + consultation",
         "owner": "Consultant + Fitter",
         "rule": "Morning preferred; allow customer 30 minutes; fitter allocation approximately 15 minutes; complimentary general inspection and coffee.",
-        "dueRule": "Six-month business-day milestone",
+        "dueRule": "Nearest business day at six months",
         "conditional": False,
     },
     {
@@ -67,7 +68,7 @@ MILESTONES = [
         "type": "Build Health Check + consultation",
         "owner": "Consultant + Fitter",
         "rule": "Relationship-led physical check under the Build Health Check standard.",
-        "dueRule": "Twelve-month business-day milestone",
+        "dueRule": "Nearest business day at twelve months",
         "conditional": False,
     },
     {
@@ -85,7 +86,7 @@ MILESTONES = [
         "type": "Build Health Check + 10% voucher",
         "owner": "Consultant + Fitter",
         "rule": "Final active touchpoint. 10% voucher issued here, valid 6 months, not combinable with other offers.",
-        "dueRule": "Twenty-four-month business-day milestone",
+        "dueRule": "Nearest business day at twenty-four months",
         "conditional": False,
     },
     {
@@ -99,33 +100,25 @@ MILESTONES = [
     },
 ]
 
-# The 1-month technical follow-up APPLIES BY DEFAULT to anything the
-# workshop physically fitted. An earlier version of this engine had it
-# the other way round -- an allowlist of suspension, GVM and airbag work,
-# suppressing everything else -- which was wrong: a roller shutter, bull
-# bar, canopy, roof rack, drawer system or towbar is bolted to the
-# vehicle and its fasteners want checking and adjusting after a month of
-# real use just as much as a leaf pack does. Getting that default
-# backwards means silently skipping a check on most qualifying builds.
+# The 1-month milestone is UNCONDITIONAL. TWOS-AC-001 section 4 states it
+# "always occurs at 1 month regardless of any earlier suspension
+# retorque", and section 5 repeats that there is "no km-based trigger or
+# early-completion skip condition". Two earlier versions of this engine
+# got that wrong in opposite directions -- first suppressing it for
+# anything that was not suspension, GVM or airbag work, then suppressing
+# it for supply-only jobs. Neither suppression is permitted by the
+# standard, so no suppression logic exists here at all.
 #
-# The asymmetry matters. An unnecessary check costs a phone call; a
-# missed one on a bolted structural accessory is a quality and safety
-# matter. So the milestone stands unless the job is evidenced as
-# non-fitment work.
-#
-# Suppression requires the controlled SUPPLY ONLY tag (QJT-001 section 7,
-# BLUE - SUPPLY ONLY: "No workshop fitment is required") -- not a guess
-# from the description. These items simply raise the check from routine
-# to safety-critical in the stated basis, so the consultant and fitter
-# know which kind of visit it is.
-HIGH_TORQUE_KEYWORDS = (
+# These keywords are informational only. They let the milestone say
+# whether load-bearing fitment is involved, so the fitter knows the
+# visit is a retorque rather than a general adjustment check. They never
+# affect whether the obligation is raised.
+LOAD_BEARING_KEYWORDS = (
     "SUSPENSION", "GVM", "AIRBAG", "AIR BAG", "LEAF", "SHOCK", "COIL",
     "STRUT", "LIFT KIT", "TORSION", "ADD-A-LEAF", "ADD A LEAF",
     "BULLBAR", "BULL BAR", "TOWBAR", "TOW BAR", "RECOVERY POINT",
     "ROOF RACK", "WHEEL", "BRAKE",
 )
-
-SUPPLY_ONLY_TAG = "SUPPLY ONLY"
 
 # Western Australian public holidays. New Year's Day, Australia Day,
 # Anzac Day, Christmas and Boxing Day are computed (with the standard
@@ -200,20 +193,32 @@ def is_business_day(d):
     return d.weekday() < 5 and d not in wa_holidays(d.year)
 
 
-def next_business_day(d):
+def nearest_business_day(d):
     """
-    Bunbury and Busselton do not trade a normal weekday on weekends, so a
-    milestone landing on a weekend or public holiday moves forward to the
-    next trading day rather than being actioned on a day nobody is there.
+    TWOS-AC-001 section 5: "If a calculated date is not a business day,
+    move it to the NEAREST business day." Nearest, not next -- so a
+    Saturday milestone moves back to the Friday, while a Sunday one moves
+    forward to the Monday. An earlier version of this engine always moved
+    forward, which put every Saturday milestone two days late.
+
+    Ties (a single midweek public holiday is equidistant either way)
+    resolve forward, so a milestone is never actioned before it matures.
     """
-    shifted = d
-    guard = 0
-    while not is_business_day(shifted):
-        shifted += datetime.timedelta(days=1)
-        guard += 1
-        if guard > 30:
-            break
-    return shifted
+    if is_business_day(d):
+        return d
+    for gap in range(1, 31):
+        forward = d + datetime.timedelta(days=gap)
+        backward = d - datetime.timedelta(days=gap)
+        if is_business_day(backward) and not is_business_day(forward):
+            return backward
+        if is_business_day(forward):
+            return forward
+    return d
+
+
+# Retained under the old name so nothing silently keeps the old
+# behaviour: any remaining caller gets the corrected rule.
+next_business_day = nearest_business_day
 
 
 def add_months(d, months):
@@ -232,29 +237,18 @@ def add_months(d, months):
             day -= 1
 
 
-def retorque_applicable(description, tags):
+def technical_note(description, tags):
     """
-    Decides whether the conditional 1-month technical follow-up applies,
-    and returns (applicable, basis).
-
-    Applies by default: anything fitted to the vehicle gets a physical
-    check. Only an explicit SUPPLY ONLY tag suppresses it, because that
-    is the one controlled signal that the workshop fitted nothing. The
-    basis string is carried into the state either way, so the consultant
-    sees the reasoning and can overrule it.
+    Describes WHAT the 1-month visit involves. Purely informational: it
+    never decides whether the milestone happens, because under
+    TWOS-AC-001 sections 4 and 5 the milestone always happens.
     """
-    tag_list = [str(t).strip().upper() for t in (tags or [])]
-    if SUPPLY_ONLY_TAG in tag_list:
-        return False, "Tagged SUPPLY ONLY -- nothing was fitted by us, so there is nothing to check"
-
-    haystack = " ".join([str(description or "")] + tag_list).upper()
-    hits = sorted({k for k in HIGH_TORQUE_KEYWORDS if k in haystack})
+    haystack = " ".join([str(description or "")] + [str(t) for t in (tags or [])]).upper()
+    hits = sorted({k for k in LOAD_BEARING_KEYWORDS if k in haystack})
     if hits:
-        return True, (
-            f"Load-bearing fitment ({', '.join(h.title() for h in hits)}) -- "
-            f"retorque required, not just an adjustment check"
-        )
-    return True, "Fitted work -- check fastener torque, alignment and adjustment after a month's use"
+        return (f"Load-bearing fitment ({', '.join(h.title() for h in hits)}) -- "
+                f"retorque, not just an adjustment check")
+    return "Check fastener torque, alignment and adjustment after a month's use"
 
 
 def build_schedule(day_zero_iso, description="", tags=None):
@@ -266,7 +260,6 @@ def build_schedule(day_zero_iso, description="", tags=None):
     visible rather than implied.
     """
     day_zero = datetime.date.fromisoformat(day_zero_iso)
-    applicable, basis = retorque_applicable(description, tags)
     schedule = []
 
     for m in MILESTONES:
@@ -285,23 +278,20 @@ def build_schedule(day_zero_iso, description="", tags=None):
             "type": m["type"],
             "owner": m["owner"],
             "rawDue": raw.isoformat(),
-            "due": next_business_day(raw).isoformat(),
+            "due": nearest_business_day(raw).isoformat(),
             "conditional": m["conditional"],
         }
         entry["shifted"] = entry["due"] != entry["rawDue"]
 
         if m["code"] == "AMBIENT":
-            entry["windowStart"] = next_business_day(add_months(day_zero, 24)).isoformat()
+            entry["windowStart"] = nearest_business_day(add_months(day_zero, 24)).isoformat()
             entry["windowEnd"] = entry["due"]
             entry["generatesObligation"] = False
         else:
             entry["generatesObligation"] = m["tier"] == "active"
 
-        if m["conditional"]:
-            entry["applicable"] = applicable
-            entry["applicabilityBasis"] = basis
-            if not applicable:
-                entry["generatesObligation"] = False
+        if m["code"] == "1M":
+            entry["technicalNote"] = technical_note(description, tags)
 
         schedule.append(entry)
 
@@ -434,7 +424,7 @@ def compute_position(register, awaiting, rework_open, today_iso, outcomes=None):
                 # surfaced rather than dropped, with its reasoning, so the
                 # consultant can see what was suppressed and overrule it.
                 # Passive and ambient tiers are by design, not suppression.
-                if m.get("conditional") and m.get("applicable") is False:
+                if False:  # nothing is conditional under TWOS-AC-001 v1.1
                     suppressed.append({
                         "job": cycle["job"],
                         "location": cycle["location"],
