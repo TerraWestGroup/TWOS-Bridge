@@ -1,16 +1,16 @@
 {
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-18T11:35:38.681774Z",
-  "latestAccountableDate": "2026-09-18",
+  "generatedAt": "2026-09-19T11:34:16.251123Z",
+  "latestAccountableDate": "2026-09-19",
   "sources": {
     "mechanicDesk": {
-      "status": "connected_tested",
-      "receivedAt": "2026-09-18T10:10:23Z",
+      "status": "connected_degraded",
+      "receivedAt": "2026-09-19T10:10:24Z",
       "expectedAtLocal": "18:10",
       "timezone": "Australia/Perth",
       "folder": "Inbox/Mechanic Desk Reports",
-      "reportCount": 6,
-      "statusDetail": "Automated nightly ingestion: 6/6 Income/Productivity/Efficiency reports parsed for 2026-09-18.",
+      "reportCount": 2,
+      "statusDetail": "Automated nightly ingestion: 2/6 Income/Productivity/Efficiency reports parsed for 2026-09-19.",
       "requiredReports": {
         "bunbury": [
           "Income",
@@ -33,12 +33,12 @@
       "status": "connected_tested",
       "syncStatus": "SUCCESS",
       "lastOrganisationSyncUtc": "2026-09-06T11:17:44.973Z",
-      "lastAccountTransactionsSyncUtc": "2026-09-18T11:35:34.223598Z",
+      "lastAccountTransactionsSyncUtc": "2026-09-19T11:34:10.980097Z",
       "approvedCadence": "Hourly Monday\u2013Friday with overnight recovery sync",
       "scheduleConfiguration": "active",
       "manualRefreshAvailable": true,
       "agentRefreshAvailable": true,
-      "displayFreshness": "18 Sep 2026 \u00b7 7:35 PM AWST"
+      "displayFreshness": "19 Sep 2026 \u00b7 7:34 PM AWST"
     },
     "podiumDailyDigest": {
       "status": "connected_tested",
@@ -54,23 +54,23 @@
     "anzWorldline": {
       "status": "connected_tested",
       "delivery": "Scheduled Outlook PDF settlement report",
-      "receivedAt": "2026-09-17T15:27:28Z",
+      "receivedAt": "2026-09-18T15:27:29Z",
       "provenance": "Your Settlement Report from ANZ Worldline Payment Solutions received in Outlook",
-      "statusDetail": "Settlement report parsed successfully for 17/09/2026.",
-      "settlementDate": "17/09/2026",
-      "netSettledAmount": 9027.21,
-      "totalValueOfTxns": 9106.91,
-      "txnFeesExclGst": -72.45,
-      "gst": -7.25
+      "statusDetail": "Settlement report parsed successfully for 18/09/2026.",
+      "settlementDate": "18/09/2026",
+      "netSettledAmount": 20299.7,
+      "totalValueOfTxns": 20478.9,
+      "txnFeesExclGst": -162.91,
+      "gst": -16.29
     }
   },
   "locations": {
     "bunbury": {
       "revenue": {
-        "net": 12809.91,
-        "grossProfit": 6553.05,
-        "grossMarginPercent": 51.16,
-        "sourceFile": "daily_income_report_180926.xls",
+        "net": 18.18,
+        "grossProfit": 3.41,
+        "grossMarginPercent": 18.76,
+        "sourceFile": "daily_income_report_190926.xls",
         "target": 13000
       },
       "workshop": {
@@ -98,10 +98,10 @@
     },
     "busselton": {
       "revenue": {
-        "net": 10054.85,
-        "grossProfit": 5874.24,
-        "grossMarginPercent": 58.42,
-        "sourceFile": "daily_income_report_180926.xls",
+        "net": 103.91,
+        "grossProfit": 26.6,
+        "grossMarginPercent": 25.6,
+        "sourceFile": "daily_income_report_190926.xls",
         "target": 10000
       },
       "workshop": {
@@ -329,7 +329,7 @@
       "statusLabel": "MechanicDesk AFTER-CARE tag and job finalisation connected",
       "requiredSource": "MechanicDesk daily Job Report (tag + finalisation) and Job WIP Report (enrolment, owner, open rework)",
       "requiredAdapter": "scripts/parsers/job_report.py, scripts/parsers/job_wip_report.py, scripts/aftercare.py",
-      "lastSuccessfulIngestionAt": "2026-09-18T11:35:38.681759Z",
+      "lastSuccessfulIngestionAt": "2026-09-19T11:34:16.251105Z",
       "locationsRead": [
         "bunbury",
         "busselton"
@@ -830,6 +830,22 @@
         "location": "bunbury"
       },
       {
+        "job": "BUNJOB3533",
+        "description": "No lights on trailer. Please look further into issue",
+        "customer": "Suria Rivers",
+        "vehicle": "2025 WHITE GWM CANNON BY0931B",
+        "registration": "BY0931B",
+        "tags": [
+          "Rework - review required"
+        ],
+        "startDate": "2026-09-21",
+        "invoiceTotal": 0.0,
+        "mechanics": "Daniel Fowles",
+        "owner": "Jelena Gordon",
+        "ownerBasis": "salesperson",
+        "location": "bunbury"
+      },
+      {
         "job": "BUSJOB2196",
         "description": "AIRBAG REFIT / REINSTALL?",
         "customer": "Voyager Estate",
@@ -866,7 +882,7 @@
         "type": "Genuine Build Consultant call",
         "due": "2026-09-21",
         "dayZero": "2026-09-18",
-        "daysAway": 3
+        "daysAway": 2
       },
       {
         "job": "BUSJOB2202",
@@ -883,7 +899,7 @@
         "type": "Genuine Build Consultant call",
         "due": "2026-09-21",
         "dayZero": "2026-09-17",
-        "daysAway": 3
+        "daysAway": 2
       },
       {
         "job": "BUSJOB2202",
@@ -900,7 +916,7 @@
         "type": "Retorque / technical follow-up",
         "due": "2026-10-16",
         "dayZero": "2026-09-17",
-        "daysAway": 28
+        "daysAway": 27
       },
       {
         "job": "BUNJOB3473",
@@ -917,7 +933,7 @@
         "type": "Retorque / technical follow-up",
         "due": "2026-10-19",
         "dayZero": "2026-09-18",
-        "daysAway": 31
+        "daysAway": 30
       },
       {
         "job": "BUSJOB2202",
@@ -934,7 +950,7 @@
         "type": "Build Health Check + consultation",
         "due": "2027-03-17",
         "dayZero": "2026-09-17",
-        "daysAway": 180
+        "daysAway": 179
       },
       {
         "job": "BUNJOB3473",
@@ -951,7 +967,7 @@
         "type": "Build Health Check + consultation",
         "due": "2027-03-18",
         "dayZero": "2026-09-18",
-        "daysAway": 181
+        "daysAway": 180
       },
       {
         "job": "BUNJOB3473",
@@ -968,7 +984,7 @@
         "type": "Build Health Check + consultation",
         "due": "2027-09-17",
         "dayZero": "2026-09-18",
-        "daysAway": 364
+        "daysAway": 363
       },
       {
         "job": "BUSJOB2202",
@@ -985,7 +1001,7 @@
         "type": "Build Health Check + consultation",
         "due": "2027-09-17",
         "dayZero": "2026-09-17",
-        "daysAway": 364
+        "daysAway": 363
       },
       {
         "job": "BUNJOB3473",
@@ -1002,7 +1018,7 @@
         "type": "Build Health Check + 10% voucher",
         "due": "2028-09-18",
         "dayZero": "2026-09-18",
-        "daysAway": 731
+        "daysAway": 730
       },
       {
         "job": "BUSJOB2202",
@@ -1019,7 +1035,7 @@
         "type": "Build Health Check + 10% voucher",
         "due": "2028-09-18",
         "dayZero": "2026-09-17",
-        "daysAway": 731
+        "daysAway": 730
       }
     ],
     "suppressedList": [],
@@ -1050,25 +1066,25 @@
         "severity": "warning",
         "owner": "DN02 Sales",
         "title": "Build Consultant is assigned by proxy",
-        "detail": "8 of 8 jobs in or awaiting the programme have no Saleperson recorded in MechanicDesk, so their After-Care obligations are assigned from the booking's Created By instead. The 72-hour call may land with someone who never met the customer. Across the wider open job book, Saleperson is filled on 16 rows."
+        "detail": "8 of 8 jobs in or awaiting the programme have no Saleperson recorded in MechanicDesk, so their After-Care obligations are assigned from the booking's Created By instead. The 72-hour call may land with someone who never met the customer. Across the wider open job book, Saleperson is filled on 18 rows."
       }
     ]
   },
   "financialControl": {
-    "payablesAsOfSyncUtc": "2026-09-18T11:35:34.223589Z",
+    "payablesAsOfSyncUtc": "2026-09-19T11:34:10.980088Z",
     "netPayables": 438130.18,
-    "overduePayables": 349.5,
+    "overduePayables": 444.5,
     "payablesProvenance": "Grouped by ContactName and netted across all payable sources",
-    "treasuryAsOfDate": "2026-09-18",
+    "treasuryAsOfDate": "2026-09-19",
     "overdraftHeadroom": 141589.26,
     "overdraftLimit": 200000,
     "overdraftDrawn": 58410.74,
     "caplinkDue": 26702,
     "caplinkDueDate": "2026-09-30",
-    "monthToDateRevenue": 209883.95,
-    "monthToDateGrossProfit": 73323.16,
-    "monthToDateGrossProfitMarginPercent": 34.94,
+    "monthToDateRevenue": 210006.04,
+    "monthToDateGrossProfit": 73356.63,
+    "monthToDateGrossProfitMarginPercent": 34.93,
     "monthToDatePeriodStart": "2026-09-01",
-    "monthToDatePeriodEnd": "2026-09-18"
+    "monthToDatePeriodEnd": "2026-09-19"
   }
 }
