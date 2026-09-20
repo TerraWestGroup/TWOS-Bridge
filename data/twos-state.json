@@ -1,16 +1,16 @@
 {
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-19T11:34:16.251123Z",
-  "latestAccountableDate": "2026-09-19",
+  "generatedAt": "2026-09-20T11:34:36.209238Z",
+  "latestAccountableDate": "2026-09-20",
   "sources": {
     "mechanicDesk": {
       "status": "connected_degraded",
-      "receivedAt": "2026-09-19T10:10:24Z",
+      "receivedAt": "2026-09-20T10:10:23Z",
       "expectedAtLocal": "18:10",
       "timezone": "Australia/Perth",
       "folder": "Inbox/Mechanic Desk Reports",
       "reportCount": 2,
-      "statusDetail": "Automated nightly ingestion: 2/6 Income/Productivity/Efficiency reports parsed for 2026-09-19.",
+      "statusDetail": "Automated nightly ingestion: 2/6 Income/Productivity/Efficiency reports parsed for 2026-09-20.",
       "requiredReports": {
         "bunbury": [
           "Income",
@@ -33,44 +33,44 @@
       "status": "connected_tested",
       "syncStatus": "SUCCESS",
       "lastOrganisationSyncUtc": "2026-09-06T11:17:44.973Z",
-      "lastAccountTransactionsSyncUtc": "2026-09-19T11:34:10.980097Z",
+      "lastAccountTransactionsSyncUtc": "2026-09-20T11:34:31.325205Z",
       "approvedCadence": "Hourly Monday\u2013Friday with overnight recovery sync",
       "scheduleConfiguration": "active",
       "manualRefreshAvailable": true,
       "agentRefreshAvailable": true,
-      "displayFreshness": "19 Sep 2026 \u00b7 7:34 PM AWST"
+      "displayFreshness": "20 Sep 2026 \u00b7 7:34 PM AWST"
     },
     "podiumDailyDigest": {
       "status": "connected_tested",
       "delivery": "Scheduled Outlook email digest",
       "sender": "notifications@podium.com",
       "subjectPattern": "Podium Daily Digest (*)",
-      "reportingDate": "2026-09-14",
-      "receivedAt": "2026-09-15T14:00:16Z",
+      "reportingDate": "2026-09-18",
+      "receivedAt": "2026-09-19T14:00:27Z",
       "timezone": "Australia/Perth",
-      "provenance": "Podium Daily Digest (SEPTEMBER 14, 2026) received in Outlook",
+      "provenance": "Podium Daily Digest (SEPTEMBER 18, 2026) received in Outlook",
       "limitations": "Daily summary evidence only; it does not establish campaign attribution, quote conversion, completed revenue or gross profit."
     },
     "anzWorldline": {
       "status": "connected_tested",
       "delivery": "Scheduled Outlook PDF settlement report",
-      "receivedAt": "2026-09-18T15:27:29Z",
+      "receivedAt": "2026-09-19T14:34:43Z",
       "provenance": "Your Settlement Report from ANZ Worldline Payment Solutions received in Outlook",
-      "statusDetail": "Settlement report parsed successfully for 18/09/2026.",
-      "settlementDate": "18/09/2026",
-      "netSettledAmount": 20299.7,
-      "totalValueOfTxns": 20478.9,
-      "txnFeesExclGst": -162.91,
-      "gst": -16.29
+      "statusDetail": "Settlement parsed successfully, but a data-quality issue was detected: Document addressed to Partner ID 77230 (BUNBURY 4X4) but transaction breakdown is headed Partner ID 77231 (BUSSELTON 4X4). Net settled amount is real; per-location attribution should not be assumed from this document.",
+      "settlementDate": "19/09/2026",
+      "netSettledAmount": 2591.42,
+      "totalValueOfTxns": 2614.3,
+      "txnFeesExclGst": -20.8,
+      "gst": -2.08
     }
   },
   "locations": {
     "bunbury": {
       "revenue": {
-        "net": 18.18,
-        "grossProfit": 3.41,
-        "grossMarginPercent": 18.76,
-        "sourceFile": "daily_income_report_190926.xls",
+        "net": 0.0,
+        "grossProfit": 0.0,
+        "grossMarginPercent": 0.0,
+        "sourceFile": "daily_income_report_200926.xls",
         "target": 13000
       },
       "workshop": {
@@ -98,10 +98,10 @@
     },
     "busselton": {
       "revenue": {
-        "net": 103.91,
-        "grossProfit": 26.6,
-        "grossMarginPercent": 25.6,
-        "sourceFile": "daily_income_report_190926.xls",
+        "net": 995.75,
+        "grossProfit": 259.9,
+        "grossMarginPercent": 26.1,
+        "sourceFile": "daily_income_report_200926.xls",
         "target": 10000
       },
       "workshop": {
@@ -142,15 +142,15 @@
   "podium": {
     "schemaVersion": "1.0",
     "sourceKey": "podiumDailyDigest",
-    "reportingDate": "2026-09-14",
+    "reportingDate": "2026-09-18",
     "inbox": {
-      "newLeads": 7,
-      "totalActiveConversations": 16,
-      "openMessages": 5
+      "newLeads": 31,
+      "totalActiveConversations": 9,
+      "openMessages": 11
     },
     "locations": {
       "bunbury": {
-        "medianResponseMinutes": null,
+        "medianResponseMinutes": 380,
         "newReviews": 0,
         "reviewInvitesSent": 0,
         "feedbackResponses": null,
@@ -329,7 +329,7 @@
       "statusLabel": "MechanicDesk AFTER-CARE tag and job finalisation connected",
       "requiredSource": "MechanicDesk daily Job Report (tag + finalisation) and Job WIP Report (enrolment, owner, open rework)",
       "requiredAdapter": "scripts/parsers/job_report.py, scripts/parsers/job_wip_report.py, scripts/aftercare.py",
-      "lastSuccessfulIngestionAt": "2026-09-19T11:34:16.251105Z",
+      "lastSuccessfulIngestionAt": "2026-09-20T11:34:36.209222Z",
       "locationsRead": [
         "bunbury",
         "busselton"
@@ -882,7 +882,7 @@
         "type": "Genuine Build Consultant call",
         "due": "2026-09-21",
         "dayZero": "2026-09-18",
-        "daysAway": 2
+        "daysAway": 1
       },
       {
         "job": "BUSJOB2202",
@@ -899,7 +899,7 @@
         "type": "Genuine Build Consultant call",
         "due": "2026-09-21",
         "dayZero": "2026-09-17",
-        "daysAway": 2
+        "daysAway": 1
       },
       {
         "job": "BUSJOB2202",
@@ -916,7 +916,7 @@
         "type": "Retorque / technical follow-up",
         "due": "2026-10-16",
         "dayZero": "2026-09-17",
-        "daysAway": 27
+        "daysAway": 26
       },
       {
         "job": "BUNJOB3473",
@@ -933,7 +933,7 @@
         "type": "Retorque / technical follow-up",
         "due": "2026-10-19",
         "dayZero": "2026-09-18",
-        "daysAway": 30
+        "daysAway": 29
       },
       {
         "job": "BUSJOB2202",
@@ -950,7 +950,7 @@
         "type": "Build Health Check + consultation",
         "due": "2027-03-17",
         "dayZero": "2026-09-17",
-        "daysAway": 179
+        "daysAway": 178
       },
       {
         "job": "BUNJOB3473",
@@ -967,7 +967,7 @@
         "type": "Build Health Check + consultation",
         "due": "2027-03-18",
         "dayZero": "2026-09-18",
-        "daysAway": 180
+        "daysAway": 179
       },
       {
         "job": "BUNJOB3473",
@@ -984,7 +984,7 @@
         "type": "Build Health Check + consultation",
         "due": "2027-09-17",
         "dayZero": "2026-09-18",
-        "daysAway": 363
+        "daysAway": 362
       },
       {
         "job": "BUSJOB2202",
@@ -1001,7 +1001,7 @@
         "type": "Build Health Check + consultation",
         "due": "2027-09-17",
         "dayZero": "2026-09-17",
-        "daysAway": 363
+        "daysAway": 362
       },
       {
         "job": "BUNJOB3473",
@@ -1018,7 +1018,7 @@
         "type": "Build Health Check + 10% voucher",
         "due": "2028-09-18",
         "dayZero": "2026-09-18",
-        "daysAway": 730
+        "daysAway": 729
       },
       {
         "job": "BUSJOB2202",
@@ -1035,7 +1035,7 @@
         "type": "Build Health Check + 10% voucher",
         "due": "2028-09-18",
         "dayZero": "2026-09-17",
-        "daysAway": 730
+        "daysAway": 729
       }
     ],
     "suppressedList": [],
@@ -1071,20 +1071,20 @@
     ]
   },
   "financialControl": {
-    "payablesAsOfSyncUtc": "2026-09-19T11:34:10.980088Z",
-    "netPayables": 438130.18,
-    "overduePayables": 444.5,
+    "payablesAsOfSyncUtc": "2026-09-20T11:34:31.325197Z",
+    "netPayables": 438339.18,
+    "overduePayables": 2918.51,
     "payablesProvenance": "Grouped by ContactName and netted across all payable sources",
-    "treasuryAsOfDate": "2026-09-19",
+    "treasuryAsOfDate": "2026-09-20",
     "overdraftHeadroom": 141589.26,
     "overdraftLimit": 200000,
     "overdraftDrawn": 58410.74,
     "caplinkDue": 26702,
     "caplinkDueDate": "2026-09-30",
-    "monthToDateRevenue": 210006.04,
-    "monthToDateGrossProfit": 73356.63,
-    "monthToDateGrossProfitMarginPercent": 34.93,
+    "monthToDateRevenue": 211001.79,
+    "monthToDateGrossProfit": 73620.99,
+    "monthToDateGrossProfitMarginPercent": 34.89,
     "monthToDatePeriodStart": "2026-09-01",
-    "monthToDatePeriodEnd": "2026-09-19"
+    "monthToDatePeriodEnd": "2026-09-20"
   }
 }
