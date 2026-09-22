@@ -1,16 +1,16 @@
 {
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-21T11:37:41.923921Z",
-  "latestAccountableDate": "2026-09-21",
+  "generatedAt": "2026-09-22T11:36:52.162722Z",
+  "latestAccountableDate": "2026-09-22",
   "sources": {
     "mechanicDesk": {
       "status": "connected_tested",
-      "receivedAt": "2026-09-21T10:10:24Z",
+      "receivedAt": "2026-09-22T10:10:27Z",
       "expectedAtLocal": "18:10",
       "timezone": "Australia/Perth",
       "folder": "Inbox/Mechanic Desk Reports",
       "reportCount": 6,
-      "statusDetail": "Automated nightly ingestion: 6/6 Income/Productivity/Efficiency reports parsed for 2026-09-21.",
+      "statusDetail": "Automated nightly ingestion: 6/6 Income/Productivity/Efficiency reports parsed for 2026-09-22.",
       "requiredReports": {
         "bunbury": [
           "Income",
@@ -33,12 +33,12 @@
       "status": "connected_tested",
       "syncStatus": "SUCCESS",
       "lastOrganisationSyncUtc": "2026-09-06T11:17:44.973Z",
-      "lastAccountTransactionsSyncUtc": "2026-09-21T11:37:36.850140Z",
+      "lastAccountTransactionsSyncUtc": "2026-09-22T11:36:47.034951Z",
       "approvedCadence": "Hourly Monday\u2013Friday with overnight recovery sync",
       "scheduleConfiguration": "active",
       "manualRefreshAvailable": true,
       "agentRefreshAvailable": true,
-      "displayFreshness": "21 Sep 2026 \u00b7 7:37 PM AWST"
+      "displayFreshness": "22 Sep 2026 \u00b7 7:36 PM AWST"
     },
     "podiumDailyDigest": {
       "status": "connected_tested",
@@ -54,37 +54,37 @@
     "anzWorldline": {
       "status": "connected_tested",
       "delivery": "Scheduled Outlook PDF settlement report",
-      "receivedAt": "2026-09-20T13:47:25Z",
+      "receivedAt": "2026-09-21T15:11:26Z",
       "provenance": "Your Settlement Report from ANZ Worldline Payment Solutions received in Outlook",
-      "statusDetail": "Settlement parsed successfully, but a data-quality issue was detected: Document addressed to Partner ID 77230 (BUNBURY 4X4) but transaction breakdown is headed Partner ID 77231 (BUSSELTON 4X4). Net settled amount is real; per-location attribution should not be assumed from this document.",
-      "settlementDate": "20/09/2026",
-      "netSettledAmount": 3278.81,
-      "totalValueOfTxns": 3307.75,
-      "txnFeesExclGst": -26.31,
-      "gst": -2.63
+      "statusDetail": "Settlement report parsed successfully for 21/09/2026.",
+      "settlementDate": "21/09/2026",
+      "netSettledAmount": 7737.8,
+      "totalValueOfTxns": 7806.11,
+      "txnFeesExclGst": -62.1,
+      "gst": -6.21
     }
   },
   "locations": {
     "bunbury": {
       "revenue": {
-        "net": 2227.28,
-        "grossProfit": 1198.54,
-        "grossMarginPercent": 53.81,
-        "sourceFile": "daily_income_report_210926.xls",
+        "net": 7274.72,
+        "grossProfit": 5143.55,
+        "grossMarginPercent": 70.7,
+        "sourceFile": "daily_income_report_220926.xls",
         "target": 13000
       },
       "workshop": {
         "productivityPercent": 100.0,
-        "efficiencyPercent": 152.38,
-        "productivityCoverage": "Daniel Fowles, Jack Rooney, Samuel Sutton",
-        "efficiencyCoverage": "Daniel Fowles, Jack Rooney, Samuel Sutton",
+        "efficiencyPercent": 133.6,
+        "productivityCoverage": "Daniel Fowles, Samuel Sutton, Jack Rooney",
+        "efficiencyCoverage": "Daniel Fowles, Samuel Sutton, Jack Rooney",
         "evidenceStatus": "current",
         "sourceFiles": [
-          "daily_job_wip_report_210926.xls",
-          "daily_job_report_210926.xls",
-          "daily_efficiency_report_210926.xls",
-          "daily_income_report_210926.xls",
-          "daily_productivity_report_210926.xls"
+          "daily_job_wip_report_220926.xls",
+          "daily_efficiency_report_220926.xls",
+          "daily_job_report_220926.xls",
+          "daily_income_report_220926.xls",
+          "daily_productivity_report_220926.xls"
         ],
         "fitterCount": 3,
         "coverageNames": [
@@ -92,40 +92,39 @@
           "Jack Rooney",
           "Samuel Sutton"
         ],
-        "recordedHours": 4.83,
+        "recordedHours": 5.0,
         "attributionSafe": true,
-        "coverageNote": "Percentages struck over 4.83 recorded hours from 3 fitter(s); every fitter named on the day's jobs recorded hours."
+        "coverageNote": "Percentages struck over 5 recorded hours from 3 fitter(s); every fitter named on the day's jobs recorded hours."
       }
     },
     "busselton": {
       "revenue": {
-        "net": 1918.28,
-        "grossProfit": 962.06,
-        "grossMarginPercent": 50.15,
-        "sourceFile": "daily_income_report_210926.xls",
+        "net": 6874.98,
+        "grossProfit": 3851.37,
+        "grossMarginPercent": 56.02,
+        "sourceFile": "daily_income_report_220926.xls",
         "target": 10000
       },
       "workshop": {
         "productivityPercent": 100.0,
-        "efficiencyPercent": 52.63,
-        "productivityCoverage": "Zach Hutchison, Aaron Leonard",
-        "efficiencyCoverage": "Zach Hutchison, Aaron Leonard",
+        "efficiencyPercent": 0.0,
+        "productivityCoverage": "Jayden Brookes",
+        "efficiencyCoverage": "Jayden Brookes",
         "evidenceStatus": "current",
         "sourceFiles": [
-          "daily_productivity_report_210926.xls",
-          "daily_job_wip_report_210926.xls",
-          "daily_efficiency_report_210926.xls",
-          "daily_job_report_210926.xls",
-          "daily_income_report_210926.xls"
+          "daily_income_report_220926.xls",
+          "daily_productivity_report_220926.xls",
+          "daily_job_wip_report_220926.xls",
+          "daily_efficiency_report_220926.xls",
+          "daily_job_report_220926.xls"
         ],
-        "fitterCount": 2,
+        "fitterCount": 1,
         "coverageNames": [
-          "Aaron Leonard",
-          "Zach Hutchison"
+          "Jayden Brookes"
         ],
-        "recordedHours": 9.5,
+        "recordedHours": 0.75,
         "attributionSafe": true,
-        "coverageNote": "Percentages struck over 9.5 recorded hours from 2 fitter(s); every fitter named on the day's jobs recorded hours."
+        "coverageNote": "Percentages struck over 0.75 recorded hours from 1 fitter(s); every fitter named on the day's jobs recorded hours."
       },
       "quotes": {
         "reportDate": "2026-09-14",
@@ -330,7 +329,7 @@
       "statusLabel": "MechanicDesk AFTER-CARE tag and job finalisation connected",
       "requiredSource": "MechanicDesk daily Job Report (tag + finalisation) and Job WIP Report (enrolment, owner, open rework)",
       "requiredAdapter": "scripts/parsers/job_report.py, scripts/parsers/job_wip_report.py, scripts/aftercare.py",
-      "lastSuccessfulIngestionAt": "2026-09-21T11:37:41.923908Z",
+      "lastSuccessfulIngestionAt": "2026-09-22T11:36:52.162706Z",
       "locationsRead": [
         "bunbury",
         "busselton"
@@ -339,12 +338,12 @@
       "seededAt": "2026-09-18"
     },
     "operatingPosition": {
-      "activeCycles": 2,
-      "dueToday": 2,
+      "activeCycles": 3,
+      "dueToday": 0,
       "completedToday": 0,
-      "overdue": 0,
+      "overdue": 2,
       "unresolvedConcerns": 0,
-      "awaitingDayZero": 5,
+      "awaitingDayZero": 4,
       "recurringQualitySignals": null,
       "ownerAttentionRequired": false,
       "ownerAttentionReason": "No After-Care matter requires Owner attention; obligations sit with the accountable consultants."
@@ -483,6 +482,116 @@
       "refund, unusual resolution or spending outside delegated authority"
     ],
     "register": [
+      {
+        "job": "BUNJOB3502",
+        "location": "bunbury",
+        "invoiceNo": "BUNINV5561",
+        "dayZero": "2026-09-22",
+        "customer": "Josh Krome",
+        "mobile": "0498212836",
+        "vehicle": "2026 BYD SHARK 6 Performance 2.0L",
+        "registration": null,
+        "description": "Suspension",
+        "tags": [
+          "SUSPENSION",
+          "AFTER-CARE",
+          "RECORD SUSPENSION DETAILS"
+        ],
+        "owner": null,
+        "ownerBasis": "created_by",
+        "fitter": "Jack Rooney",
+        "enrolledAt": "2026-09-22",
+        "supersededBy": null,
+        "schedule": [
+          {
+            "code": "72H",
+            "label": "72 hours",
+            "tier": "active",
+            "type": "Genuine Build Consultant call",
+            "owner": "Build Consultant",
+            "rawDue": "2026-09-25",
+            "due": "2026-09-25",
+            "conditional": false,
+            "shifted": false,
+            "generatesObligation": true
+          },
+          {
+            "code": "1M",
+            "label": "1 month",
+            "tier": "active",
+            "type": "Retorque / technical follow-up",
+            "owner": "Workshop / Consultant",
+            "rawDue": "2026-10-22",
+            "due": "2026-10-22",
+            "conditional": false,
+            "shifted": false,
+            "generatesObligation": true,
+            "technicalNote": "Load-bearing fitment (Suspension) -- retorque, not just an adjustment check"
+          },
+          {
+            "code": "6M",
+            "label": "6 months",
+            "tier": "active",
+            "type": "Build Health Check + consultation",
+            "owner": "Consultant + Fitter",
+            "rawDue": "2027-03-22",
+            "due": "2027-03-22",
+            "conditional": false,
+            "shifted": false,
+            "generatesObligation": true
+          },
+          {
+            "code": "12M",
+            "label": "12 months",
+            "tier": "active",
+            "type": "Build Health Check + consultation",
+            "owner": "Consultant + Fitter",
+            "rawDue": "2027-09-22",
+            "due": "2027-09-22",
+            "conditional": false,
+            "shifted": false,
+            "generatesObligation": true
+          },
+          {
+            "code": "18M",
+            "label": "18 months",
+            "tier": "passive",
+            "type": "Conditional contact only",
+            "owner": "Build Consultant",
+            "rawDue": "2028-03-22",
+            "due": "2028-03-22",
+            "conditional": false,
+            "shifted": false,
+            "generatesObligation": false
+          },
+          {
+            "code": "24M",
+            "label": "24 months",
+            "tier": "active",
+            "type": "Build Health Check + 10% voucher",
+            "owner": "Consultant + Fitter",
+            "rawDue": "2028-09-22",
+            "due": "2028-09-22",
+            "conditional": false,
+            "shifted": false,
+            "generatesObligation": true
+          },
+          {
+            "code": "AMBIENT",
+            "label": "24-36 months",
+            "tier": "ambient",
+            "type": "Newsletter and referral credit only",
+            "owner": "DN06 Growth",
+            "rawDue": "2029-09-22",
+            "due": "2029-09-21",
+            "conditional": false,
+            "shifted": true,
+            "windowStart": "2028-09-22",
+            "windowEnd": "2029-09-21",
+            "generatesObligation": false
+          }
+        ]
+      },
       {
         "job": "BUNJOB3473",
         "location": "bunbury",
@@ -740,18 +849,19 @@
         "location": "bunbury"
       },
       {
-        "job": "BUNJOB3502",
-        "description": "Suspension",
-        "customer": "Josh Krome",
-        "vehicle": "2026 BYD SHARK 6 Performance 2.0L",
+        "job": "BUNJOB3510",
+        "description": "Long Range Fuel Tank",
+        "customer": "Jack Biondi",
+        "vehicle": "2017 Mitsubishi Triton",
         "registration": "",
         "tags": [
-          "SUSPENSION",
-          "AFTER-CARE"
+          "LONG RANGE FUEL TANK",
+          "AFTER-CARE",
+          "REQUIRES SCHEDULING"
         ],
-        "startDate": "2026-09-22",
-        "invoiceTotal": 3835.0,
-        "mechanics": "Jack Rooney",
+        "startDate": "2026-09-27",
+        "invoiceTotal": 2304.75,
+        "mechanics": "",
         "owner": "Jelena Gordon",
         "ownerBasis": "created_by",
         "location": "bunbury"
@@ -766,29 +876,10 @@
           "DRAWER SYSTEM",
           "DRIVING LIGHTS",
           "MISC",
-          "AFTER-CARE",
-          "REQUIRES SCHEDULING"
+          "AFTER-CARE"
         ],
-        "startDate": "2026-09-21",
+        "startDate": "2026-09-24",
         "invoiceTotal": 6322.6,
-        "mechanics": "",
-        "owner": "Jelena Gordon",
-        "ownerBasis": "created_by",
-        "location": "bunbury"
-      },
-      {
-        "job": "BUNJOB3510",
-        "description": "Long Range Fuel Tank",
-        "customer": "Jack Biondi",
-        "vehicle": "2017 Mitsubishi Triton",
-        "registration": "",
-        "tags": [
-          "LONG RANGE FUEL TANK",
-          "AFTER-CARE",
-          "REQUIRES SCHEDULING"
-        ],
-        "startDate": "2026-09-21",
-        "invoiceTotal": 2304.75,
         "mechanics": "",
         "owner": "Jelena Gordon",
         "ownerBasis": "created_by",
@@ -796,22 +887,6 @@
       }
     ],
     "reworkOpen": [
-      {
-        "job": "BUNJOB3508",
-        "description": "No power to 7 pin plug on tow bar",
-        "customer": "John Carroll",
-        "vehicle": "2018+ JAYCO MOTORHOME 1IJI068",
-        "registration": "1IJI068",
-        "tags": [
-          "Rework - review required"
-        ],
-        "startDate": "2026-09-22",
-        "invoiceTotal": 0.0,
-        "mechanics": "Samuel Sutton",
-        "owner": "Jelena Gordon",
-        "ownerBasis": "salesperson",
-        "location": "bunbury"
-      },
       {
         "job": "BUSJOB2196",
         "description": "AIRBAG REFIT / REINSTALL?",
@@ -822,7 +897,7 @@
           "Rework - Review Required",
           "AIR BAGS"
         ],
-        "startDate": "2026-09-22",
+        "startDate": "2026-09-26",
         "invoiceTotal": 0.0,
         "mechanics": "",
         "owner": "Mitch Cooper",
@@ -831,7 +906,8 @@
       }
     ],
     "outcomes": {},
-    "dueTodayList": [
+    "dueTodayList": [],
+    "overdueList": [
       {
         "job": "BUNJOB3473",
         "location": "bunbury",
@@ -846,7 +922,8 @@
         "code": "72H",
         "type": "Genuine Build Consultant call",
         "due": "2026-09-21",
-        "dayZero": "2026-09-18"
+        "dayZero": "2026-09-18",
+        "daysLate": 1
       },
       {
         "job": "BUSJOB2202",
@@ -862,11 +939,28 @@
         "code": "72H",
         "type": "Genuine Build Consultant call",
         "due": "2026-09-21",
-        "dayZero": "2026-09-17"
+        "dayZero": "2026-09-17",
+        "daysLate": 1
       }
     ],
-    "overdueList": [],
     "upcomingList": [
+      {
+        "job": "BUNJOB3502",
+        "location": "bunbury",
+        "customer": "Josh Krome",
+        "vehicle": "2026 BYD SHARK 6 Performance 2.0L",
+        "registration": null,
+        "mobile": "0498212836",
+        "owner": null,
+        "ownerBasis": "created_by",
+        "fitter": "Jack Rooney",
+        "milestone": "72 hours",
+        "code": "72H",
+        "type": "Genuine Build Consultant call",
+        "due": "2026-09-25",
+        "dayZero": "2026-09-22",
+        "daysAway": 3
+      },
       {
         "job": "BUSJOB2202",
         "location": "busselton",
@@ -882,7 +976,7 @@
         "type": "Retorque / technical follow-up",
         "due": "2026-10-16",
         "dayZero": "2026-09-17",
-        "daysAway": 25
+        "daysAway": 24
       },
       {
         "job": "BUNJOB3473",
@@ -899,7 +993,24 @@
         "type": "Retorque / technical follow-up",
         "due": "2026-10-19",
         "dayZero": "2026-09-18",
-        "daysAway": 28
+        "daysAway": 27
+      },
+      {
+        "job": "BUNJOB3502",
+        "location": "bunbury",
+        "customer": "Josh Krome",
+        "vehicle": "2026 BYD SHARK 6 Performance 2.0L",
+        "registration": null,
+        "mobile": "0498212836",
+        "owner": null,
+        "ownerBasis": "created_by",
+        "fitter": "Jack Rooney",
+        "milestone": "1 month",
+        "code": "1M",
+        "type": "Retorque / technical follow-up",
+        "due": "2026-10-22",
+        "dayZero": "2026-09-22",
+        "daysAway": 30
       },
       {
         "job": "BUSJOB2202",
@@ -916,7 +1027,7 @@
         "type": "Build Health Check + consultation",
         "due": "2027-03-17",
         "dayZero": "2026-09-17",
-        "daysAway": 177
+        "daysAway": 176
       },
       {
         "job": "BUNJOB3473",
@@ -933,7 +1044,24 @@
         "type": "Build Health Check + consultation",
         "due": "2027-03-18",
         "dayZero": "2026-09-18",
-        "daysAway": 178
+        "daysAway": 177
+      },
+      {
+        "job": "BUNJOB3502",
+        "location": "bunbury",
+        "customer": "Josh Krome",
+        "vehicle": "2026 BYD SHARK 6 Performance 2.0L",
+        "registration": null,
+        "mobile": "0498212836",
+        "owner": null,
+        "ownerBasis": "created_by",
+        "fitter": "Jack Rooney",
+        "milestone": "6 months",
+        "code": "6M",
+        "type": "Build Health Check + consultation",
+        "due": "2027-03-22",
+        "dayZero": "2026-09-22",
+        "daysAway": 181
       },
       {
         "job": "BUNJOB3473",
@@ -950,7 +1078,7 @@
         "type": "Build Health Check + consultation",
         "due": "2027-09-17",
         "dayZero": "2026-09-18",
-        "daysAway": 361
+        "daysAway": 360
       },
       {
         "job": "BUSJOB2202",
@@ -967,41 +1095,24 @@
         "type": "Build Health Check + consultation",
         "due": "2027-09-17",
         "dayZero": "2026-09-17",
-        "daysAway": 361
+        "daysAway": 360
       },
       {
-        "job": "BUNJOB3473",
+        "job": "BUNJOB3502",
         "location": "bunbury",
-        "customer": "Tyler Woolcock",
-        "vehicle": "2023 Isuzu D-Max",
+        "customer": "Josh Krome",
+        "vehicle": "2026 BYD SHARK 6 Performance 2.0L",
         "registration": null,
-        "mobile": "0475622346",
+        "mobile": "0498212836",
         "owner": null,
         "ownerBasis": "created_by",
-        "fitter": "Samuel Sutton",
-        "milestone": "24 months",
-        "code": "24M",
-        "type": "Build Health Check + 10% voucher",
-        "due": "2028-09-18",
-        "dayZero": "2026-09-18",
-        "daysAway": 728
-      },
-      {
-        "job": "BUSJOB2202",
-        "location": "busselton",
-        "customer": "MARC PAPALIA",
-        "vehicle": "2026 BYD SHARK",
-        "registration": "1JBF666",
-        "mobile": "0408109984",
-        "owner": "Mitch Cooper",
-        "ownerBasis": "created_by",
-        "fitter": "Jayden Brookes",
-        "milestone": "24 months",
-        "code": "24M",
-        "type": "Build Health Check + 10% voucher",
-        "due": "2028-09-18",
-        "dayZero": "2026-09-17",
-        "daysAway": 728
+        "fitter": "Jack Rooney",
+        "milestone": "12 months",
+        "code": "12M",
+        "type": "Build Health Check + consultation",
+        "due": "2027-09-22",
+        "dayZero": "2026-09-22",
+        "daysAway": 365
       }
     ],
     "suppressedList": [],
@@ -1032,25 +1143,25 @@
         "severity": "warning",
         "owner": "DN02 Sales",
         "title": "Build Consultant is assigned by proxy",
-        "detail": "7 of 7 jobs in or awaiting the programme have no Saleperson recorded in MechanicDesk, so their After-Care obligations are assigned from the booking's Created By instead. The 72-hour call may land with someone who never met the customer. Across the wider open job book, Saleperson is filled on 16 rows."
+        "detail": "7 of 7 jobs in or awaiting the programme have no Saleperson recorded in MechanicDesk, so their After-Care obligations are assigned from the booking's Created By instead. The 72-hour call may land with someone who never met the customer. Across the wider open job book, Saleperson is filled on 15 rows."
       }
     ]
   },
   "financialControl": {
-    "payablesAsOfSyncUtc": "2026-09-21T11:37:36.850135Z",
-    "netPayables": 444918.51,
+    "payablesAsOfSyncUtc": "2026-09-22T11:36:47.034943Z",
+    "netPayables": 425936.68,
     "overduePayables": 4.5,
     "payablesProvenance": "Grouped by ContactName and netted across all payable sources",
-    "treasuryAsOfDate": "2026-09-21",
-    "overdraftHeadroom": 170082.72,
+    "treasuryAsOfDate": "2026-09-22",
+    "overdraftHeadroom": 132356.49,
     "overdraftLimit": 200000,
-    "overdraftDrawn": 29917.28,
+    "overdraftDrawn": 67643.51,
     "caplinkDue": 26702,
     "caplinkDueDate": "2026-09-30",
-    "monthToDateRevenue": 246448.23,
-    "monthToDateGrossProfit": 100039.13,
-    "monthToDateGrossProfitMarginPercent": 40.59,
+    "monthToDateRevenue": 261325.2,
+    "monthToDateGrossProfit": 107726.36,
+    "monthToDateGrossProfitMarginPercent": 41.22,
     "monthToDatePeriodStart": "2026-09-01",
-    "monthToDatePeriodEnd": "2026-09-21"
+    "monthToDatePeriodEnd": "2026-09-22"
   }
 }
