@@ -1,16 +1,16 @@
 {
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-22T11:36:52.162722Z",
-  "latestAccountableDate": "2026-09-22",
+  "generatedAt": "2026-09-23T11:37:02.755740Z",
+  "latestAccountableDate": "2026-09-23",
   "sources": {
     "mechanicDesk": {
       "status": "connected_tested",
-      "receivedAt": "2026-09-22T10:10:27Z",
+      "receivedAt": "2026-09-23T10:32:21Z",
       "expectedAtLocal": "18:10",
       "timezone": "Australia/Perth",
       "folder": "Inbox/Mechanic Desk Reports",
       "reportCount": 6,
-      "statusDetail": "Automated nightly ingestion: 6/6 Income/Productivity/Efficiency reports parsed for 2026-09-22.",
+      "statusDetail": "Automated nightly ingestion: 6/6 Income/Productivity/Efficiency reports parsed for 2026-09-23.",
       "requiredReports": {
         "bunbury": [
           "Income",
@@ -33,12 +33,12 @@
       "status": "connected_tested",
       "syncStatus": "SUCCESS",
       "lastOrganisationSyncUtc": "2026-09-06T11:17:44.973Z",
-      "lastAccountTransactionsSyncUtc": "2026-09-22T11:36:47.034951Z",
+      "lastAccountTransactionsSyncUtc": "2026-09-23T11:36:54.494663Z",
       "approvedCadence": "Hourly Monday\u2013Friday with overnight recovery sync",
       "scheduleConfiguration": "active",
       "manualRefreshAvailable": true,
       "agentRefreshAvailable": true,
-      "displayFreshness": "22 Sep 2026 \u00b7 7:36 PM AWST"
+      "displayFreshness": "23 Sep 2026 \u00b7 7:36 PM AWST"
     },
     "podiumDailyDigest": {
       "status": "connected_tested",
@@ -54,37 +54,37 @@
     "anzWorldline": {
       "status": "connected_tested",
       "delivery": "Scheduled Outlook PDF settlement report",
-      "receivedAt": "2026-09-21T15:11:26Z",
+      "receivedAt": "2026-09-22T15:23:43Z",
       "provenance": "Your Settlement Report from ANZ Worldline Payment Solutions received in Outlook",
-      "statusDetail": "Settlement report parsed successfully for 21/09/2026.",
-      "settlementDate": "21/09/2026",
-      "netSettledAmount": 7737.8,
-      "totalValueOfTxns": 7806.11,
-      "txnFeesExclGst": -62.1,
-      "gst": -6.21
+      "statusDetail": "Settlement report parsed successfully for 22/09/2026.",
+      "settlementDate": "22/09/2026",
+      "netSettledAmount": 10196.99,
+      "totalValueOfTxns": 10287.0,
+      "txnFeesExclGst": -81.83,
+      "gst": -8.18
     }
   },
   "locations": {
     "bunbury": {
       "revenue": {
-        "net": 7274.72,
-        "grossProfit": 5143.55,
-        "grossMarginPercent": 70.7,
-        "sourceFile": "daily_income_report_220926.xls",
+        "net": 4533.42,
+        "grossProfit": 2260.47,
+        "grossMarginPercent": 49.86,
+        "sourceFile": "daily_income_report_230926.xls",
         "target": 13000
       },
       "workshop": {
         "productivityPercent": 100.0,
-        "efficiencyPercent": 133.6,
-        "productivityCoverage": "Daniel Fowles, Samuel Sutton, Jack Rooney",
-        "efficiencyCoverage": "Daniel Fowles, Samuel Sutton, Jack Rooney",
+        "efficiencyPercent": 95.98,
+        "productivityCoverage": "Daniel Fowles, Jack Rooney, Samuel Sutton",
+        "efficiencyCoverage": "Daniel Fowles, Jack Rooney, Samuel Sutton",
         "evidenceStatus": "current",
         "sourceFiles": [
-          "daily_job_wip_report_220926.xls",
-          "daily_efficiency_report_220926.xls",
-          "daily_job_report_220926.xls",
-          "daily_income_report_220926.xls",
-          "daily_productivity_report_220926.xls"
+          "daily_income_report_230926.xls",
+          "daily_job_wip_report_230926.xls",
+          "daily_efficiency_report_230926.xls",
+          "daily_job_report_230926.xls",
+          "daily_productivity_report_230926.xls"
         ],
         "fitterCount": 3,
         "coverageNames": [
@@ -92,39 +92,39 @@
           "Jack Rooney",
           "Samuel Sutton"
         ],
-        "recordedHours": 5.0,
+        "recordedHours": 12.68,
         "attributionSafe": true,
-        "coverageNote": "Percentages struck over 5 recorded hours from 3 fitter(s); every fitter named on the day's jobs recorded hours."
+        "coverageNote": "Percentages struck over 12.68 recorded hours from 3 fitter(s); every fitter named on the day's jobs recorded hours."
       }
     },
     "busselton": {
       "revenue": {
-        "net": 6874.98,
-        "grossProfit": 3851.37,
-        "grossMarginPercent": 56.02,
-        "sourceFile": "daily_income_report_220926.xls",
+        "net": 5334.55,
+        "grossProfit": 2377.28,
+        "grossMarginPercent": 44.56,
+        "sourceFile": "daily_income_report_230926.xls",
         "target": 10000
       },
       "workshop": {
         "productivityPercent": 100.0,
-        "efficiencyPercent": 0.0,
+        "efficiencyPercent": 187.6,
         "productivityCoverage": "Jayden Brookes",
         "efficiencyCoverage": "Jayden Brookes",
         "evidenceStatus": "current",
         "sourceFiles": [
-          "daily_income_report_220926.xls",
-          "daily_productivity_report_220926.xls",
-          "daily_job_wip_report_220926.xls",
-          "daily_efficiency_report_220926.xls",
-          "daily_job_report_220926.xls"
+          "daily_job_wip_report_230926.xls",
+          "daily_efficiency_report_230926.xls",
+          "daily_income_report_230926.xls",
+          "daily_productivity_report_230926.xls",
+          "daily_job_report_230926.xls"
         ],
         "fitterCount": 1,
         "coverageNames": [
           "Jayden Brookes"
         ],
-        "recordedHours": 0.75,
+        "recordedHours": 2.5,
         "attributionSafe": true,
-        "coverageNote": "Percentages struck over 0.75 recorded hours from 1 fitter(s); every fitter named on the day's jobs recorded hours."
+        "coverageNote": "Percentages struck over 2.5 recorded hours from 1 fitter(s); every fitter named on the day's jobs recorded hours."
       },
       "quotes": {
         "reportDate": "2026-09-14",
@@ -329,7 +329,7 @@
       "statusLabel": "MechanicDesk AFTER-CARE tag and job finalisation connected",
       "requiredSource": "MechanicDesk daily Job Report (tag + finalisation) and Job WIP Report (enrolment, owner, open rework)",
       "requiredAdapter": "scripts/parsers/job_report.py, scripts/parsers/job_wip_report.py, scripts/aftercare.py",
-      "lastSuccessfulIngestionAt": "2026-09-22T11:36:52.162706Z",
+      "lastSuccessfulIngestionAt": "2026-09-23T11:37:02.755723Z",
       "locationsRead": [
         "bunbury",
         "busselton"
@@ -338,12 +338,12 @@
       "seededAt": "2026-09-18"
     },
     "operatingPosition": {
-      "activeCycles": 3,
+      "activeCycles": 4,
       "dueToday": 0,
       "completedToday": 0,
       "overdue": 2,
       "unresolvedConcerns": 0,
-      "awaitingDayZero": 4,
+      "awaitingDayZero": 7,
       "recurringQualitySignals": null,
       "ownerAttentionRequired": false,
       "ownerAttentionReason": "No After-Care matter requires Owner attention; obligations sit with the accountable consultants."
@@ -482,6 +482,115 @@
       "refund, unusual resolution or spending outside delegated authority"
     ],
     "register": [
+      {
+        "job": "BUSJOB2218",
+        "location": "busselton",
+        "invoiceNo": "BUSINV3509",
+        "dayZero": "2026-09-23",
+        "customer": "CHERYL DALGRANO",
+        "mobile": "0400055548",
+        "vehicle": "2026 TOYOTA HILUX BSN15GS",
+        "registration": "BSN15GS",
+        "description": "CUSTOMER TO BOOK, NOTES, AIRBAG HELPER KIT & REAR CAMERA MONITOR 4 CARAVAN, SUPPLY AND FIT",
+        "tags": [
+          "AIR BAGS",
+          "AFTER-CARE"
+        ],
+        "owner": null,
+        "ownerBasis": "created_by",
+        "fitter": "Jayden Brookes",
+        "enrolledAt": "2026-09-23",
+        "supersededBy": null,
+        "schedule": [
+          {
+            "code": "72H",
+            "label": "72 hours",
+            "tier": "active",
+            "type": "Genuine Build Consultant call",
+            "owner": "Build Consultant",
+            "rawDue": "2026-09-26",
+            "due": "2026-09-25",
+            "conditional": false,
+            "shifted": true,
+            "generatesObligation": true
+          },
+          {
+            "code": "1M",
+            "label": "1 month",
+            "tier": "active",
+            "type": "Retorque / technical follow-up",
+            "owner": "Workshop / Consultant",
+            "rawDue": "2026-10-23",
+            "due": "2026-10-23",
+            "conditional": false,
+            "shifted": false,
+            "generatesObligation": true,
+            "technicalNote": "Load-bearing fitment (Air Bag, Airbag) -- retorque, not just an adjustment check"
+          },
+          {
+            "code": "6M",
+            "label": "6 months",
+            "tier": "active",
+            "type": "Build Health Check + consultation",
+            "owner": "Consultant + Fitter",
+            "rawDue": "2027-03-23",
+            "due": "2027-03-23",
+            "conditional": false,
+            "shifted": false,
+            "generatesObligation": true
+          },
+          {
+            "code": "12M",
+            "label": "12 months",
+            "tier": "active",
+            "type": "Build Health Check + consultation",
+            "owner": "Consultant + Fitter",
+            "rawDue": "2027-09-23",
+            "due": "2027-09-23",
+            "conditional": false,
+            "shifted": false,
+            "generatesObligation": true
+          },
+          {
+            "code": "18M",
+            "label": "18 months",
+            "tier": "passive",
+            "type": "Conditional contact only",
+            "owner": "Build Consultant",
+            "rawDue": "2028-03-23",
+            "due": "2028-03-23",
+            "conditional": false,
+            "shifted": false,
+            "generatesObligation": false
+          },
+          {
+            "code": "24M",
+            "label": "24 months",
+            "tier": "active",
+            "type": "Build Health Check + 10% voucher",
+            "owner": "Consultant + Fitter",
+            "rawDue": "2028-09-23",
+            "due": "2028-09-22",
+            "conditional": false,
+            "shifted": true,
+            "generatesObligation": true
+          },
+          {
+            "code": "AMBIENT",
+            "label": "24-36 months",
+            "tier": "ambient",
+            "type": "Newsletter and referral credit only",
+            "owner": "DN06 Growth",
+            "rawDue": "2029-09-23",
+            "due": "2029-09-25",
+            "conditional": false,
+            "shifted": true,
+            "windowStart": "2028-09-22",
+            "windowEnd": "2029-09-25",
+            "generatesObligation": false
+          }
+        ]
+      },
       {
         "job": "BUNJOB3502",
         "location": "bunbury",
@@ -884,6 +993,67 @@
         "owner": "Jelena Gordon",
         "ownerBasis": "created_by",
         "location": "bunbury"
+      },
+      {
+        "job": "BUSJOB2204",
+        "description": "DRIVING LIGHTS, WINCH, LIGHTBAR, SOLAR PANEL, ANDERSON, SUPPLY AND FIT, FIT OWN RHINO BACKBONE & PLATFORM TO CANOPY",
+        "customer": "ADAM SOULOS",
+        "vehicle": "2026 FORD RANGER SUPERDUTY",
+        "registration": "",
+        "tags": [
+          "DRIVING LIGHTS/LIGHTBAR",
+          "WINCH",
+          "ROOF RACK",
+          "MISC",
+          "AUXILLARY POWER",
+          "ORDERED",
+          "AFTER-CARE"
+        ],
+        "startDate": "2026-09-24",
+        "invoiceTotal": 6378.0,
+        "mechanics": "Aaron Leonard, Jayden Brookes, Zach Hutchison",
+        "owner": "Mitch Cooper",
+        "ownerBasis": "created_by",
+        "location": "busselton"
+      },
+      {
+        "job": "BUSJOB2193",
+        "description": "",
+        "customer": "Callum Macnish",
+        "vehicle": "2013-2017 TOYOTA PRADO",
+        "registration": "",
+        "tags": [
+          "BULLBAR",
+          "DRIVING LIGHTS/LIGHTBAR",
+          "SUSPENSION",
+          "AFTER-CARE"
+        ],
+        "startDate": "2026-09-22",
+        "invoiceTotal": 6716.02,
+        "mechanics": "Aaron Leonard, Zach Hutchison",
+        "owner": "Mitch Cooper",
+        "ownerBasis": "created_by",
+        "location": "busselton"
+      },
+      {
+        "job": "BUSJOB2166",
+        "description": "BULLBAR, UNDERBODY, SUSPENSION, ROOF RACK ETC",
+        "customer": "David Fabry",
+        "vehicle": "2026 Mitsubishi Triton MV BM28888",
+        "registration": "BM28888",
+        "tags": [
+          "BULLBAR",
+          "DRIVING LIGHTS/LIGHTBAR",
+          "MISC",
+          "SUSPENSION",
+          "AFTER-CARE"
+        ],
+        "startDate": "2026-09-14",
+        "invoiceTotal": 22455.77,
+        "mechanics": "Aaron Leonard, Jayden Brookes, Zach Hutchison",
+        "owner": "Drew Baker",
+        "ownerBasis": "created_by",
+        "location": "busselton"
       }
     ],
     "reworkOpen": [
@@ -923,7 +1093,7 @@
         "type": "Genuine Build Consultant call",
         "due": "2026-09-21",
         "dayZero": "2026-09-18",
-        "daysLate": 1
+        "daysLate": 2
       },
       {
         "job": "BUSJOB2202",
@@ -940,10 +1110,27 @@
         "type": "Genuine Build Consultant call",
         "due": "2026-09-21",
         "dayZero": "2026-09-17",
-        "daysLate": 1
+        "daysLate": 2
       }
     ],
     "upcomingList": [
+      {
+        "job": "BUSJOB2218",
+        "location": "busselton",
+        "customer": "CHERYL DALGRANO",
+        "vehicle": "2026 TOYOTA HILUX BSN15GS",
+        "registration": "BSN15GS",
+        "mobile": "0400055548",
+        "owner": null,
+        "ownerBasis": "created_by",
+        "fitter": "Jayden Brookes",
+        "milestone": "72 hours",
+        "code": "72H",
+        "type": "Genuine Build Consultant call",
+        "due": "2026-09-25",
+        "dayZero": "2026-09-23",
+        "daysAway": 2
+      },
       {
         "job": "BUNJOB3502",
         "location": "bunbury",
@@ -959,7 +1146,7 @@
         "type": "Genuine Build Consultant call",
         "due": "2026-09-25",
         "dayZero": "2026-09-22",
-        "daysAway": 3
+        "daysAway": 2
       },
       {
         "job": "BUSJOB2202",
@@ -976,7 +1163,7 @@
         "type": "Retorque / technical follow-up",
         "due": "2026-10-16",
         "dayZero": "2026-09-17",
-        "daysAway": 24
+        "daysAway": 23
       },
       {
         "job": "BUNJOB3473",
@@ -993,7 +1180,7 @@
         "type": "Retorque / technical follow-up",
         "due": "2026-10-19",
         "dayZero": "2026-09-18",
-        "daysAway": 27
+        "daysAway": 26
       },
       {
         "job": "BUNJOB3502",
@@ -1010,6 +1197,23 @@
         "type": "Retorque / technical follow-up",
         "due": "2026-10-22",
         "dayZero": "2026-09-22",
+        "daysAway": 29
+      },
+      {
+        "job": "BUSJOB2218",
+        "location": "busselton",
+        "customer": "CHERYL DALGRANO",
+        "vehicle": "2026 TOYOTA HILUX BSN15GS",
+        "registration": "BSN15GS",
+        "mobile": "0400055548",
+        "owner": null,
+        "ownerBasis": "created_by",
+        "fitter": "Jayden Brookes",
+        "milestone": "1 month",
+        "code": "1M",
+        "type": "Retorque / technical follow-up",
+        "due": "2026-10-23",
+        "dayZero": "2026-09-23",
         "daysAway": 30
       },
       {
@@ -1027,7 +1231,7 @@
         "type": "Build Health Check + consultation",
         "due": "2027-03-17",
         "dayZero": "2026-09-17",
-        "daysAway": 176
+        "daysAway": 175
       },
       {
         "job": "BUNJOB3473",
@@ -1044,7 +1248,7 @@
         "type": "Build Health Check + consultation",
         "due": "2027-03-18",
         "dayZero": "2026-09-18",
-        "daysAway": 177
+        "daysAway": 176
       },
       {
         "job": "BUNJOB3502",
@@ -1061,58 +1265,24 @@
         "type": "Build Health Check + consultation",
         "due": "2027-03-22",
         "dayZero": "2026-09-22",
-        "daysAway": 181
+        "daysAway": 180
       },
       {
-        "job": "BUNJOB3473",
-        "location": "bunbury",
-        "customer": "Tyler Woolcock",
-        "vehicle": "2023 Isuzu D-Max",
-        "registration": null,
-        "mobile": "0475622346",
-        "owner": null,
-        "ownerBasis": "created_by",
-        "fitter": "Samuel Sutton",
-        "milestone": "12 months",
-        "code": "12M",
-        "type": "Build Health Check + consultation",
-        "due": "2027-09-17",
-        "dayZero": "2026-09-18",
-        "daysAway": 360
-      },
-      {
-        "job": "BUSJOB2202",
+        "job": "BUSJOB2218",
         "location": "busselton",
-        "customer": "MARC PAPALIA",
-        "vehicle": "2026 BYD SHARK",
-        "registration": "1JBF666",
-        "mobile": "0408109984",
-        "owner": "Mitch Cooper",
+        "customer": "CHERYL DALGRANO",
+        "vehicle": "2026 TOYOTA HILUX BSN15GS",
+        "registration": "BSN15GS",
+        "mobile": "0400055548",
+        "owner": null,
         "ownerBasis": "created_by",
         "fitter": "Jayden Brookes",
-        "milestone": "12 months",
-        "code": "12M",
+        "milestone": "6 months",
+        "code": "6M",
         "type": "Build Health Check + consultation",
-        "due": "2027-09-17",
-        "dayZero": "2026-09-17",
-        "daysAway": 360
-      },
-      {
-        "job": "BUNJOB3502",
-        "location": "bunbury",
-        "customer": "Josh Krome",
-        "vehicle": "2026 BYD SHARK 6 Performance 2.0L",
-        "registration": null,
-        "mobile": "0498212836",
-        "owner": null,
-        "ownerBasis": "created_by",
-        "fitter": "Jack Rooney",
-        "milestone": "12 months",
-        "code": "12M",
-        "type": "Build Health Check + consultation",
-        "due": "2027-09-22",
-        "dayZero": "2026-09-22",
-        "daysAway": 365
+        "due": "2027-03-23",
+        "dayZero": "2026-09-23",
+        "daysAway": 181
       }
     ],
     "suppressedList": [],
@@ -1143,25 +1313,25 @@
         "severity": "warning",
         "owner": "DN02 Sales",
         "title": "Build Consultant is assigned by proxy",
-        "detail": "7 of 7 jobs in or awaiting the programme have no Saleperson recorded in MechanicDesk, so their After-Care obligations are assigned from the booking's Created By instead. The 72-hour call may land with someone who never met the customer. Across the wider open job book, Saleperson is filled on 15 rows."
+        "detail": "11 of 11 jobs in or awaiting the programme have no Saleperson recorded in MechanicDesk, so their After-Care obligations are assigned from the booking's Created By instead. The 72-hour call may land with someone who never met the customer. Across the wider open job book, Saleperson is filled on 14 rows."
       }
     ]
   },
   "financialControl": {
-    "payablesAsOfSyncUtc": "2026-09-22T11:36:47.034943Z",
-    "netPayables": 425936.68,
-    "overduePayables": 4.5,
+    "payablesAsOfSyncUtc": "2026-09-23T11:36:54.494654Z",
+    "netPayables": 425932.18,
+    "overduePayables": 0.0,
     "payablesProvenance": "Grouped by ContactName and netted across all payable sources",
-    "treasuryAsOfDate": "2026-09-22",
-    "overdraftHeadroom": 132356.49,
+    "treasuryAsOfDate": "2026-09-23",
+    "overdraftHeadroom": 140021.03,
     "overdraftLimit": 200000,
-    "overdraftDrawn": 67643.51,
+    "overdraftDrawn": 59978.97,
     "caplinkDue": 26702,
     "caplinkDueDate": "2026-09-30",
-    "monthToDateRevenue": 261325.2,
-    "monthToDateGrossProfit": 107726.36,
-    "monthToDateGrossProfitMarginPercent": 41.22,
+    "monthToDateRevenue": 272243.17,
+    "monthToDateGrossProfit": 114673.46,
+    "monthToDateGrossProfitMarginPercent": 42.12,
     "monthToDatePeriodStart": "2026-09-01",
-    "monthToDatePeriodEnd": "2026-09-22"
+    "monthToDatePeriodEnd": "2026-09-23"
   }
 }
