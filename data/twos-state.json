@@ -1,16 +1,16 @@
 {
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-25T11:38:10.604579Z",
-  "latestAccountableDate": "2026-09-25",
+  "generatedAt": "2026-09-26T11:35:22.308574Z",
+  "latestAccountableDate": "2026-09-26",
   "sources": {
     "mechanicDesk": {
-      "status": "connected_tested",
-      "receivedAt": "2026-09-25T10:10:25Z",
+      "status": "connected_degraded",
+      "receivedAt": "2026-09-26T10:10:23Z",
       "expectedAtLocal": "18:10",
       "timezone": "Australia/Perth",
       "folder": "Inbox/Mechanic Desk Reports",
-      "reportCount": 6,
-      "statusDetail": "Automated nightly ingestion: 6/6 Income/Productivity/Efficiency reports parsed for 2026-09-25.",
+      "reportCount": 2,
+      "statusDetail": "Automated nightly ingestion: 2/6 Income/Productivity/Efficiency reports parsed for 2026-09-26.",
       "requiredReports": {
         "bunbury": [
           "Income",
@@ -33,12 +33,12 @@
       "status": "connected_tested",
       "syncStatus": "SUCCESS",
       "lastOrganisationSyncUtc": "2026-09-06T11:17:44.973Z",
-      "lastAccountTransactionsSyncUtc": "2026-09-25T11:38:04.886307Z",
+      "lastAccountTransactionsSyncUtc": "2026-09-26T11:35:17.682939Z",
       "approvedCadence": "Hourly Monday\u2013Friday with overnight recovery sync",
       "scheduleConfiguration": "active",
       "manualRefreshAvailable": true,
       "agentRefreshAvailable": true,
-      "displayFreshness": "25 Sep 2026 \u00b7 7:38 PM AWST"
+      "displayFreshness": "26 Sep 2026 \u00b7 7:35 PM AWST"
     },
     "podiumDailyDigest": {
       "status": "connected_tested",
@@ -54,23 +54,23 @@
     "anzWorldline": {
       "status": "connected_tested",
       "delivery": "Scheduled Outlook PDF settlement report",
-      "receivedAt": "2026-09-24T15:36:22Z",
+      "receivedAt": "2026-09-25T15:03:14Z",
       "provenance": "Your Settlement Report from ANZ Worldline Payment Solutions received in Outlook",
-      "statusDetail": "Settlement report parsed successfully for 24/09/2026.",
-      "settlementDate": "24/09/2026",
-      "netSettledAmount": 19441.01,
-      "totalValueOfTxns": 19612.63,
-      "txnFeesExclGst": -156.02,
-      "gst": -15.6
+      "statusDetail": "Settlement report parsed successfully for 25/09/2026.",
+      "settlementDate": "25/09/2026",
+      "netSettledAmount": 12343.16,
+      "totalValueOfTxns": 12452.13,
+      "txnFeesExclGst": -99.06,
+      "gst": -9.91
     }
   },
   "locations": {
     "bunbury": {
       "revenue": {
-        "net": 10968.4,
-        "grossProfit": 3348.14,
-        "grossMarginPercent": 30.53,
-        "sourceFile": "daily_income_report_250926.xls",
+        "net": 0.0,
+        "grossProfit": 0.0,
+        "grossMarginPercent": 0.0,
+        "sourceFile": "daily_income_report_260926.xls",
         "target": 13000
       },
       "workshop": {
@@ -98,10 +98,10 @@
     },
     "busselton": {
       "revenue": {
-        "net": 2486.86,
-        "grossProfit": 1199.74,
-        "grossMarginPercent": 48.24,
-        "sourceFile": "daily_income_report_250926.xls",
+        "net": 0.0,
+        "grossProfit": 0.0,
+        "grossMarginPercent": 0.0,
+        "sourceFile": "daily_income_report_260926.xls",
         "target": 10000
       },
       "workshop": {
@@ -329,7 +329,7 @@
       "statusLabel": "MechanicDesk AFTER-CARE tag and job finalisation connected",
       "requiredSource": "MechanicDesk daily Job Report (tag + finalisation) and Job WIP Report (enrolment, owner, open rework)",
       "requiredAdapter": "scripts/parsers/job_report.py, scripts/parsers/job_wip_report.py, scripts/aftercare.py",
-      "lastSuccessfulIngestionAt": "2026-09-25T11:38:10.604564Z",
+      "lastSuccessfulIngestionAt": "2026-09-26T11:35:22.308559Z",
       "locationsRead": [
         "bunbury",
         "busselton"
@@ -339,14 +339,14 @@
     },
     "operatingPosition": {
       "activeCycles": 5,
-      "dueToday": 2,
+      "dueToday": 0,
       "completedToday": 0,
-      "overdue": 2,
+      "overdue": 4,
       "unresolvedConcerns": 0,
       "awaitingDayZero": 5,
       "recurringQualitySignals": null,
-      "ownerAttentionRequired": false,
-      "ownerAttentionReason": "No After-Care matter requires Owner attention; obligations sit with the accountable consultants."
+      "ownerAttentionRequired": true,
+      "ownerAttentionReason": "4 After-Care obligations are past their due date with no recorded outcome."
     },
     "eligibility": {
       "decisionOwner": "Build Consultant",
@@ -1147,40 +1147,7 @@
       }
     ],
     "outcomes": {},
-    "dueTodayList": [
-      {
-        "job": "BUSJOB2218",
-        "location": "busselton",
-        "customer": "CHERYL DALGRANO",
-        "vehicle": "2026 TOYOTA HILUX BSN15GS",
-        "registration": "BSN15GS",
-        "mobile": "0400055548",
-        "owner": null,
-        "ownerBasis": "created_by",
-        "fitter": "Jayden Brookes",
-        "milestone": "72 hours",
-        "code": "72H",
-        "type": "Genuine Build Consultant call",
-        "due": "2026-09-25",
-        "dayZero": "2026-09-23"
-      },
-      {
-        "job": "BUNJOB3502",
-        "location": "bunbury",
-        "customer": "Josh Krome",
-        "vehicle": "2026 BYD SHARK 6 Performance 2.0L",
-        "registration": null,
-        "mobile": "0498212836",
-        "owner": null,
-        "ownerBasis": "created_by",
-        "fitter": "Jack Rooney",
-        "milestone": "72 hours",
-        "code": "72H",
-        "type": "Genuine Build Consultant call",
-        "due": "2026-09-25",
-        "dayZero": "2026-09-22"
-      }
-    ],
+    "dueTodayList": [],
     "overdueList": [
       {
         "job": "BUNJOB3473",
@@ -1197,7 +1164,7 @@
         "type": "Genuine Build Consultant call",
         "due": "2026-09-21",
         "dayZero": "2026-09-18",
-        "daysLate": 4
+        "daysLate": 5
       },
       {
         "job": "BUSJOB2202",
@@ -1214,7 +1181,41 @@
         "type": "Genuine Build Consultant call",
         "due": "2026-09-21",
         "dayZero": "2026-09-17",
-        "daysLate": 4
+        "daysLate": 5
+      },
+      {
+        "job": "BUSJOB2218",
+        "location": "busselton",
+        "customer": "CHERYL DALGRANO",
+        "vehicle": "2026 TOYOTA HILUX BSN15GS",
+        "registration": "BSN15GS",
+        "mobile": "0400055548",
+        "owner": null,
+        "ownerBasis": "created_by",
+        "fitter": "Jayden Brookes",
+        "milestone": "72 hours",
+        "code": "72H",
+        "type": "Genuine Build Consultant call",
+        "due": "2026-09-25",
+        "dayZero": "2026-09-23",
+        "daysLate": 1
+      },
+      {
+        "job": "BUNJOB3502",
+        "location": "bunbury",
+        "customer": "Josh Krome",
+        "vehicle": "2026 BYD SHARK 6 Performance 2.0L",
+        "registration": null,
+        "mobile": "0498212836",
+        "owner": null,
+        "ownerBasis": "created_by",
+        "fitter": "Jack Rooney",
+        "milestone": "72 hours",
+        "code": "72H",
+        "type": "Genuine Build Consultant call",
+        "due": "2026-09-25",
+        "dayZero": "2026-09-22",
+        "daysLate": 1
       }
     ],
     "upcomingList": [
@@ -1233,7 +1234,7 @@
         "type": "Genuine Build Consultant call",
         "due": "2026-09-29",
         "dayZero": "2026-09-25",
-        "daysAway": 4
+        "daysAway": 3
       },
       {
         "job": "BUSJOB2202",
@@ -1250,7 +1251,7 @@
         "type": "Retorque / technical follow-up",
         "due": "2026-10-16",
         "dayZero": "2026-09-17",
-        "daysAway": 21
+        "daysAway": 20
       },
       {
         "job": "BUNJOB3473",
@@ -1267,7 +1268,7 @@
         "type": "Retorque / technical follow-up",
         "due": "2026-10-19",
         "dayZero": "2026-09-18",
-        "daysAway": 24
+        "daysAway": 23
       },
       {
         "job": "BUNJOB3502",
@@ -1284,7 +1285,7 @@
         "type": "Retorque / technical follow-up",
         "due": "2026-10-22",
         "dayZero": "2026-09-22",
-        "daysAway": 27
+        "daysAway": 26
       },
       {
         "job": "BUSJOB2218",
@@ -1301,7 +1302,7 @@
         "type": "Retorque / technical follow-up",
         "due": "2026-10-23",
         "dayZero": "2026-09-23",
-        "daysAway": 28
+        "daysAway": 27
       },
       {
         "job": "BUSJOB2092",
@@ -1318,7 +1319,7 @@
         "type": "Retorque / technical follow-up",
         "due": "2026-10-26",
         "dayZero": "2026-09-25",
-        "daysAway": 31
+        "daysAway": 30
       },
       {
         "job": "BUSJOB2202",
@@ -1335,7 +1336,7 @@
         "type": "Build Health Check + consultation",
         "due": "2027-03-17",
         "dayZero": "2026-09-17",
-        "daysAway": 173
+        "daysAway": 172
       },
       {
         "job": "BUNJOB3473",
@@ -1352,7 +1353,7 @@
         "type": "Build Health Check + consultation",
         "due": "2027-03-18",
         "dayZero": "2026-09-18",
-        "daysAway": 174
+        "daysAway": 173
       },
       {
         "job": "BUNJOB3502",
@@ -1369,7 +1370,7 @@
         "type": "Build Health Check + consultation",
         "due": "2027-03-22",
         "dayZero": "2026-09-22",
-        "daysAway": 178
+        "daysAway": 177
       },
       {
         "job": "BUSJOB2218",
@@ -1386,7 +1387,7 @@
         "type": "Build Health Check + consultation",
         "due": "2027-03-23",
         "dayZero": "2026-09-23",
-        "daysAway": 179
+        "daysAway": 178
       }
     ],
     "suppressedList": [],
@@ -1422,11 +1423,11 @@
     ]
   },
   "financialControl": {
-    "payablesAsOfSyncUtc": "2026-09-25T11:38:04.886301Z",
+    "payablesAsOfSyncUtc": "2026-09-26T11:35:17.682935Z",
     "netPayables": 457155.21,
-    "overduePayables": 0.0,
+    "overduePayables": 95.0,
     "payablesProvenance": "Grouped by ContactName and netted across all payable sources",
-    "treasuryAsOfDate": "2026-09-25",
+    "treasuryAsOfDate": "2026-09-26",
     "overdraftHeadroom": 171462.81,
     "overdraftLimit": 200000,
     "overdraftDrawn": 28537.19,
@@ -1436,6 +1437,6 @@
     "monthToDateGrossProfit": 125239.42,
     "monthToDateGrossProfitMarginPercent": 40.76,
     "monthToDatePeriodStart": "2026-09-01",
-    "monthToDatePeriodEnd": "2026-09-25"
+    "monthToDatePeriodEnd": "2026-09-26"
   }
 }
